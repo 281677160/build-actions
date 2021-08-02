@@ -1,0 +1,54 @@
+#
+#
+# 说明：
+# 
+# ‘删除在github空间的老固件’ 删除12小时之前的一切固件，保留数设置没效，一删除就会把在删除时间段内的固件全部删除
+#
+# ‘删除自动发布的老固件’ 每次启动都生效，可以设置保留数
+#
+# 手动按钮启动时候修改true为false也就关闭某项生效，env:下面的开关为定时删除时候分别控制开关
+
+
+name: delete
+on:
+  workflow_dispatch:
+    inputs:
+      delete-older-workflow:
+        description: '删除github空间旧固件'
+        required: false
+        default: 'true'
+      delete-older-releases:
+        description: '删除旧的发布'
+        required: false
+        default: 'true'
+
+#  schedule:
+#    - cron: 0 7 * * 6
+
+env:
+  OLDER_WORKFLOW: true
+  OLDER_RELEASES: true
+
+jobs:
+  del_runs:
+    runs-on: Ubuntu-20.04
+    name: delete-workflow-runs
+    steps:
+    
+      - name: 删除在github空间的老固件
+        uses: Mattraks/delete-workflow-runs@main
+        if: env.OLDER_WORKFLOW == 'true' || (github.event.inputs.delete-older-workflow == 'true')
+        with:
+          token: ${{ github.token }}
+          repository: ${{ github.repository }}       
+          retain_days: 0.5
+          keep_minimum_runs: 0
+    
+      - name: 删除自动发布的老固件
+        uses: dev-drprasad/delete-older-releases@master
+        if: env.OLDER_RELEASES == 'true' || (github.event.inputs.delete-older-releases == 'true')
+        with:
+          keep_latest: 0         # 保留多少个发布不删除
+          delete_tags: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}

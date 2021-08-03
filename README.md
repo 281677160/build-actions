@@ -56,20 +56,20 @@ op自带的ttyd或者用putty连接OP都可以，用了命令后会一直使用�
 - 12、`保存编译配置`，编译固件之前打开‘`SSH连接服器配置固件`’跟‘`上传【.config】配置文件在github空间`’。</br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编译的时候SSH连接服务器修改好机型、插件跟其他应用。</br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;编译成功后会有固件跟.config配置文件的，下载.config配置文件后，解压得到一个【config.txt】文件。</br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;双击打开，把里面的内容都复制，然后覆盖对应机型.config里面原来的内容，这样就会保存你的配置了。</br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;下次编译在不修改配置的情况下就不需要再次打开SSH了，那就可以使用定时编译功能，或者手机启动编译。</br>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;本地提取.config配置文件覆盖进去也可以，《[本地提取教程](https://github.com/danshui-git/shuoming/blob/master/yijianconfig.md)》。
 #
 - 13、
-《[增加编译机型方法](https://github.com/danshui-git/shuoming/blob/master/jlck.md)》
+《[增加编译机型的方法](https://github.com/danshui-git/shuoming/blob/master/jlck.md)》
 《[定时触发编译说明](https://github.com/danshui-git/shuoming/blob/master/%E5%AE%9A%E6%97%B6%E7%BC%96%E8%AF%91%E8%AF%B4%E6%98%8E.md)》
-《[修改跟删除](https://github.com/danshui-git/shuoming/blob/master/%E5%88%A0%E9%99%A4%E5%92%8C%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6.md)》
-《[本地提取.config](https://github.com/danshui-git/shuoming/blob/master/yijianconfig.md)》
 《[IPV4/IPV6选择](https://github.com/danshui-git/shuoming/blob/master/%E5%85%B6%E4%BB%96%E8%AF%B4%E6%98%8E.md)》
 《[固件包减负](https://github.com/danshui-git/shuoming/blob/master/%E5%9B%BA%E4%BB%B6%E6%96%87%E4%BB%B6%E5%A4%B9%E6%95%B4%E7%90%86.md)》
 《[banner的说明](https://github.com/danshui-git/shuoming/blob/master/banner%E8%AF%B4%E6%98%8E.md)》
+《[本地提取.config](https://github.com/danshui-git/shuoming/blob/master/yijianconfig.md)》
 《[patch补丁制作](https://github.com/danshui-git/shuoming/blob/master/buding.md)》
 《[NTFS优盘挂载](https://github.com/danshui-git/shuoming/blob/master/ntfs.md)》
 《[各种命令的简单介绍](https://github.com/danshui-git/shuoming/blob/master/ming.md)》
-《[微信通知跟自动发布固功能密匙获取跟使用教程](https://github.com/danshui-git/shuoming/blob/master/ms.md)》
+《[微信通知跟发布固功能密匙获取跟使用](https://github.com/danshui-git/shuoming/blob/master/ms.md)》
 《[Telegram机器人推送信息教程](https://github.com/danshui-git/shuoming/blob/master/bot.md)》
 《[编译时设置overlay空间容量](https://github.com/danshui-git/shuoming/blob/master/overlay.md)》
 《[编译出错时查看日志方法](https://github.com/danshui-git/shuoming/blob/master/errors.md)》
+《[修改文件跟删除仓库](https://github.com/danshui-git/shuoming/blob/master/%E5%88%A0%E9%99%A4%E5%92%8C%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6.md)》
 
 #
 

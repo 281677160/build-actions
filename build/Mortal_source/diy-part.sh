@@ -31,7 +31,7 @@ sed -i '/CYXluq4wUazHjmCDBCqXF/d' $ZZZ                                          
 
 # 修改插件名字
 sed -i 's/"aMule设置"/"电驴下载"/g' `grep "aMule设置" -rl ./`
-sed -i 's/"网络存储"/"存储"/g' `grep "网络存储" -rl ./`
+sed -i 's/"网络存储"/"NAS"/g' `grep "网络存储" -rl ./`
 sed -i 's/"Turbo ACC 网络加速"/"网络加速"/g' `grep "Turbo ACC 网络加速" -rl ./`
 sed -i 's/"实时流量监测"/"流量"/g' `grep "实时流量监测" -rl ./`
 sed -i 's/"KMS 服务器"/"KMS激活"/g' `grep "KMS 服务器" -rl ./`

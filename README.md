@@ -85,5 +85,5 @@ op自带的ttyd或者用putty连接OP都可以，用了命令后会一直使用�
 - <a href="#/README.md">hyird</a>
 - <a href="#/README.md">World Peace</a>
 - <a href="#/README.md">感谢各位大佬提供的各种各样的插件</a>
-- 感谢各位帮助过我的人，祝福各位好人一生平安
+- <a href="#/README.md">感谢各位帮助过我的人，祝福各位好人一生平安</a>
 

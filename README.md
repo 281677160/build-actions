@@ -78,7 +78,6 @@ op自带的ttyd或者用putty连接OP都可以，用了命令后会一直使用�
 - 感谢[Lienol](https://github.com/Lienol/openwrt.git)大神提供的openwrt源码
 - 感谢[ctcgfw](https://github.com/project-openwrt/openwrt.git)大神提供的openwrt源码
 - 感谢[P3TERX](https://github.com/P3TERX/Actions-OpenWrt)大神提供的一键编译脚本
-- 感谢[garypang13](https://github.com/garypang13/Actions-OpenWrt)大神提供的一键编译脚本
 - 感谢[tuanqing](https://github.com/tuanqing/mknop)大神提供的一键打包脚本
 - 感谢[Hyy2001X](https://github.com/Hyy2001X/AutoBuild-Actions)大神，定时自动升级固件来源于此大神
 - 感谢[ophub](https://github.com/ophub/amlogic-s9xxx-openwrt)大神提供Amlogic系列CPU机型的一键打包脚本

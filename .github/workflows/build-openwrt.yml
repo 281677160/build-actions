@@ -81,7 +81,7 @@ jobs:
           echo "OpenWrt_name=21.02" >> $GITHUB_ENV
         fi
         echo "NETIP=package/base-files/files/etc/networkip" >> $GITHUB_ENV
-        if [ -n "$(ls -A build/common/0712gg 2>/dev/null)" ]; then
+        if [ -n "$(ls -A build/common/0808gg 2>/dev/null)" ]; then
           source build/common/common.sh && Diy_gonggao
         else
           source build/common/common.sh && Diy_tongzhi

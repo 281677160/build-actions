@@ -81,9 +81,9 @@ op自带的ttyd或者用putty连接OP都可以，用了命令后会一直使用�
 - [tuanqing](https://github.com/tuanqing/mknop)
 - [Hyy2001X](https://github.com/Hyy2001X/AutoBuild-Actions)
 - [ophub](https://github.com/ophub/amlogic-s9xxx-openwrt)
-- [hyird](https://github.com/hyird/Action-Openwrt)
+- <a href="#/README.md">hyird</a>
 - <a href="#/README.md">World Peace</a>
-- 感谢微软免费提供的编译平台
-- 感谢各位大佬提供的各种各样的插件
+- [github](https://github.com/)
+- <a href="#/README.md">感谢各位大佬提供的各种各样的插件</a>
 - 感谢各位帮助过我的人，祝福各位好人一生平安
 

@@ -61,7 +61,7 @@ op自带的ttyd或者用putty连接OP都可以，用了命令后会一直使用�
 《[banner的说明](https://github.com/danshui-git/shuoming/blob/master/banner%E8%AF%B4%E6%98%8E.md)》
 《[本地提取.config](https://github.com/danshui-git/shuoming/blob/master/yijianconfig.md)》
 《[patch补丁制作](https://github.com/danshui-git/shuoming/blob/master/buding.md)》
-《[NTFS优盘挂载](https://github.com/danshui-git/shuoming/blob/master/ntfs.md)》
+《[NTFS优盘挂载](https://github.com/danshui-git/shuoming/blob/master/NTFS%E6%A0%BC%E5%BC%8F%E4%BC%98%E7%9B%98%E6%8C%82%E8%BD%BD)》
 《[各种命令的简单介绍](https://github.com/danshui-git/shuoming/blob/master/ming.md)》
 《[微信通知跟发布固功能密匙获取跟使用](https://github.com/danshui-git/shuoming/blob/master/ms.md)》
 《[Telegram机器人推送信息教程](https://github.com/danshui-git/shuoming/blob/master/bot.md)》

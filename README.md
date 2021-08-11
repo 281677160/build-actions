@@ -1,6 +1,6 @@
 # 择要
 
-- [Lede_source](https://github.com/coolsnowwolf/lede)，Luci版本=18.06、内核版本=5.10
+- [Lede_source](https://github.com/coolsnowwolf/lede)，Luci版本=18.06、内核版本=5.4
 - [Lienol_source](https://github.com/Lienol/openwrt/tree/19.07)，Luci版本=17.01、内核版本=4.14
 - [Mortal_source](https://github.com/immortalwrt/immortalwrt/tree/openwrt-21.02)，Luci版本=21.02、内核版本=5.4
 - [openwrt_amlogic](https://github.com/coolsnowwolf/lede)，N1和晶晨系列CPU盒子专用（Luci版本=18.06、内核版本=5.4）
@@ -10,8 +10,6 @@
 - 源码已直接打入了常用插件了，请先确定我仓库有没有您需要的插件，再来自行添加所需插件 【[插件包](https://github.com/281677160/openwrt-package)】
 
 - 启动教程视频，mp4格式，需要的自己下载。《[谷歌云](https://drive.google.com/drive/folders/1WEUtVfiVtR5lyG8aX4RcDGdUPV6uMlxt?usp=sharing)》、《[百度（密码：apek）](https://pan.baidu.com/s/1RVi4nN8Y1ak9LTWzhV5bSQ)》、《[微云](https://share.weiyun.com/33SgJdCO)》
-
-- 本仓库是由编译主体、外加扩展、插件包，三部分组成的，AutoBuild-OpenWrt这个仓库就是主体，其他的外加扩展跟插件包你们是不需要理会的，每次你们启动主体编译的时候就会下载外加扩展跟插件包，这样就可以做到每次编译都同步我最新仓库的目的，一般情况下，我没修改主体的build-openwrt.yml文件，你们是不需要重复拉取我仓库来更新仓库的，如果主体文件有改变需要你们更新仓库的时候，运行至公告那里就会出错了，这个是我特意弄的，如果出现在公告那里就出错不能继续运行下去，意思就是要更新仓库了，怎么更新法，一般我都会在公告那里写，就算运行至公告错误，也可以点击公告展开来看见公告内容，无非就是复制一下build-openwrt.yml文件内容吧，如果连带build里面的文件也有修改的话，就要重新拉取仓库了。
 
 - 《[如何在本地Ubuntu一键无脑编译](https://github.com/danshui-git/shuoming/blob/master/bendi.md)》
  
@@ -64,7 +62,7 @@ op自带的ttyd或者用putty连接OP都可以，用了命令后会一直使用�
 《[固件包减负](https://github.com/danshui-git/shuoming/blob/master/%E5%9B%BA%E4%BB%B6%E6%96%87%E4%BB%B6%E5%A4%B9%E6%95%B4%E7%90%86.md)》
 《[banner的说明](https://github.com/danshui-git/shuoming/blob/master/banner%E8%AF%B4%E6%98%8E.md)》
 《[patch补丁制作](https://github.com/danshui-git/shuoming/blob/master/buding.md)》
-《[NTFS优盘挂载](https://github.com/danshui-git/shuoming/blob/master/ntfs.md)》
+《[NTFS盘挂载问题](https://github.com/danshui-git/shuoming/blob/master/NTFS%E6%A0%BC%E5%BC%8F%E4%BC%98%E7%9B%98%E6%8C%82%E8%BD%BD)》
 《[各种命令的简单介绍](https://github.com/danshui-git/shuoming/blob/master/ming.md)》
 《[微信通知跟自动发布固功能密匙获取跟使用教程](https://github.com/danshui-git/shuoming/blob/master/ms.md)》
 《[Telegram机器人推送信息教程](https://github.com/danshui-git/shuoming/blob/master/bot.md)》
@@ -76,17 +74,17 @@ op自带的ttyd或者用putty连接OP都可以，用了命令后会一直使用�
 #
 #
 - ## 鸣谢
-- 感谢[coolsnowwolf](https://github.com/coolsnowwolf/lede.git)大神提供的openwrt源码
-- 感谢[Lienol](https://github.com/Lienol/openwrt.git)大神提供的openwrt源码
-- 感谢[ctcgfw](https://github.com/project-openwrt/openwrt.git)大神提供的openwrt源码
-- 感谢[P3TERX](https://github.com/P3TERX/Actions-OpenWrt)大神提供的一键编译脚本
-- 感谢[garypang13](https://github.com/garypang13/Actions-OpenWrt)大神提供的一键编译脚本
-- 感谢[tuanqing](https://github.com/tuanqing/mknop)大神提供的一键打包脚本
-- 感谢[Hyy2001X](https://github.com/Hyy2001X/AutoBuild-Actions)大神，定时自动升级固件来源于此大神
-- 感谢[ophub](https://github.com/ophub/amlogic-s9xxx-openwrt)大神提供Amlogic系列CPU机型的一键打包脚本
-- 感谢[hyird](https://github.com/hyird/Action-Openwrt)大神，是这仁兄告诉我有patch补丁这回事的
-- 还有要感谢<a href="#/README.md">World Peace</a>仁兄，这个仁兄是在P3TERX大神的Telegram群认识的，我刚接触云编译时告诉我使用files修改设置的，非常感谢!
-- 感谢微软免费提供的编译平台
-- 感谢各位大佬提供的各种各样的插件
-- 感谢各位帮助过我的人，祝福各位好人一生平安
+- [coolsnowwolf](https://github.com/coolsnowwolf/lede.git)
+- [Lienol](https://github.com/Lienol/openwrt.git)
+- [ctcgfw](https://github.com/project-openwrt/openwrt.git)
+- [P3TERX](https://github.com/P3TERX/Actions-OpenWrt)
+- [tuanqing](https://github.com/tuanqing/mknop)
+- [Hyy2001X](https://github.com/Hyy2001X/AutoBuild-Actions)
+- [ophub](https://github.com/ophub/amlogic-s9xxx-openwrt)
+- [nicholas-opensource](https://github.com/nicholas-opensource/OpenWrt-Autobuild)
+- [github平台](https://github.com/)
+- <a href="#/README.md">hyird</a>
+- <a href="#/README.md">World Peace</a>
+- <a href="#/README.md">感谢各位大佬提供的各种各样的插件</a>
+- <a href="#/README.md">感谢各位帮助过我的人，祝福各位好人一生平安</a>
 

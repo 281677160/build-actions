@@ -217,7 +217,7 @@ jobs:
         fi
         cd openwrt
         cp -Rf bin/targets/*/* "${Home}"/upgrade
-        cd targets/*/*
+        cd bin/targets/*/*
         find -name "*buildinfo*" | xargs -i rm -rf {}
         find -name "*sha256sums*" | xargs -i rm -rf {}
         find -name "*manifest*" | xargs -i rm -rf {}

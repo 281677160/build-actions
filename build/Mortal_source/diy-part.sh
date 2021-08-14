@@ -18,7 +18,7 @@ uci set network.lan.delegate='0'                                            # �
 uci commit network                                                          # 不要删除跟注释,除非上面全部删除或注释掉了
 #uci set dhcp.lan.ignore='1'                                                 # 关闭DHCP功能
 #uci commit dhcp                                                             # 跟‘关闭DHCP功能’联动,同时启用或者删除跟注释
-uci set system.@system[0].hostname='OpenWrt-123'                             # 修改主机名称为OpenWrt-123
+uci set system.@system[0].hostname='OpenWrt-123'                            # 修改主机名称为OpenWrt-123
 EOF
 
 

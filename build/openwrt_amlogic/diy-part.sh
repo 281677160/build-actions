@@ -28,8 +28,6 @@ sed -i "s/OpenWrt /${Author} Compiled in $(TZ=UTC-8 date "+%Y.%m.%d") @ OpenWrt 
 
 sed -i '/CYXluq4wUazHjmCDBCqXF/d' $ZZZ                                                            # 设置密码为空
 
-#sed -i 's/PATCHVER:=5.4/PATCHVER:=5.10/g' target/linux/armvirt/Makefile                          # 默认内核5.4，修改内核为5.10
-
 
 # 设置打包固件的机型，内核组合（请看说明）
 cat >$GITHUB_WORKSPACE/amlogic_openwrt <<-EOF

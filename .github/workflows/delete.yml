@@ -37,7 +37,7 @@ jobs:
     
       - name: 删除在github空间的老固件
         uses: Mattraks/delete-workflow-runs@main
-        if: env.OLDER_WORKFLOW == 'true' || (github.event.inputs.delete-older-workflow == 'true')
+        if: env.OLDER_WORKFLOW == 'true' || env.OLDER_WORKFLOW == 'true' && (github.event.inputs.delete-older-workflow == 'true')
         with:
           token: ${{ github.token }}
           repository: ${{ github.repository }}       
@@ -46,7 +46,7 @@ jobs:
     
       - name: 删除自动发布的老固件
         uses: dev-drprasad/delete-older-releases@master
-        if: env.OLDER_RELEASES == 'true' || (github.event.inputs.delete-older-releases == 'true')
+        if: env.OLDER_RELEASES == 'true' || env.OLDER_RELEASES == 'true' && (github.event.inputs.delete-older-releases == 'true')
         with:
           keep_latest: 0         # 保留多少个发布不删除
           delete_tags: true

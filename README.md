@@ -1,5 +1,9 @@
 # 择要
 
+- ### 最近启动编译后，运行至开始编译步骤莫名的自动停止编译的，这个是github的动作，因为云编译浪费资源厉害，所有github要出手，一般在日志或者Actions会出现如下语句
+- The runner has received a shutdown signal. This can happen when the runner service is stopped, or a manually started runner is canceled.
+
+#
 - [Lede_source](https://github.com/coolsnowwolf/lede)，Luci版本=18.06、内核版本=5.4
 - [Lienol_source](https://github.com/Lienol/openwrt/tree/19.07)，Luci版本=17.01、内核版本=4.14
 - [Mortal_source](https://github.com/immortalwrt/immortalwrt/tree/openwrt-21.02)，Luci版本=21.02、内核版本=5.4

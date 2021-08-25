@@ -1,7 +1,8 @@
 # 择要
 
-- ### 最近启动编译后，运行至开始编译步骤莫名的自动停止编译的，这个是github的动作，因为云编译浪费资源厉害，所有github要出手，一般在日志或者Actions会出现如下语句
+- ### 最近启动编译后，运行至开始编译步骤莫名的自动停止编译的，这个是github的动作，因为云编译浪费资源厉害，所以github要出手，一般在日志或者Actions会出现类似如下语句
 - The runner has received a shutdown signal. This can happen when the runner service is stopped, or a manually started runner is canceled.
+- 出现这样情况可以隔天再尝试，或者直接用我的本地一键脚本编译也可以的
 
 #
 - [Lede_source](https://github.com/coolsnowwolf/lede)，Luci版本=18.06、内核版本=5.4

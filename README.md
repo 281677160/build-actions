@@ -87,6 +87,7 @@ op自带的ttyd或者用putty连接OP都可以，用了命令后会一直使用�
 - [Hyy2001X](https://github.com/Hyy2001X/AutoBuild-Actions)
 - [ophub](https://github.com/ophub/amlogic-s9xxx-openwrt)
 - [nicholas-opensource](https://github.com/nicholas-opensource/OpenWrt-Autobuild)
+- [hx210](https://github.com/hx210/build-actions)
 - [github平台](https://github.com/)
 - <a href="#/README.md">hyird</a>
 - <a href="#/README.md">World Peace</a>

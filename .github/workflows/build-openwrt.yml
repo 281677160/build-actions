@@ -14,9 +14,13 @@ on:
         required: false
         default: 'ssh-actions'
 
-#定时触发开始编译(把下面两个#去掉开启,时间设置请看定时编译说明)
+# 定时触发开始编译(把下面两个#去掉开启,时间设置请看定时编译说明)
 #  schedule:
 #   - cron: 0 16 */2 * *
+
+# 下面两个#去掉 按 ☆ Star 启动编译
+#  watch:
+#    types: [started]
 
 env:
   Github: https://github.com/${{github.repository}}

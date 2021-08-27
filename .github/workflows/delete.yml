@@ -2,28 +2,40 @@
 #
 # 说明：
 # 
-# ‘删除在github空间的老固件’ 删除12小时之前的一切固件，保留数设置没效，一删除就会把在删除时间段内的固件全部删除
+# ‘清理Actions空间’ 删除12小时之前的一切固件和其他文件，保留数设置没效，一删除就会把在删除时间段内的固件全部删除
 #
-# ‘删除自动发布的老固件’ 每次启动都生效，可以设置保留数
+# ‘删除releases,可设置保留数’ 每次启动都生效，可以设置保留数
 #
-# 手动按钮启动时候修改true为false也就关闭某项生效，env:下面的开关为定时删除时候分别控制开关
+# ‘重新FORK上游仓库’ 只有在手动启动时候开启才生效，选择启动的话会把你现有的仓库改变成上游仓库的全部数据，要注意备份你的.config配置文件
+#  重新FORK上游仓库需要设置好“REPO_TOKEN”，怎么设置请看《微信通知跟发布固功能密匙获取跟使用》,发布密匙就是了，此密匙用途非常广的
+#
+# 手动按钮启动时候参数为true时生效，为false是关闭项目启动
+#
+# env:下面的OLDER_WORKFLOW和OLDER_RELEASES是定时启动时候设置开或者关闭项目运行（true为开，false关）
 
 
-name: delete
+name: 清理Actions和重新FORK仓库操作
 on:
   workflow_dispatch:
     inputs:
-      delete-older-workflow:
-        description: '删除github空间旧固件'
+      older-actions:
+        description: '删除actions固件'
         required: false
         default: 'true'
-      delete-older-releases:
-        description: '删除旧的发布'
+      older-releases:
+        description: '删除releases'
         required: false
         default: 'true'
+      again-fork:
+        description: '重新FORK上游仓库'
+        required: false
+        default: 'false'
 
 #  schedule:
-#    - cron: 0 7 * * 6
+#    - cron: 10 4 * * *
+
+  watch:
+    types: [started]
 
 env:
   OLDER_WORKFLOW: true
@@ -32,23 +44,46 @@ env:
 jobs:
   del_runs:
     runs-on: Ubuntu-20.04
-    name: delete-workflow-runs
+    name: 清理Actions和重新FORK仓
     steps:
     
-      - name: 删除在github空间的老固件
-        uses: Mattraks/delete-workflow-runs@main
-        if: env.OLDER_WORKFLOW == 'true' || env.OLDER_WORKFLOW == 'true' && (github.event.inputs.delete-older-workflow == 'true')
-        with:
-          token: ${{ github.token }}
-          repository: ${{ github.repository }}       
-          retain_days: 0.5
-          keep_minimum_runs: 0
+    - name: 设置项目开关参数控制
+      run: |
+        if [[ -n "${{ github.event.inputs }}" ]]; then
+          if [[ "${{ github.event.inputs.older-actions }}" != 'true' ]]; then
+            echo "OLDER_WORKFLOW=false" >> $GITHUB_ENV
+          fi
+          if [[ "${{ github.event.inputs.older-releases }}" != 'true' ]]; then
+            echo "OLDER_RELEASES=false" >> $GITHUB_ENV
+          fi
+        fi
     
-      - name: 删除自动发布的老固件
-        uses: dev-drprasad/delete-older-releases@master
-        if: env.OLDER_RELEASES == 'true' || env.OLDER_RELEASES == 'true' && (github.event.inputs.delete-older-releases == 'true')
-        with:
-          keep_latest: 0         # 保留多少个发布不删除
-          delete_tags: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
+    - name: 清理Actions空间
+      if: env.OLDER_WORKFLOW == 'true' || (github.event.inputs.older-actions == 'true')
+      uses: Mattraks/delete-workflow-runs@main
+      with:
+        token: ${{ github.token }}
+        repository: ${{ github.repository }}       
+        retain_days: 0.5
+        keep_minimum_runs: 0
+    
+    - name: 删除releases,可设置保留数
+      if: env.OLDER_RELEASES == 'true' || (github.event.inputs.older-releases == 'true')
+      uses: dev-drprasad/delete-older-releases@master
+      with:
+        keep_latest: 0         # 保留多少个发布不删除
+        delete_tags: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
+          
+    - name: 重新FORK上游仓库
+      if: (github.event.inputs.again-fork == 'true')
+      uses: danshui-git/github-forks-sync-action@main
+      with:
+        github_token: ${{ secrets.REPO_TOKEN }}
+        upstream_repository: 281677160/build-actions
+        upstream_branch: main
+        target_repository: ${{github.repository}}
+        target_branch: main
+        force: true
+        tags: false

@@ -20,7 +20,7 @@ on:
   workflow_dispatch:
     inputs:
       older-actions:
-        description: '删除actions固件'
+        description: '清理Actions空间'
         required: false
         default: 'true'
       older-releases:

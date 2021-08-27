@@ -34,9 +34,6 @@ on:
 #  schedule:
 #    - cron: 10 4 * * *
 
-  watch:
-    types: [started]
-
 env:
   OLDER_WORKFLOW: true
   OLDER_RELEASES: true

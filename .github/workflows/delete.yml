@@ -14,7 +14,7 @@
 # env:下面的OLDER_WORKFLOW和OLDER_RELEASES是定时启动时候设置开或者关闭项目运行（true为开，false关）
 
 
-name: 清理Actions和重新FORK仓库操作
+name: 清理Actions和重新FORK仓库
 on:
   workflow_dispatch:
     inputs:

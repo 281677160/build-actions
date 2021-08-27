@@ -20,6 +20,8 @@
  
 - 《[把定时自动在线更新插件编译进固件的说明](https://github.com/danshui-git/shuoming/blob/master/%E5%AE%9A%E6%97%B6%E6%9B%B4%E6%96%B0%E6%8F%92%E4%BB%B6.md)》
 
+- 《[一键重新FORK上游仓库说明](https://github.com/danshui-git/shuoming/blob/master/chongxinfork.md)》
+
 - 《[Telegram聊天吹水群](https://t.me/heiheiheio)》- 《[Telegram中文设置方法](https://github.com/danshui-git/shuoming/blob/master/tele.md)》
 
 ```

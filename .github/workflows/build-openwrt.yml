@@ -178,7 +178,7 @@ jobs:
           source "${PATH1}/upgrade.sh" && Diy_Part2 > /dev/null 2>&1
         fi
         if [ "${BY_INFORMATION}" == "true" ]; then
-          source "${PATH1}/upgrade.sh" > /dev/null 2>&1
+          source "${PATH1}/upgrade.sh" && GET_TARGET_INFO
           source "${PATH1}/common.sh" && Diy_xinxi
         fi
 

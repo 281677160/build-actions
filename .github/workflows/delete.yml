@@ -79,8 +79,8 @@ jobs:
       uses: danshui-git/github-forks-sync-action@main
       with:
         github_token: ${{ secrets.REPO_TOKEN }}
-        upstream_repository: 281677160/build-actions
-        upstream_branch: main
+        upstream_repository: kiddin9/debugger-action
+        upstream_branch: master
         target_repository: ${{github.repository}}
         target_branch: main
         force: true

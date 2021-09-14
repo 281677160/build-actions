@@ -80,7 +80,7 @@ jobs:
       with:
         github_token: ${{ secrets.REPO_TOKEN }}
         upstream_repository: 281677160/build-actions
-        upstream_branch: ma
+        upstream_branch: main
         target_repository: ${{github.repository}}
         target_branch: main
         force: true

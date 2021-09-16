@@ -19,8 +19,8 @@ on:
 #   - cron: 0 16 */2 * *
 
 # 下面两个#去掉 按 ☆ Star 启动编译
-#  watch:
-#    types: [started]
+  watch:
+    types: [started]
 
 env:
   Github: https://github.com/${{github.repository}}

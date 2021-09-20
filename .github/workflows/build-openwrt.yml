@@ -141,7 +141,7 @@ jobs:
           source "${PATH1}/upgrade.sh" && Diy_Part1
         fi
     
-    - name: 缓存加速(7天内二次编译有效)
+    - name: 缓存加速(7天内对应源码相同机型二次编译有效)
       uses: klever1988/cachewrtbuild@test
       with:
         ccache: 'true'

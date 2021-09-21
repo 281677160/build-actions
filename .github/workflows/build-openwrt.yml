@@ -58,6 +58,7 @@ jobs:
         echo "UPLOAD_RELEASE=${UPLOAD_RELEASE}" >> $GITHUB_ENV
         echo "SERVERCHAN_SCKEY=${SERVERCHAN_SCKEY}" >> $GITHUB_ENV
         echo "REGULAR_UPDATE=${REGULAR_UPDATE}" >> $GITHUB_ENV
+        echo "USE_CACHEWRTBUILD=${USE_CACHEWRTBUILD}" >> $GITHUB_ENV
         echo "BY_INFORMATION=${BY_INFORMATION}" >> $GITHUB_ENV
         echo "CangKu=${Apidz##*/}" >> $GITHUB_ENV
         echo "Modelfile=${{matrix.target}}" >> $GITHUB_ENV
@@ -141,7 +142,8 @@ jobs:
           source "${PATH1}/upgrade.sh" && Diy_Part1
         fi
     
-    - name: 缓存加速(7天内对应源码相同机型二次编译有效)
+    - name: 缓存加速(7天内对应源码相同机型二次编译有效，每次只保留一个源码的缓存)
+      if: env.USE_CACHEWRTBUILD == 'true'
       uses: klever1988/cachewrtbuild@test
       with:
         ccache: 'true'

@@ -159,7 +159,6 @@ jobs:
     - name: 生成配置文件
       run: |
         cd openwrt
-        source "${PATH1}/common.sh" && Diy_chajian > /dev/null 2>&1
         make defconfig > /dev/null 2>&1
         echo "TARGET_BOARD=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' .config)" >> $GITHUB_ENV
         echo "TARGET_SUBTARGET=$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' .config)" >> $GITHUB_ENV

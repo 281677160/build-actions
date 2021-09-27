@@ -161,6 +161,8 @@ jobs:
         cd openwrt
         make defconfig > /dev/null 2>&1
         source "${PATH1}/common.sh" && Diy_chajian > /dev/null 2>&1
+        echo "TARGET_BOARD=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' .config)" >> $GITHUB_ENV
+        echo "TARGET_SUBTARGET=$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' .config)" >> $GITHUB_ENV
         if [ `grep -c "CONFIG_TARGET_x86_64=y" .config` -eq '1' ]; then
          echo "TARGET_PROFILE=x86-64" >> $GITHUB_ENV
         elif [ `grep -c "CONFIG_TARGET_x86_generic=y" .config` -eq '1' ]; then

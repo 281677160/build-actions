@@ -2,9 +2,9 @@
 
 # 择要
 
-- #### 请不要SSH连接配置固件就直接编译，这样的话，运行至开始编译步骤莫名的自动停止编译的，这个是github的动作，因为云编译浪费资源厉害，所以github要出手，一般在日志或者Actions会出现类似如下语句《[查看图片说明](https://github.com/danshui-git/shuoming/blob/master/tingzhi.md)》
-- The runner has received a shutdown signal. This can happen when the runner service is stopped, or a manually started runner is canceled.
-- 请先获取到对应源码的.config配置文件覆盖到对应源码的.config上，再不进行SSH连接编译固件，《[在线获取.config配置文件](https://github.com/danshui-git/shuoming/blob/master/config.md)》，或者用我的《[本地一键提取.config配置](https://github.com/danshui-git/shuoming/blob/master/yijianconfig.md)》来提取到配置文件覆盖到你想编译的源码的.config里面，还是不行的话，请用我的《[一键本地无脑编译](https://github.com/danshui-git/shuoming/blob/master/bendi.md)》本地编译吧。
+- ## 请不要SSH连接配置固件就直接编译，这样的话，运行至开始编译步骤莫名的自动停止编译的，这个是github的动作，因为云编译浪费资源厉害，所以github要出手，一般在日志或者Actions会出现类似如下语句《[查看图片说明](https://github.com/danshui-git/shuoming/blob/master/tingzhi.md)》
+
+- ## 请先获取到对应源码的.config配置文件覆盖到对应源码的.config上，再不进行SSH连接编译固件，《[在线获取.config配置文件](https://github.com/danshui-git/shuoming/blob/master/config.md)》，或者用我的《[本地一键提取.config配置](https://github.com/danshui-git/shuoming/blob/master/yijianconfig.md)》来提取到配置文件覆盖到你想编译的源码的.config里面，还是不行的话，请用我的《[一键本地无脑编译](https://github.com/danshui-git/shuoming/blob/master/bendi.md)》本地编译吧。
 
 #
 - [Lede_source](https://github.com/coolsnowwolf/lede)，Luci版本=18.06、内核版本=5.4

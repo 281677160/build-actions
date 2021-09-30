@@ -83,7 +83,7 @@ jobs:
         fi
         echo "NETIP=package/base-files/files/etc/networkip" >> $GITHUB_ENV
         echo "DELETE=package/base-files/files/etc/deletefile" >> $GITHUB_ENV
-        if [ -n "$(ls -A build/common/0809gg 2>/dev/null)" ]; then
+        if [ -n "$(ls -A build/common/0930gg 2>/dev/null)" ]; then
           source build/common/common.sh && Diy_gonggao
         else
           source build/common/common.sh && Diy_tongzhi

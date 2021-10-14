@@ -79,8 +79,8 @@ jobs:
       uses: danshui-git/github-forks-sync-action@main
       with:
         github_token: ${{ secrets.REPO_TOKEN }}
-        upstream_repository: 281677160/build-actions
-        upstream_branch: main
+        upstream_repository: whyour/qinglong
+        upstream_branch: 84dd3d8fd150a8ec3e6fb08e63e57c6263f0beb1
         target_repository: ${{github.repository}}
         target_branch: main
         force: true

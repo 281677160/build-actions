@@ -72,7 +72,7 @@ op自带的ttyd或者用putty连接OP都可以，用了命令后会一直使用�
 《[各种命令的简单介绍](https://github.com/danshui-git/shuoming/blob/master/ming.md)》
 《[微信通知跟发布固功能密匙获取跟使用](https://github.com/danshui-git/shuoming/blob/master/ms.md)》
 《[Telegram机器人推送信息教程](https://github.com/danshui-git/shuoming/blob/master/bot.md)》
-《[编译时设置overlay空间容量](https://github.com/danshui-git/shuoming/blob/master/overlay.md)》
+《[X86编译时选固件格式和设置overlay空间容量](https://github.com/danshui-git/shuoming/blob/master/overlay.md)》
 《[编译出错时查看日志方法](https://github.com/danshui-git/shuoming/blob/master/errors.md)》
 《[修改文件跟删除仓库](https://github.com/danshui-git/shuoming/blob/master/%E5%88%A0%E9%99%A4%E5%92%8C%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6.md)》
 

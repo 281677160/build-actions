@@ -93,7 +93,7 @@ jobs:
         fi
         source "${PATH1}/common.sh" && Diy_all > /dev/null 2>&1
         /bin/bash "${PATH1}/$DIY_PART_SH"
-        ./scripts/feeds update -a
+        ./scripts/feeds update -a > /dev/null 2>&1
         ./scripts/feeds install -a > /dev/null 2>&1
         mv "$PATH1/$CONFIG_FILE" .config
         

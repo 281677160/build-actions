@@ -1,0 +1,129 @@
+#
+#
+# 因为SSH连接配置固件直接编译，会给github停止编译的
+#
+# 所以本文件是专门用来连接SSH配置.config文件专用
+#
+# 跟启动编译是一样的，已经默就打开SSH，选择好生成什么源码的.config文件，然后启动，等待进入SSH连接，然后配置文件
+#
+# 配置完成后会自动上传一份.config文件，下载下来，覆盖到对应的源码上的.config就可以编译了
+#
+
+name: 配置.config文件
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    if: github.event.repository.owner.id == github.event.sender.id
+
+    name: 编译 "${{matrix.target}}"
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [Lede_source]
+
+        # [Lede_source,Lienol_source,Mortal_source,openwrt_amlogic]
+
+    steps:
+    - name: 准备结束
+      uses: actions/checkout@v2
+
+    - name: 读取脚本设置
+      run: |
+        source "${GITHUB_WORKSPACE}/build/${{matrix.target}}/settings.ini"
+        echo "REPO_URL=${REPO_URL}" >> $GITHUB_ENV
+        echo "REPO_BRANCH=${REPO_BRANCH}" >> $GITHUB_ENV
+        echo "CONFIG_FILE=${CONFIG_FILE}" >> $GITHUB_ENV
+        echo "DIY_PART_SH=${DIY_PART_SH}" >> $GITHUB_ENV
+
+    - name: 读取扩展文件
+      run: |
+        echo
+        git clone --depth 1 -b main https://github.com/281677160/common build/common > /dev/null 2>&1
+        chmod -R +x "${GITHUB_WORKSPACE}/build/common"
+        if [[ "${REPO_BRANCH}" == "master" ]]; then
+          echo "ZZZ=package/lean/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
+          echo "CODE=Lede" >> $GITHUB_ENV
+        elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
+          echo "ZZZ=package/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
+          echo "CODE=Lienol" >> $GITHUB_ENV
+        elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
+          echo "ZZZ=package/emortal/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
+          echo "CODE=Mortal" >> $GITHUB_ENV
+        fi
+        echo "NETIP=package/base-files/files/etc/networkip" >> $GITHUB_ENV
+        echo "DELETE=package/base-files/files/etc/deletefile" >> $GITHUB_ENV
+        
+    - name: 部署编译环境
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        sudo -E apt-get -qq update > /dev/null 2>&1
+        sudo -E apt-get -qq install -y subversion build-essential libncurses5-dev zlib1g-dev gawk git ccache gettext libssl-dev xsltproc zip > /dev/null 2>&1
+        sudo timedatectl set-timezone "Asia/Shanghai"
+        sudo mkdir -p /workdir
+        sudo chown $USER:$GROUPS /workdir
+    
+    - name: 下载"${{matrix.target}}"源码
+      working-directory: /workdir
+      run: |
+        git clone -b "$REPO_BRANCH" --single-branch "$REPO_URL" openwrt > /dev/null 2>&1
+        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+        cd $GITHUB_WORKSPACE/openwrt
+        ./scripts/feeds update -a > /dev/null 2>&1
+        echo "Home=${GITHUB_WORKSPACE}/openwrt" >> $GITHUB_ENV
+        echo "PATH1=${GITHUB_WORKSPACE}/openwrt/build/${{matrix.target}}" >> $GITHUB_ENV
+ 
+    - name: 加载源,补丁和自定义设置
+      run: |
+        echo "Compile_Date=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
+        cp -Rf `find ./ -maxdepth 1 -type d ! -path './openwrt' ! -path './'` openwrt
+        mv -f "${Home}"/build/common/*.sh "${PATH1}"
+        source "${PATH1}/common.sh" && Diy_settings > /dev/null 2>&1
+        cd openwrt
+        if [[ "${REPO_BRANCH}" == "master" ]]; then
+          source "${PATH1}/common.sh" && Diy_lede > /dev/null 2>&1
+        elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
+          source "${PATH1}/common.sh" && Diy_lienol > /dev/null 2>&1
+        elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
+          source "${PATH1}/common.sh" && Diy_mortal > /dev/null 2>&1
+        fi
+        source "${PATH1}/common.sh" && Diy_all > /dev/null 2>&1
+        /bin/bash "${PATH1}/$DIY_PART_SH"
+        ./scripts/feeds update -a
+        ./scripts/feeds install -a > /dev/null 2>&1
+        mv "$PATH1/$CONFIG_FILE" .config
+        source "${PATH1}/upgrade.sh" && Diy_Part1 > /dev/null 2>&1
+        
+    - name: SSH远程连接（制作.config配置文件）
+      uses: danshui-git/debugger-action@master
+      env:
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+
+    - name: 生成配置文件
+      run: |
+        cd openwrt
+        source "${PATH1}/common.sh" && Diy_chajian > /dev/null 2>&1
+        make defconfig > /dev/null 2>&1
+        ./scripts/diffconfig.sh > ${GITHUB_WORKSPACE}/config.txt
+        echo "TARGET_BOARD=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' .config)" >> $GITHUB_ENV
+        echo "TARGET_SUBTARGET=$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' .config)" >> $GITHUB_ENV
+        if [ `grep -c "CONFIG_TARGET_x86_64=y" .config` -eq '1' ]; then
+         echo "TARGET_PROFILE=x86-64" >> $GITHUB_ENV
+        elif [ `grep -c "CONFIG_TARGET_x86_generic=y" .config` -eq '1' ]; then
+         echo "TARGET_PROFILE=x86-32" >> $GITHUB_ENV
+        elif [ `grep -c "CONFIG_TARGET.*DEVICE.*=y" .config` -eq '1' ]; then
+          grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
+          [ -s DEVICE_NAME ] && echo "TARGET_PROFILE=$(cat DEVICE_NAME)" >> $GITHUB_ENV
+        else
+          echo "TARGET_PROFILE=armvirt" >> $GITHUB_ENV
+        fi
+        
+    - name: 上传.config配置文件在 github actions
+      uses: actions/upload-artifact@v2
+      with:
+        name: .config_${{ env.CODE }}_${{ env.TARGET_PROFILE }}_${{ env.Compile_Date }}
+        path: config.txt

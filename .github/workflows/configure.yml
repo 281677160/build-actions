@@ -61,7 +61,7 @@ jobs:
         DEBIAN_FRONTEND: noninteractive
       run: |
         sudo -E apt-get -qq update > /dev/null 2>&1
-        sudo -E apt-get -qq install -y subversion build-essential libncurses5-dev zlib1g-dev gawk git ccache gettext libssl-dev xsltproc zip > /dev/null 2>&1
+        sudo -E apt-get -qq install -y subversion build-essential libncurses5-dev zlib1g-dev gawk git ccache gettext libssl-dev xsltproc zip
         sudo timedatectl set-timezone "Asia/Shanghai"
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
@@ -69,7 +69,7 @@ jobs:
     - name: 下载"${{matrix.target}}"源码
       working-directory: /workdir
       run: |
-        git clone -b "$REPO_BRANCH" --single-branch "$REPO_URL" openwrt > /dev/null 2>&1
+        git clone -b "$REPO_BRANCH" --single-branch "$REPO_URL" openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
         cd $GITHUB_WORKSPACE/openwrt
         ./scripts/feeds update -a > /dev/null 2>&1
@@ -95,7 +95,7 @@ jobs:
         ./scripts/feeds update -a
         ./scripts/feeds install -a > /dev/null 2>&1
         mv "$PATH1/$CONFIG_FILE" .config
-        source "${PATH1}/upgrade.sh" && Diy_Part1 > /dev/null 2>&1
+        source "${PATH1}/upgrade.sh" && Diy_Part1
         
     - name: SSH远程连接（制作.config配置文件）
       uses: danshui-git/debugger-action@master

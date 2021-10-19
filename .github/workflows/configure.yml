@@ -95,7 +95,7 @@ jobs:
         ./scripts/feeds update -a
         ./scripts/feeds install -a > /dev/null 2>&1
         mv "$PATH1/$CONFIG_FILE" .config
-        source "${PATH1}/upgrade.sh" && Diy_Part1
+        git clone https://github.com/281677160/luci-app-autoupdate package/luci-app-autoupdate
         
     - name: SSH远程连接（制作.config配置文件）
       uses: danshui-git/debugger-action@master

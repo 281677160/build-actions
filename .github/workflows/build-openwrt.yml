@@ -1,10 +1,11 @@
 #
 #
-# 感谢p3terx大神的一键编译脚本
-# 
-# Copyright (C) 2019 P3TERX <https://p3terx.com>
-# <https://github.com/P3TERX/Actions-OpenWrt.git>
+# 编译固件所用，不带SSH连接配置固件了
 #
+# 需要配置固件请用 configure.yml 配置
+#
+#
+
 name: 编译OpenWrt固件
 on:
   workflow_dispatch:

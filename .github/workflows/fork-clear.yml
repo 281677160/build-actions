@@ -1,3 +1,4 @@
+#
 # 重新FORK仓库或者清理发布都需要用REPO_TOKEN密匙
 #
 # 同一个仓库只需要存入一次密匙即可，这密匙基本是万能的，什么都能用上
@@ -18,6 +19,7 @@
 #  为防止开启跟关闭时候跟清理空间和删除releases混淆，‘重新FORK上游仓库’的开关开启参数为 fork
 #
 # env:下面的OLDER_WORKFLOW和OLDER_RELEASES是定时启动时候设置开或者关闭项目运行（true为开，false关）
+#
 
 
 name: 重新FORK和清理

@@ -6,8 +6,12 @@
 #
 # 把定时更新固件发布到云端或者发布固件都需要REPO_TOKEN密匙
 #
+# 同一个仓库只需要存入一次密匙即可，这密匙基本是万能的，什么都能用上
+#
 # REPO_TOKEN密匙制作教程：https://git.io/jm.md
 #
+#
+
 
 name: 编译OpenWrt固件
 on:

@@ -4,6 +4,9 @@
 #
 # 需要配置固件请用 configure.yml 配置
 #
+# 把定时更新固件发布到云端或者发布固件都需要REPO_TOKEN密匙
+#
+# REPO_TOKEN密匙制作教程：https://git.io/jm.md
 #
 
 name: 编译OpenWrt固件

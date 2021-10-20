@@ -8,21 +8,30 @@
 #
 # 配置完成后会自动上传一份.config文件，下载下来，覆盖到对应的源码上的.config就可以编译了
 #
+# 如果配置了REPO_TOKEN密匙的话，则会把.config文件自动覆盖到对应源码文件夹的.config中，免除手动覆盖
+#
+# REPO_TOKEN密匙制作教程：https://git.io/jm.md
+#
+#
 
 name: 配置.config文件
 on:
   workflow_dispatch:
+
+env: 
+ REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
+ TZ: Asia/Shanghai
 
 jobs:
   build:
     runs-on: ubuntu-18.04
     if: github.event.repository.owner.id == github.event.sender.id
 
-    name: 编译 "${{matrix.target}}"
+    name: 生成"${{matrix.target}}"配置文件
     strategy:
       fail-fast: false
       matrix:
-        target: [Lede_source]
+        target: [Lede_source,Lienol_source,Mortal_source,openwrt_amlogic]
 
         # [Lede_source,Lienol_source,Mortal_source,openwrt_amlogic]
 
@@ -37,13 +46,17 @@ jobs:
         echo "REPO_BRANCH=${REPO_BRANCH}" >> $GITHUB_ENV
         echo "CONFIG_FILE=${CONFIG_FILE}" >> $GITHUB_ENV
         echo "DIY_PART_SH=${DIY_PART_SH}" >> $GITHUB_ENV
+        echo "Modelfile=${{matrix.target}}" >> $GITHUB_ENV
 
     - name: 读取扩展文件
       run: |
         echo
         git clone --depth 1 -b main https://github.com/281677160/common build/common > /dev/null 2>&1
         chmod -R +x "${GITHUB_WORKSPACE}/build/common"
-        if [[ "${REPO_BRANCH}" == "master" ]]; then
+        if [[ "${Modelfile}" == "openwrt_amlogic" ]]; then
+          echo "ZZZ=package/lean/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
+          echo "CODE=amlogic" >> $GITHUB_ENV
+        elif [[ "${REPO_BRANCH}" == "master" ]]; then
           echo "ZZZ=package/lean/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
           echo "CODE=Lede" >> $GITHUB_ENV
         elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
@@ -56,13 +69,13 @@ jobs:
         echo "NETIP=package/base-files/files/etc/networkip" >> $GITHUB_ENV
         echo "DELETE=package/base-files/files/etc/deletefile" >> $GITHUB_ENV
         
-    - name: 部署编译环境
+    - name: 部署制作.config文件环境
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
         sudo -E apt-get -qq update > /dev/null 2>&1
-        sudo -E apt-get -qq install -y subversion build-essential libncurses5-dev zlib1g-dev gawk git ccache gettext libssl-dev xsltproc zip > /dev/null 2>&1
-        sudo timedatectl set-timezone "Asia/Shanghai"
+        sudo -E apt-get -qq install -y subversion build-essential libncurses5-dev zlib1g-dev gawk git ccache gettext libssl-dev xsltproc zip git-core wget curl grep > /dev/null 2>&1
+        sudo timedatectl set-timezone "$TZ"
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
     
@@ -78,12 +91,10 @@ jobs:
  
     - name: 加载源,补丁和自定义设置
       run: |
-        echo "Compile_Date=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
         cp -Rf `find ./ -maxdepth 1 -type d ! -path './openwrt' ! -path './'` openwrt
         mv -f "${Home}"/build/common/*.sh "${PATH1}"
-        source "${PATH1}/common.sh" && Diy_settings > /dev/null 2>&1
+        source "${PATH1}/common.sh" && Diy_settings
         cd openwrt
-        git clone https://github.com/281677160/luci-app-autoupdate package/luci-app-autoupdate
         if [[ "${REPO_BRANCH}" == "master" ]]; then
           source "${PATH1}/common.sh" && Diy_lede > /dev/null 2>&1
         elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
@@ -95,7 +106,7 @@ jobs:
         /bin/bash "${PATH1}/$DIY_PART_SH"
         ./scripts/feeds update -a > /dev/null 2>&1
         ./scripts/feeds install -a > /dev/null 2>&1
-        mv "$PATH1/$CONFIG_FILE" .config
+        [[ -e "$PATH1/$CONFIG_FILE" ]] && mv "$PATH1/$CONFIG_FILE" .config
         
     - name: SSH远程连接（制作.config配置文件）
       uses: danshui-git/debugger-action@master
@@ -103,14 +114,15 @@ jobs:
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
-    - name: 生成配置文件
+    - name: 生成"${{matrix.target}}"配置文件
       run: |
         cd openwrt
-        source "${PATH1}/common.sh" && Diy_chajian > /dev/null 2>&1
-        make defconfig > /dev/null 2>&1
-        ./scripts/diffconfig.sh > ${GITHUB_WORKSPACE}/config.txt
+        make defconfig
+        ./scripts/diffconfig.sh > ${GITHUB_WORKSPACE}/${CONFIG_FILE}
+        cp -r ${GITHUB_WORKSPACE}/${CONFIG_FILE} ${GITHUB_WORKSPACE}/config.txt
         echo "TARGET_BOARD=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' .config)" >> $GITHUB_ENV
         echo "TARGET_SUBTARGET=$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' .config)" >> $GITHUB_ENV
+        echo "Compile_Date=$(date +%Y%m%d-%H%M)" >> $GITHUB_ENV
         if [ `grep -c "CONFIG_TARGET_x86_64=y" .config` -eq '1' ]; then
          echo "TARGET_PROFILE=x86-64" >> $GITHUB_ENV
         elif [ `grep -c "CONFIG_TARGET_x86_generic=y" .config` -eq '1' ]; then
@@ -127,3 +139,24 @@ jobs:
       with:
         name: .config_${{ env.CODE }}_${{ env.TARGET_PROFILE }}_${{ env.Compile_Date }}
         path: config.txt
+    
+    - name: 把新配置的.config配置文件自动覆盖到${{matrix.target}}文件夹的.config
+      run: |
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
+        cd $GITHUB_WORKSPACE
+        git clone -b main https://github.com/${{github.repository}}.git main
+        cd main
+        rm -Rf build/${{matrix.target}}/${CONFIG_FILE}
+        git rm --cache build/${{matrix.target}}/${CONFIG_FILE}
+        cp -Rf $GITHUB_WORKSPACE/${CONFIG_FILE} build/${{matrix.target}}/${CONFIG_FILE}
+        git add .
+        git commit -m "${{env.CODE}}配置文件更新于$(date +%Y年%m月%d号-%H点%M分)" |tee build.log
+        if [[ `grep -c "working tree clean" build.log` -eq '1' ]]; then
+          echo "配置文件无更新,所以无需要覆盖!"
+          echo "配置文件无更新,所以无需要覆盖!"
+        else
+          echo "正在更新${{matrix.target}}文件夹的${CONFIG_FILE}配置文件!"
+          git push --quiet "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main
+          echo "更新完毕!"
+        fi

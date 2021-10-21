@@ -207,7 +207,7 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/repo
         export YMLTARGE="$(cat .github/workflows/build-openwrt.yml |grep "target: \[" |grep  -v \#  |awk 'NR==1'|sed 's/^[ ]*//g' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
-        export YMLTARGE2="$(cat .github/workflows/configure.yml |grep "target: \[" |grep  -v \#  |awk 'NR==1'|sed 's/^[ ]*//g' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
+        export YMLTARGE2="$(cat .github/workflows/make-menuconfig.yml |grep "target: \[" |grep  -v \#  |awk 'NR==1'|sed 's/^[ ]*//g' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
         sed -i "s/${YMLTARGE}/${YMLTARGE2}/g" .github/workflows/build-openwrt.yml
         git add .
         git commit -m "Update build-openwrt.yml" |tee build.log

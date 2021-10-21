@@ -2,6 +2,13 @@
 
 # 择要
 
+#
+- 2021/10/22号更新了最新获取.config方法，和修改了最新的一键同步上游仓库，更人性化
+- 《[全新在线获取.config配置文件教程](https://github.com/danshui-git/shuoming/blob/master/config.md)》
+- 《[全新一键保存配置同步上游仓库和清理仓库说明](https://github.com/danshui-git/shuoming/blob/master/chongxinfork.md)》
+- 新手教程全新整理了一下，应该更容易看懂了
+---
+
 - [Lede_source](https://github.com/coolsnowwolf/lede)，Luci版本=18.06、内核版本=5.4
 - [Lienol_source](https://github.com/Lienol/openwrt/tree/19.07)，Luci版本=17.01、内核版本=4.14
 - [Mortal_source](https://github.com/immortalwrt/immortalwrt/tree/openwrt-21.02)，Luci版本=21.02、内核版本=5.4

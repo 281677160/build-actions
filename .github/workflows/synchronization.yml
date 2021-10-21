@@ -24,7 +24,7 @@
 #
 
 
-name: 同步上游仓库或清理仓库
+name: 更新同步上游或清理仓库
 on:
   workflow_dispatch:
     inputs:

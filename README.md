@@ -2,9 +2,6 @@
 
 # 择要
 
-- ## 利用.github/workflows/make-menuconfig.yml，可以在线生成.config配置文件再编译，《[在线获取.config配置文件教程](https://github.com/danshui-git/shuoming/blob/master/config.md)》，或者用我的《[本地一键提取.config配置](https://github.com/danshui-git/shuoming/blob/master/yijianconfig.md)》来提取到配置文件覆盖到你想编译的源码的.config里面，还是不行的话，请用我的《[一键本地无脑编译](https://github.com/danshui-git/shuoming/blob/master/bendi.md)》本地编译吧。
-
-#
 - [Lede_source](https://github.com/coolsnowwolf/lede)，Luci版本=18.06、内核版本=5.4
 - [Lienol_source](https://github.com/Lienol/openwrt/tree/19.07)，Luci版本=17.01、内核版本=4.14
 - [Mortal_source](https://github.com/immortalwrt/immortalwrt/tree/openwrt-21.02)，Luci版本=21.02、内核版本=5.4

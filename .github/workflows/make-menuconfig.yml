@@ -173,7 +173,7 @@ jobs:
           rm -fr build.log
           echo "正在更新build-openwrt.yml文件!"
           git push --quiet "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main
-          echo "更新完毕!"
+          echo "build-openwrt.yml文件更新完毕!"
         fi
     
     - name: 把新配置的.config配置文件自动覆盖${{matrix.target}}文件夹的.config（需要密匙）
@@ -199,7 +199,7 @@ jobs:
             git commit -m "${{env.CODE}}更新${CONFIG_FILE} 机型为${{env.TARGET_PROFILE}}"
           fi
           git push --quiet "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main
-          echo "更新完毕!"
+          echo ".config更新完毕，已经覆盖至build/${{matrix.target}}/${CONFIG_FILE}!"
         fi
         
     - name: 最后更新build-openwrt.yml（需要密匙）
@@ -212,9 +212,9 @@ jobs:
         git add .
         git commit -m "Update build-openwrt.yml" |tee build.log
         if [[ `grep -c "Your branch is up to date with" build.log` -eq '1' ]] || [[ `grep -c "Your branch is ahead of" build.log` -eq '1' ]]; then
-          echo "配置文件无更新,所以无需要覆盖!"
+          echo "make-menuconfig.yml和build-openwrt.yml选择机型一致,所以无需更新!"
         else
           rm -fr build.log
           git push --quiet "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main
-          echo "更新完毕!"
+          echo "make-menuconfig.yml和build-openwrt.yml选择机型同步一致!"
         fi

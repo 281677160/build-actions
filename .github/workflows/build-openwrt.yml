@@ -266,8 +266,8 @@ jobs:
         ./transfer wet -s -p 16 --no-progress ${FIRMWARE} 2>&1 | tee wetransfer.log
         echo "##### WETRANSFER：$(cat wetransfer.log | grep https | cut -f3 -d" ")" >> update_log.txt
     
-    - name: 发布固件
-      if: steps.organizer.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true'
+    - name: 发布固件（请先设置好密匙）
+      if: steps.organizer.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && env.REPO_TOKEN
       uses: ncipollo/release-action@v1
       with:
         name: ${{ env.CODE }}-${{ env.TARGET_PROFILE }}
@@ -276,14 +276,14 @@ jobs:
         bodyFile: "update_log.txt"
         artifacts: "${{ env.FIRMWARE }}/*"
         
-    - name: 把定时更新固件发布到云端1（请先设置好REPO_TOKEN）
+    - name: 把定时更新固件发布到云端1（请先设置好密匙）
       if: steps.compile.outputs.status == 'success' && env.REGULAR_UPDATE == 'true'
       run: |
        cd openwrt
        source "${PATH1}/upgrade.sh" && Diy_Part3
         
-    - name: 把定时更新固件发布到云端2（请先设置好REPO_TOKEN）
-      if: steps.compile.outputs.status == 'success' && env.REGULAR_UPDATE == 'true'
+    - name: 把定时更新固件发布到云端2（请先设置好密匙）
+      if: steps.compile.outputs.status == 'success' && env.REGULAR_UPDATE == 'true' && env.REPO_TOKEN
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.REPO_TOKEN }}
@@ -292,15 +292,15 @@ jobs:
         overwrite: true
         file_glob: true
         
-    - name: 把定时更新固件发布到云端3（请先设置好REPO_TOKEN）
+    - name: 把定时更新固件发布到云端3（请先设置好密匙）
       if: steps.compile.outputs.status == 'success' && env.REGULAR_UPDATE == 'true'
       run: |
         mkdir -p Github_Tags
         cd Github_Tags
         wget -q --no-cookie --no-check-certificate https://api.github.com/repos/${{github.repository}}/releases/tags/AutoUpdate -O Github_Tags
         
-    - name: 把定时更新固件发布到云端4（请先设置好REPO_TOKEN）
-      if: steps.compile.outputs.status == 'success' && env.REGULAR_UPDATE == 'true'
+    - name: 把定时更新固件发布到云端4（请先设置好密匙）
+      if: steps.compile.outputs.status == 'success' && env.REGULAR_UPDATE == 'true' && env.REPO_TOKEN
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.REPO_TOKEN }}

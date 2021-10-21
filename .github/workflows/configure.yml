@@ -17,6 +17,11 @@
 name: 配置.config文件
 on:
   workflow_dispatch:
+    inputs:
+      config:
+        description: 'true-actions改成true,再按Run workflow启动,若配置文件有更新随即自动启动对应源码编译固件'
+        required: false
+        default: 'true-actions'
 
 env: 
  REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
@@ -27,11 +32,11 @@ jobs:
     runs-on: ubuntu-18.04
     if: github.event.repository.owner.id == github.event.sender.id
 
-    name: 生成"${{matrix.target}}"配置文件
+    name: 制作"${{matrix.target}}"配置文件
     strategy:
       fail-fast: false
       matrix:
-        target: [Lede_source,Lienol_source,Mortal_source,openwrt_amlogic]
+        target: [Lede_source]
 
         # [Lede_source,Lienol_source,Mortal_source,openwrt_amlogic]
 
@@ -78,6 +83,8 @@ jobs:
         sudo timedatectl set-timezone "$TZ"
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
     
     - name: 下载"${{matrix.target}}"源码
       working-directory: /workdir
@@ -139,24 +146,69 @@ jobs:
       with:
         name: .config_${{ env.CODE }}_${{ env.TARGET_PROFILE }}_${{ env.Compile_Date }}
         path: config.txt
-    
-    - name: 把新配置的.config配置文件自动覆盖到${{matrix.target}}文件夹的.config
+        
+    - name: 修改build-openwrt.yml文件，用于.config有更新时启动"${{matrix.target}}"编译（需要密匙和true-actions改成true）
+      if: env.REPO_TOKEN && (github.event.inputs.config == 'true' && github.event.inputs.config  != 'false')
       run: |
-        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git config --global user.name "github-actions[bot]"
         cd $GITHUB_WORKSPACE
         git clone -b main https://github.com/${{github.repository}}.git main
+        cd main
+        export TARGE="$(cat .github/workflows/build-openwrt.yml |grep "target: \[" |grep  -v \#  |awk 'NR==1'|sed -e 's/^[ ]*//g' |sed  's/\[/\\&/' |sed  's/\]/\\&/')"
+        export QIDONG="$(grep -A 1 'paths:' .github/workflows/build-openwrt.yml |awk 'NR==2' |sed -e 's/^[ ]*//g' |sed  's/\//\\&/g')"
+        export TARGE2="target: \\["${Modelfile}"\\]"
+        sed -i "s/${TARGE}/${TARGE2}/g" .github/workflows/build-openwrt.yml
+        sed -i "s/${QIDONG}/- 'build\/${Modelfile}\/start-up\/start'/g" .github/workflows/build-openwrt.yml
+        git add .
+        git commit -m "Update build-openwrt.yml" |tee build.log
+        if [[ `grep -c "Your branch is up to date with" build.log` -eq '1' ]]; then
+          echo "配置文件无更新,所以无需要覆盖!"
+        else
+          rm -fr build.log
+          echo "正在更新build-openwrt.yml文件!"
+          git push --quiet "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main
+          echo "更新完毕!"
+        fi
+    
+    - name: 把新配置的.config配置文件自动覆盖${{matrix.target}}文件夹的.config（需要密匙）
+      if: env.REPO_TOKEN
+      run: |
+        cd $GITHUB_WORKSPACE
+        [[ ! -e "main" ]] && git clone -b main https://github.com/${{github.repository}}.git main
         cd main
         rm -Rf build/${{matrix.target}}/${CONFIG_FILE}
         git rm --cache build/${{matrix.target}}/${CONFIG_FILE}
         cp -Rf $GITHUB_WORKSPACE/${CONFIG_FILE} build/${{matrix.target}}/${CONFIG_FILE}
         git add .
-        git commit -m "${{env.CODE}}配置文件更新于$(date +%Y年%m月%d号-%H点%M分)" |tee build.log
-        if [[ `grep -c "working tree clean" build.log` -eq '1' ]]; then
-          echo "配置文件无更新,所以无需要覆盖!"
+        git commit -m "${{env.CODE}}更新${CONFIG_FILE}于$(date +%Y年%m月%d号-%H点%M分)" |tee build.log
+        if [[ `grep -c "Your branch is up to date with" build.log` -eq '1' ]]; then
           echo "配置文件无更新,所以无需要覆盖!"
         else
-          echo "正在更新${{matrix.target}}文件夹的${CONFIG_FILE}配置文件!"
+          rm -fr build.log
+          if [[ "${{ github.event.inputs.config }}" == 'true' ]]; then
+            mkdir -p build/${Modelfile}/start-up
+            echo "${{env.CODE}}于$(date +%Y年%m月%d号-%H点%M分)启动编译" > build/${Modelfile}/start-up/start
+            echo "正在更新${{matrix.target}}文件夹的${CONFIG_FILE}配置文件!"
+            git add .
+            git commit -m "${{env.CODE}}更新${CONFIG_FILE}于$(date +%Y年%m月%d号-%H点%M分)"
+          fi
           git push --quiet "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main
           echo "更新完毕!"
         fi
+        
+    - name: 最后更新build-openwrt.yml（需要密匙）
+      if: env.REPO_TOKEN
+      run: |
+        cd $GITHUB_WORKSPACE/main
+        export YMLTARGE="$(cat .github/workflows/build-openwrt.yml |grep "target: \[" |grep  -v \#  |awk 'NR==1'|sed -e 's/^[ ]*//g' |sed  's/\[/\\&/' |sed  's/\]/\\&/')"
+        export YMLTARGE2="$(cat .github/workflows/configure.yml |grep "target: \[" |grep  -v \#  |awk 'NR==1'|sed -e 's/^[ ]*//g' |sed  's/\[/\\&/' |sed  's/\]/\\&/')"
+        sed -i "s/${YMLTARGE}/${YMLTARGE2}/g" .github/workflows/build-openwrt.yml
+        git add .
+        git commit -m "Update build-openwrt.yml" |tee build.log
+        if [[ `grep -c "Your branch is up to date with" build.log` -eq '1' ]] || [[ `grep -c "Your branch is ahead of" build.log` -eq '1' ]]; then
+          echo "配置文件无更新,所以无需要覆盖!"
+        else
+          rm -fr build.log
+          git push --quiet "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main
+          echo "更新完毕!"
+        fi
+

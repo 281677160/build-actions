@@ -104,11 +104,11 @@ jobs:
         source "${PATH1}/common.sh" && Diy_settings
         cd openwrt
         if [[ "${REPO_BRANCH}" == "master" ]]; then
-          source "${PATH1}/common.sh" && Diy_lede > /dev/null 2>&1
+          source "${PATH1}/common.sh" && Diy_lede
         elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
-          source "${PATH1}/common.sh" && Diy_lienol > /dev/null 2>&1
+          source "${PATH1}/common.sh" && Diy_lienol
         elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
-          source "${PATH1}/common.sh" && Diy_mortal > /dev/null 2>&1
+          source "${PATH1}/common.sh" && Diy_mortal
         fi
         source "${PATH1}/common.sh" && Diy_all > /dev/null 2>&1
         /bin/bash "${PATH1}/$DIY_PART_SH"

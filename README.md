@@ -2,8 +2,6 @@
 
 # 择要
 
-- ## 请不要SSH连接配置固件就直接编译，这样的话，运行至开始编译步骤莫名的自动停止编译的，这个是github的动作，因为云编译浪费资源厉害，所以github要出手，一般在日志或者Actions会出现类似如下语句《[查看图片说明](https://github.com/danshui-git/shuoming/blob/master/tingzhi.md)》
-
 - ## 利用.github/workflows/make-menuconfig.yml，可以在线生成.config配置文件再编译，《[在线获取.config配置文件](https://github.com/danshui-git/shuoming/blob/master/config.md)》，或者用我的《[本地一键提取.config配置](https://github.com/danshui-git/shuoming/blob/master/yijianconfig.md)》来提取到配置文件覆盖到你想编译的源码的.config里面，还是不行的话，请用我的《[一键本地无脑编译](https://github.com/danshui-git/shuoming/blob/master/bendi.md)》本地编译吧。
 
 #
@@ -69,7 +67,7 @@ op自带的ttyd或者用putty连接OP都可以，用了命令后会一直使用�
 - 《[本地提取.config](https://github.com/danshui-git/shuoming/blob/master/yijianconfig.md)》
 - 《[patch补丁制作](https://github.com/danshui-git/shuoming/blob/master/buding.md)》
 - 《[NTFS盘挂载问题](https://github.com/danshui-git/shuoming/blob/master/NTFS%E6%A0%BC%E5%BC%8F%E4%BC%98%E7%9B%98%E6%8C%82%E8%BD%BD)》
-- 《[各种命令的简单介绍](https://github.com/danshui-git/shuoming/blob/master/ming.md)》
+- 《[各种命令的简单介绍，包括拉取插件命令](https://github.com/danshui-git/shuoming/blob/master/ming.md)》
 - 《[微信通知跟发布固功能密匙获取跟使用](https://github.com/danshui-git/shuoming/blob/master/ms.md)》
 - 《[Telegram机器人推送信息教程](https://github.com/danshui-git/shuoming/blob/master/bot.md)》
 - 《[X86编译时选固件格式和设置overlay空间容量](https://github.com/danshui-git/shuoming/blob/master/overlay.md)》

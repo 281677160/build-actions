@@ -18,13 +18,13 @@
 #
 # 同步完上游仓库后，如若你有自建机型文件夹的话，要注意对比diy-part.sh文件有没有更新内容
 #
-#  为防止开启跟关闭时候跟清理空间和删除releases混淆，‘重新FORK上游仓库’的开关开启参数为 fork
+#  为防止开启跟关闭时候跟清理空间和删除releases混淆，‘同步上游仓库’的开关开启参数为 fork
 #
 # env:下面的OLDER_WORKFLOW和OLDER_RELEASES是定时启动时候设置开或者关闭项目运行（true为开，false关）
 #
 
 
-name: 更新同步上游或清理仓库
+name: 同步上游或清理仓库
 on:
   workflow_dispatch:
     inputs:
@@ -53,7 +53,7 @@ env:
 jobs:
   del_runs:
     runs-on: Ubuntu-20.04
-    name: 清理仓库或同步上游仓库
+    name: 同步上游或清理仓库
     steps:
     
     - name: 准备结束

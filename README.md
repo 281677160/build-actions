@@ -38,7 +38,7 @@ op自带的ttyd或者用putty连接OP都可以，用了命令后会一直使用�
 #
 - 6、修改好ip后，根据个人需求打开或者关闭各功能，开关控制在build文件夹--你要编译的对应源码文件夹（跟第4步修改的源码文件一样的文件夹名称）里的【settings.ini】设置《[各开关控制教程](https://github.com/danshui-git/shuoming/blob/master/kaiguan.md)》
 #
-- 7、获取配置文件分《[在线获取.config配置文件教程](https://github.com/danshui-git/shuoming/blob/master/config.md)》和《[本地获取.config](https://github.com/danshui-git/shuoming/blob/master/yijianconfig.md)》两种方法
+- 7、获取.config配置文件，分《[在线获取.config配置文件教程](https://github.com/danshui-git/shuoming/blob/master/config.md)》和《[本地获取.config](https://github.com/danshui-git/shuoming/blob/master/yijianconfig.md)》两种方法，您喜欢什么样的都行
 #
 - 8、第4、5、6、7步骤都完成后，如果您在第 7 步骤没设置密匙自动触发编译或者是本地获取的配置文件的话，就手动启动编译《[[启动教程](https://github.com/danshui-git/shuoming/blob/master/%E6%89%8B%E5%8A%A8%E5%BC%80%E5%A7%8B.md)]》
 #

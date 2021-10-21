@@ -153,8 +153,6 @@ jobs:
         cd $GITHUB_WORKSPACE
         git clone -b main https://github.com/${{github.repository}}.git repo
         cd repo
-        export TARGE="$(cat .github/workflows/build-openwrt.yml |grep "target: \[" |grep  -v \#  |awk 'NR==1'|sed 's/^[ ]*//g' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
-        export TARGE2="target: \\["${Modelfile}"\\]"
         export QIDONG_paths="$(grep -A 1 'paths:' .github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed 's/\//\\&/g')"
         export QIDONG_main="$(grep -A 1 'branches:' .github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed 's/\//\\&/g')"
         if [[ -z "${QIDONG_paths}" ]] || [[ -z "${QIDONG_main}" ]]; then
@@ -162,6 +160,8 @@ jobs:
          export QIDONG_paths="$(grep -A 1 'paths:' .github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed 's/\//\\&/g')"
          export QIDONG_main="$(grep -A 1 'branches:' .github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed 's/\//\\&/g')"
         fi
+        export TARGE="$(cat .github/workflows/build-openwrt.yml |grep "target: \[" |grep  -v \#  |awk 'NR==1'|sed 's/^[ ]*//g' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
+        export TARGE2="target: \\["${Modelfile}"\\]"
         sed -i "s/${TARGE}/${TARGE2}/g" .github/workflows/build-openwrt.yml
         sed -i "s/${QIDONG_paths}/- 'build\/${Modelfile}\/start-up\/start'/g" .github/workflows/build-openwrt.yml
         sed -i "s/${QIDONG_main}/- main/g" .github/workflows/build-openwrt.yml

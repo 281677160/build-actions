@@ -16,6 +16,8 @@
 #
 # ‘同步上游仓库’ 只有在手动启动时参数改为fork再启动才生效，同步仓库时会自动保留config配置文件和备份diy-part.sh文件
 #
+# 同步完上游仓库后，如若你有自建机型文件夹的话，要注意对比diy-part.sh文件有没有更新内容
+#
 #  为防止开启跟关闭时候跟清理空间和删除releases混淆，‘重新FORK上游仓库’的开关开启参数为 fork
 #
 # env:下面的OLDER_WORKFLOW和OLDER_RELEASES是定时启动时候设置开或者关闭项目运行（true为开，false关）
@@ -96,7 +98,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
           
-    - name: 同步上游仓库(自动保留.config文件和备份diy.sh文件，不影响你自建文件夹，需要密匙)
+    - name: 同步上游仓库(自动保留.config文件和备份diy-part.sh文件，不影响你自建文件夹，需要密匙)
       if: env.REPO_TOKEN && (github.event.inputs.again-fork == 'fork')
       run: |
         cd $GITHUB_WORKSPACE

@@ -6,6 +6,7 @@
 - 《[全新在线获取.config配置文件教程](https://github.com/danshui-git/shuoming/blob/master/config.md)》
 - 《[全新一键保存配置同步上游仓库和清理仓库说明](https://github.com/danshui-git/shuoming/blob/master/chongxinfork.md)》
 - 新手教程全新整理了一下，应该更容易看懂了
+- 最新仓库修改了获取.config配置文件和保存配置同步上游仓库的方式，所以在.github/workflows文件里面的（build-openwrt.ym和make-menuconfig.yml）文件名是不能修改的，切记！
 ---
 
 - [Lede_source](https://github.com/coolsnowwolf/lede)，Luci版本=18.06、内核版本=5.4
@@ -20,8 +21,6 @@
 - 《[如何在本地Ubuntu一键无脑编译](https://github.com/281677160/bendi)》
  
 - 《[把定时自动在线更新插件编译进固件的说明](https://github.com/danshui-git/shuoming/blob/master/%E5%AE%9A%E6%97%B6%E6%9B%B4%E6%96%B0%E6%8F%92%E4%BB%B6.md)》
-
-- #### 最新仓库修改了获取.config配置文件和保存配置同步上游仓库的方式，所以在.github/workflows文件里面的（build-openwrt.ym和make-menuconfig.yml）文件名是不能修改的，切记！
 
 ```
 AdGuardHome更新核心的时候如果遇见‘A task is already running.’这个显示的话，请用命令来更新核心，

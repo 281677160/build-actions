@@ -14,7 +14,7 @@
 #
 #
 
-name: 设置配置.config文件
+name: 设置.config配置文件
 on:
   workflow_dispatch:
     inputs:

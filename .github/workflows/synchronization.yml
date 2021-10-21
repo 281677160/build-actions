@@ -8,7 +8,7 @@
 #
 # 说明：
 # 
-# ‘清理Actions空间’ 删除12小时之前的一切固件和其他文件，保留数设置没效，一删除就会把在删除时间段内的固件全部删除
+# ‘清理Actions空间’ 删除12小时之前在Actions的固件，保留数设置没效，一删除就会把在删除时间段内的固件全部删除
 #
 # ‘删除releases,可设置保留数’ 每次启动都生效，可以设置保留数
 #
@@ -29,17 +29,17 @@ on:
   workflow_dispatch:
     inputs:
       older-actions:
-        description: '清理Actions空间'
+        description: 'true-actions改true开启清理Actions空间'
         required: false
-        default: 'true'
+        default: 'true-actions'
       older-releases:
-        description: '删除releases'
+        description: 'true-actions改true开启删除releases'
         required: false
-        default: 'true'
+        default: 'true-actions'
       again-fork:
-        description: '同步上游仓库'
+        description: 'fork-actions改fork开启同步上游仓库'
         required: false
-        default: 'false'
+        default: 'fork-actions'
 
 #  schedule:
 #    - cron: 10 4 * * *

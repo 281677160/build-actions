@@ -216,5 +216,5 @@ jobs:
         else
           rm -fr build.log
           git push --quiet "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main
-          echo "make-menuconfig.yml和build-openwrt.yml选择机型同步一致!"
+          echo "make-menuconfig.yml和build-openwrt.yml选择机型同步一致更新完毕!"
         fi

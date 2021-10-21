@@ -1,6 +1,6 @@
 - 《[Telegram聊天吹水群](https://t.me/heiheiheio)》- 《[Telegram中文设置方法](https://github.com/danshui-git/shuoming/blob/master/tele.md)》
 
-# 择要
+- # 择要
 ---
 - 2021/10/22号更新了最新获取.config方法，和修改了最新的一键同步上游仓库，更人性化
 - 《[全新在线获取.config配置文件教程](https://github.com/danshui-git/shuoming/blob/master/config.md)》
@@ -9,8 +9,8 @@
 - 最新仓库修改了获取.config配置文件和保存配置同步上游仓库的方式，所以在.github/workflows文件里面的（build-openwrt.yml和make-menuconfig.yml）文件名是不能修改的，切记！
 - 保持 build-openwrt.yml 和 make-menuconfig.yml 就好，反正这个文件名字也应该没多少人闲地蛋痛去修改吧，就是说一下比较好
 ---
-# 介绍
-
+- # 介绍
+---
 - [Lede_source](https://github.com/coolsnowwolf/lede)，Luci版本=18.06、内核版本=5.4
 - [Lienol_source](https://github.com/Lienol/openwrt/tree/19.07)，Luci版本=17.01、内核版本=4.14
 - [Mortal_source](https://github.com/immortalwrt/immortalwrt/tree/openwrt-21.02)，Luci版本=21.02、内核版本=5.4
@@ -30,9 +30,9 @@ op自带的ttyd或者用putty连接OP都可以，用了命令后会一直使用�
 
  命令是：while ! bash /usr/share/AdGuardHome/update_core.sh ; do sleep 2 ; done ; echo succeed
 ```
-
+---
 #
-## 编译教程：
+- # 编译教程：
 ### - 以下的说明教程都是在我另外的仓库的，查看说明时候就跳转到另外仓库了，浏览器回退就会回来，别拉取到我说明的仓库，注意了！
 #
 - 1、`注册及登录github账号，github个别地区或网络已筑墙,请自备梯子`《[注册链接](https://github.com)》

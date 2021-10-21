@@ -147,7 +147,7 @@ jobs:
         name: .config_${{ env.CODE }}_${{ env.TARGET_PROFILE }}_${{ env.Compile_Date }}
         path: config.txt
         
-    - name: 修改build-openwrt.yml文件，用于.config有更新时启动"${{matrix.target}}"编译（需要密匙和true-actions改成true）
+    - name: 修改build-openwrt.yml文件，用于.config有更新时自动触发"${{matrix.target}}"编译（需要密匙和true-actions改成true）
       if: env.REPO_TOKEN && (github.event.inputs.config == 'true' && github.event.inputs.config  != 'false')
       run: |
         cd $GITHUB_WORKSPACE
@@ -179,7 +179,7 @@ jobs:
         git rm --cache build/${{matrix.target}}/${CONFIG_FILE}
         cp -Rf $GITHUB_WORKSPACE/${CONFIG_FILE} build/${{matrix.target}}/${CONFIG_FILE}
         git add .
-        git commit -m "${{env.CODE}}更新${CONFIG_FILE}于$(date +%Y年%m月%d号-%H点%M分)" |tee build.log
+        git commit -m "${{env.CODE}}更新了${CONFIG_FILE} 机型为${TARGET_PROFILE}" |tee build.log
         if [[ `grep -c "Your branch is up to date with" build.log` -eq '1' ]]; then
           echo "配置文件无更新,所以无需要覆盖!"
         else
@@ -189,7 +189,7 @@ jobs:
             echo "${{env.CODE}}于$(date +%Y年%m月%d号-%H点%M分)启动编译" > build/${Modelfile}/start-up/start
             echo "正在更新${{matrix.target}}文件夹的${CONFIG_FILE}配置文件!"
             git add .
-            git commit -m "${{env.CODE}}更新${CONFIG_FILE}于$(date +%Y年%m月%d号-%H点%M分)"
+            git commit -m "${{env.CODE}}更新了${CONFIG_FILE} 机型为${TARGET_PROFILE}"
           fi
           git push --quiet "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main
           echo "更新完毕!"

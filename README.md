@@ -11,9 +11,10 @@
 ---
 - # 介绍
 ---
-- [Lede_source](https://github.com/coolsnowwolf/lede)，Luci版本=18.06、内核版本=5.4
+- [Lede_source](https://github.com/coolsnowwolf/lede)，Luci版本=18.06、内核版本=5.4-5.10
 - [Lienol_source](https://github.com/Lienol/openwrt/tree/19.07)，Luci版本=17.01、内核版本=4.14
 - [Mortal_source](https://github.com/immortalwrt/immortalwrt/tree/openwrt-21.02)，Luci版本=21.02、内核版本=5.4
+- [Tianling_source](https://github.com/immortalwrt/immortalwrt/tree/openwrt-18.06)，Luci版本=18.06、内核版本=4.19-4.14-4.9
 - [openwrt_amlogic](https://github.com/coolsnowwolf/lede)，N1和晶晨系列CPU盒子专用（Luci版本=18.06、内核版本=5.4）
 
 - openwrt_amlogic文件夹，编译S905x3, S905x2, S922x, S905x, S905d, s912《[自动打包您所需的固件说明](https://github.com/danshui-git/shuoming/blob/master/Amlogic.md)》

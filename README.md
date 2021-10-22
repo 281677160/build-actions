@@ -37,11 +37,11 @@ op自带的ttyd或者用putty连接OP都可以，用了命令后会一直使用�
 #
 - > 编译openwrt两个常用的工具下载地址《[PuTTY(SSH)工具](https://github.com/danshui-git/shuoming/blob/master/Putty%E5%B7%A5%E5%85%B7%E4%B8%8B%E8%BD%BD.md)》《[WinSCP文件管理](https://github.com/danshui-git/shuoming/blob/master/WinSCP.md)》
 #
-- > 1、`注册及登录github账号，github个别地区或网络已筑墙,请自备梯子`《[注册链接](https://github.com)》
+- > 1、注册及登录github账号，github个别地区或网络已筑墙,请自备梯子《[注册链接](https://github.com)》
 #
-- 2、`拉取我的仓库到你的github帐号`《[拉取仓库教程](https://github.com/danshui-git/shuoming/blob/master/1%E6%8B%89%E5%8F%96%E4%BB%93%E5%BA%93.md)》
+- > 2、拉取我的仓库到你的github帐号《[拉取仓库教程](https://github.com/danshui-git/shuoming/blob/master/1%E6%8B%89%E5%8F%96%E4%BB%93%E5%BA%93.md)》
 #
-- 3、`获取密匙然后在编译仓库使用密匙，非必要步骤，但是有密匙就方便很多，推荐获取`《[仓库密匙获取跟使用](https://github.com/danshui-git/shuoming/blob/master/jm.md)》
+- > 3、获取密匙然后在编译仓库使用密匙，非必要步骤，但是有密匙就方便很多，推荐获取《[仓库密匙获取跟使用](https://github.com/danshui-git/shuoming/blob/master/jm.md)》
 #
 - 4、`必须了解的脚本简单介绍，起码也知道我仓库有什么源码，出处那里，然后您才好选择`《[脚本简单介绍](https://github.com/danshui-git/shuoming/blob/master/%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D%E6%96%B0%E8%84%9A%E6%9C%AC.md)》
 #

@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-18.04
     if: github.event.repository.owner.id == github.event.sender.id
 
-    name: 制作"${{matrix.target}}"配置文件
+    name: 编译OpenWrt固件
     strategy:
       fail-fast: false
       matrix:

@@ -181,7 +181,7 @@ jobs:
         export TARGET1="$(cat sybuild-openwrt.yml |grep "target: \[" |grep  -v \#  |awk 'NR==1'|sed 's/^[ ]*//g' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
         export TARGET2="$(cat repo/.github/workflows/build-openwrt.yml |grep "target: \[" |grep  -v \#  |awk 'NR==1'|sed 's/^[ ]*//g' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
         sed -i "s/${TARGET1}/${TARGET2}/g" sybuild-openwrt.yml
-        cp symake-menuconfig.yml repo/.github/workflows/build-openwrt.yml
+        cp cp sybuild-openwrt.yml repo/.github/workflows/build-openwrt.yml
         cd repo
         curl -fsSL https://raw.githubusercontent.com/281677160/build-actions/main/.github/workflows/compile.yml > .github/workflows/compile.yml
         export QIDONG_paths="$(grep -A 1 'paths:' .github/workflows/compile.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed 's/\//\\&/g')"

@@ -105,6 +105,8 @@ jobs:
         git clone -b main https://github.com/281677160/build-actions.git shangyou
         cd shangyou
         rm -rf build/*/.config
+        export QIDONG_paths="$(grep -A 1 'paths:' .github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed 's/\//\\&/g')"
+        sed -i "s/${QIDONG_paths}/- 'config'/g" .github/workflows/build-openwrt.yml
         cd $GITHUB_WORKSPACE
         git clone -b main https://github.com/${{github.repository}}.git repo
         cd repo

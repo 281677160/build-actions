@@ -109,7 +109,7 @@ jobs:
           source "${PATH1}/common.sh" && Diy_lede
         elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
           source "${PATH1}/common.sh" && Diy_lienol
-        elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
+        elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
           source "${PATH1}/common.sh" && Diy_Tianling
         elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
           source "${PATH1}/common.sh" && Diy_mortal

@@ -20,7 +20,7 @@ on:
     branches:
       - main
     paths:
-      - 'config'
+      - 'build/Tianling_source/start-up/start'
 
 # 定时触发开始编译(把下面两个#去掉开启,时间设置请看定时编译说明)
 #  schedule:

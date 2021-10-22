@@ -14,14 +14,14 @@
 #
 #
 
-name: 设置.config配置文件
+name: 编译OpenWrt固件
 on:
   workflow_dispatch:
     inputs:
       ssh:
-        description: 'true-actions改成true,再按Run workflow启动,自动启动对应源码编译固件'
+        description: 'ssh-actions改成ssh,再按Run workflow启动,则开启SSH连接配置固件'
         required: false
-        default: 'true-actions'
+        default: 'ssh-actions'
 
 
 # 定时触发开始编译(把下面两个#去掉开启,时间设置请看定时编译说明)
@@ -130,7 +130,7 @@ jobs:
         [[ -e "$PATH1/$CONFIG_FILE" ]] && mv "$PATH1/$CONFIG_FILE" .config
         
     - name: SSH远程连接（制作.config配置文件）
-      if: env.SSH_ACTIONS == 'true' || (github.event.inputs.ssh == 'true')
+      if: env.SSH_ACTIONS == 'true' || (github.event.inputs.ssh == '')
       uses: danshui-git/debugger-action@master
       env:
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}

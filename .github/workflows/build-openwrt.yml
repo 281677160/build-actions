@@ -171,14 +171,6 @@ jobs:
         cd $GITHUB_WORKSPACE
         curl -fsSL https://raw.githubusercontent.com/281677160/build-actions/main/.github/workflows/build-openwrt.yml > sybuild-openwrt.yml
         git clone -b main https://github.com/${{github.repository}}.git repo
-        export CRON2="$(cat repo/.github/workflows/build-openwrt.yml |grep "cron:" |grep  -v \# |sed 's/^[ ]*//g' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')"
-        if [[ -n "${CRON2}" ]]; then
-          sed -i 's/^#\(.*schedule:\)/\1/' sybuild-openwrt.yml
-          sed -i 's/^#\(.*cron:\)/\1/' sybuild-openwrt.yml
-          export CRON1="$(cat sybuild-openwrt.yml |grep "cron:" |sed 's/^[ ]*//g' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')"
-          echo "222222"
-          sed -i "s/${CRON1}/${CRON2}/g" sybuild-openwrt.yml
-        fi
         export TARGET1="$(cat sybuild-openwrt.yml |grep "target: \[" |grep  -v \#  |awk 'NR==1'|sed 's/^[ ]*//g' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
         export TARGET2="$(cat repo/.github/workflows/build-openwrt.yml |grep "target: \[" |grep  -v \#  |awk 'NR==1'|sed 's/^[ ]*//g' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
         sed -i "s/${TARGET1}/${TARGET2}/g" sybuild-openwrt.yml

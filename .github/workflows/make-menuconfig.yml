@@ -18,7 +18,7 @@ name: 设置.config配置文件
 on:
   workflow_dispatch:
     inputs:
-      config:
+      ssh:
         description: 'true-actions改成true,再按Run workflow启动,自动启动对应源码编译固件'
         required: false
         default: 'true-actions'
@@ -26,7 +26,7 @@ on:
 
 # 定时触发开始编译(把下面两个#去掉开启,时间设置请看定时编译说明)
 #  schedule:
-#   - cron: 0 16 */2 * *
+#   - cron: 0 16 */5 * *
 
 
 env: 
@@ -42,7 +42,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [Tianling_source]
+        target: [Lede_source]
 
         # [Lede_source,Lienol_source,Mortal_source,openwrt_amlogic]
 
@@ -57,6 +57,8 @@ jobs:
         echo "REPO_BRANCH=${REPO_BRANCH}" >> $GITHUB_ENV
         echo "CONFIG_FILE=${CONFIG_FILE}" >> $GITHUB_ENV
         echo "DIY_PART_SH=${DIY_PART_SH}" >> $GITHUB_ENV
+        echo "SSH_ACTIONS=${SSH_ACTIONS}" >> $GITHUB_ENV
+        echo "UPLOAD_CONFIG=${UPLOAD_CONFIG}" >> $GITHUB_ENV
         echo "Modelfile=${{matrix.target}}" >> $GITHUB_ENV
 
     - name: 读取扩展文件
@@ -83,7 +85,7 @@ jobs:
         echo "NETIP=package/base-files/files/etc/networkip" >> $GITHUB_ENV
         echo "DELETE=package/base-files/files/etc/deletefile" >> $GITHUB_ENV
         
-    - name: 部署制作.config文件环境
+    - name: 部署编译环境
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
@@ -127,17 +129,20 @@ jobs:
         [[ -e "$PATH1/$CONFIG_FILE" ]] && mv "$PATH1/$CONFIG_FILE" .config
         
     - name: SSH远程连接（制作.config配置文件）
+      if: env.SSH_ACTIONS == 'true' || (github.event.inputs.ssh == 'true')
       uses: danshui-git/debugger-action@master
       env:
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
     - name: 生成"${{matrix.target}}"配置文件
+      id: compile
       run: |
         cd openwrt
         make defconfig
         ./scripts/diffconfig.sh > ${GITHUB_WORKSPACE}/${CONFIG_FILE}
         cp -r ${GITHUB_WORKSPACE}/${CONFIG_FILE} ${GITHUB_WORKSPACE}/config.txt
+        echo "::set-output name=status::success"
         echo "TARGET_BOARD=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' .config)" >> $GITHUB_ENV
         echo "TARGET_SUBTARGET=$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' .config)" >> $GITHUB_ENV
         echo "Compile_Date=$(date +%Y%m%d-%H%M)" >> $GITHUB_ENV
@@ -153,79 +158,41 @@ jobs:
         fi
         
     - name: 上传.config配置文件在 github actions
+      if: env.UPLOAD_CONFIG == 'true'
       uses: actions/upload-artifact@v2
       with:
         name: .config_${{ env.CODE }}_${{ env.TARGET_PROFILE }}_${{ env.Compile_Date }}
         path: config.txt
         
-    - name: 修改build-openwrt.yml文件，用于.config有更新时启动"${{matrix.target}}"编译（需要密匙和true-actions改成true）
-      if: env.REPO_TOKEN && (github.event.inputs.config == 'true')
+    - name: 启动"${{matrix.target}}"编译
+      if: steps.compile.outputs.status == 'success' && env.REPO_TOKEN
       run: |
         cd $GITHUB_WORKSPACE
+        curl -fsSL https://raw.githubusercontent.com/281677160/build-actions/main/.github/workflows/build-openwrt.yml > sybuild-openwrt.yml
         git clone -b main https://github.com/${{github.repository}}.git repo
-        cd repo
-        export QIDONG_paths="$(grep -A 1 'paths:' .github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed 's/\//\\&/g')"
-        export QIDONG_main="$(grep -A 1 'branches:' .github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed 's/\//\\&/g')"
-        if [[ -z "${QIDONG_paths}" ]] || [[ -z "${QIDONG_main}" ]]; then
-         curl -fsSL https://ghproxy.com/https://raw.githubusercontent.com/281677160/build-actions/main/.github/workflows/build-openwrt.yml > .github/workflows/build-openwrt.yml
-         export QIDONG_paths="$(grep -A 1 'paths:' .github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed 's/\//\\&/g')"
-         export QIDONG_main="$(grep -A 1 'branches:' .github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed 's/\//\\&/g')"
+        export CRON2="$(cat repo/.github/workflows/build-openwrt.yml |grep "cron:" |grep  -v \#  |sed 's/^[ ]*//g' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')"
+        if [[ -n "${CRON2}" ]]; then
+          sed -i 's/^#\(.*schedule:\)/\1/' sybuild-openwrt.yml
+          sed -i 's/^#\(.*- cron:\)/\1/' sybuild-openwrt.yml
+          export CRON1="$(cat sybuild-openwrt.yml |grep "cron:" |sed 's/^[ ]*//g' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')"
+          sed -i "s/${CRON1}/${CRON2}/g" sybuild-openwrt.yml
         fi
-        export TARGE="$(cat .github/workflows/build-openwrt.yml |grep "target: \[" |grep  -v \#  |awk 'NR==1'|sed 's/^[ ]*//g' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
-        export TARGE2="target: \\["${Modelfile}"\\]"
-        sed -i "s/${TARGE}/${TARGE2}/g" .github/workflows/build-openwrt.yml
-        sed -i "s/${QIDONG_paths}/- 'build\/${Modelfile}\/start-up\/start'/g" .github/workflows/build-openwrt.yml
-        sed -i "s/${QIDONG_main}/- main/g" .github/workflows/build-openwrt.yml
-        git add .
-        git commit -m "Update build-openwrt.yml" |tee build.log
-        if [[ `grep -c "Your branch is up to date with" build.log` -eq '1' ]]; then
-          echo "配置文件无更新,所以无需要覆盖!"
-        else
-          rm -fr build.log
-          echo "正在更新build-openwrt.yml文件!"
-          git push --quiet "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main
-          echo "build-openwrt.yml文件更新完毕!"
-        fi
-    
-    - name: 把新配置的.config配置文件自动覆盖${{matrix.target}}文件夹的.config（需要密匙）
-      if: env.REPO_TOKEN
-      run: |
-        cd $GITHUB_WORKSPACE
-        [[ ! -e "repo" ]] && git clone -b main https://github.com/${{github.repository}}.git repo
+        export TARGET1="$(cat sybuild-openwrt.yml |grep "target: \[" |grep  -v \#  |awk 'NR==1'|sed 's/^[ ]*//g' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
+        export TARGET2="$(cat repo/.github/workflows/build-openwrt.yml |grep "target: \[" |grep  -v \#  |awk 'NR==1'|sed 's/^[ ]*//g' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
+        sed -i "s/${TARGET1}/${TARGET2}/g" sybuild-openwrt.yml
+        cp symake-menuconfig.yml repo/.github/workflows/build-openwrt.yml
         cd repo
+        curl -fsSL https://raw.githubusercontent.com/281677160/build-actions/main/.github/workflows/compile.yml > .github/workflows/compile.yml
+        export QIDONG_paths="$(grep -A 1 'paths:' .github/workflows/compile.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed 's/\//\\&/g')"
+        export TARGE="$(cat .github/workflows/compile.yml |grep "target: \[" |grep  -v \#  |awk 'NR==1'|sed 's/^[ ]*//g' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
+        export TARGE2="target: \\[${{matrix.target}}\\]"
+        sed -i "s/${TARGE}/${TARGE2}/g" .github/workflows/compile.yml
+        sed -i "s/${QIDONG_paths}/- 'build\/${{matrix.target}}\/start-up\/start'/g" .github/workflows/compile.yml
         rm -Rf build/${{matrix.target}}/${CONFIG_FILE}
         git rm --cache build/${{matrix.target}}/${CONFIG_FILE}
         cp -Rf $GITHUB_WORKSPACE/${CONFIG_FILE} build/${{matrix.target}}/${CONFIG_FILE}
+        mkdir -p build/${{matrix.target}}/start-up
+        echo "${{env.CODE}}于$(date +%Y年%m月%d号-%H点%M分)自动触发编译${{env.TARGET_PROFILE}}固件" > build/${Modelfile}/start-up/start
         git add .
-        git commit -m "${{env.CODE}}更新${CONFIG_FILE} 机型为${{env.TARGET_PROFILE}}" |tee build.log
-        if [[ `grep -c "Your branch is up to date with" build.log` -eq '1' ]]; then
-          echo "配置文件无更新,所以无需要覆盖!"
-        else
-          rm -fr build.log
-          if [[ "${{ github.event.inputs.config }}" == 'true' ]]; then
-            mkdir -p build/${Modelfile}/start-up
-            echo "${{env.CODE}}于$(date +%Y年%m月%d号-%H点%M分)自动触发编译${{env.TARGET_PROFILE}}固件" > build/${Modelfile}/start-up/start
-            echo "正在更新${{matrix.target}}文件夹的${CONFIG_FILE}配置文件!"
-            git add .
-            git commit -m "${{env.CODE}}更新了${CONFIG_FILE},机型为${{env.TARGET_PROFILE}}触发自动编译"
-          fi
-          git push --quiet "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main
-          echo ".config更新完毕，已经覆盖至build/${{matrix.target}}/${CONFIG_FILE}!"
-        fi
-        
-    - name: 最后更新build-openwrt.yml（需要密匙）
-      if: env.REPO_TOKEN
-      run: |
-        cd $GITHUB_WORKSPACE/repo
-        export YMLTARGE="$(cat .github/workflows/build-openwrt.yml |grep "target: \[" |grep  -v \#  |awk 'NR==1'|sed 's/^[ ]*//g' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
-        export YMLTARGE2="$(cat .github/workflows/make-menuconfig.yml |grep "target: \[" |grep  -v \#  |awk 'NR==1'|sed 's/^[ ]*//g' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
-        sed -i "s/${YMLTARGE}/${YMLTARGE2}/g" .github/workflows/build-openwrt.yml
-        git add .
-        git commit -m "Update build-openwrt.yml" |tee build.log
-        if [[ `grep -c "Your branch is up to date with" build.log` -eq '1' ]] || [[ `grep -c "Your branch is ahead of" build.log` -eq '1' ]]; then
-          echo "make-menuconfig.yml和build-openwrt.yml选择机型一致,所以无需更新!"
-        else
-          rm -fr build.log
-          git push --quiet "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main
-          echo "make-menuconfig.yml和build-openwrt.yml选择机型同步一致更新完毕!"
-        fi
+        git commit -m "编译${{env.CODE}}-${{env.TARGET_PROFILE}}固件"
+        git push --quiet "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main

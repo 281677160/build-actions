@@ -201,7 +201,7 @@ jobs:
             echo "${{env.CODE}}于$(date +%Y年%m月%d号-%H点%M分)自动触发编译${{env.TARGET_PROFILE}}固件" > build/${Modelfile}/start-up/start
             echo "正在更新${{matrix.target}}文件夹的${CONFIG_FILE}配置文件!"
             git add .
-            git commit -m "${{env.CODE}}更新${CONFIG_FILE} 机型为${{env.TARGET_PROFILE}}"
+            git commit -m "${{env.CODE}}更新了${CONFIG_FILE},机型为${{env.TARGET_PROFILE}}触发自动编译"
           fi
           git push --quiet "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main
           echo ".config更新完毕，已经覆盖至build/${{matrix.target}}/${CONFIG_FILE}!"

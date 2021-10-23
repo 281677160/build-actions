@@ -3,7 +3,7 @@
 - # 择要
 ---
 - 2021/10/22号更新了最新获取.config方法，和修改了最新的一键同步上游仓库，更人性化
-- 《[全新启动编译教程](https://github.com/danshui-git/shuoming/blob/master/config.md)》
+- 《[全新启动编译教程（必须获取密匙后才可以）](https://github.com/danshui-git/shuoming/blob/master/config.md)》
 - 《[全新一键保存配置同步上游仓库和清理仓库说明](https://github.com/danshui-git/shuoming/blob/master/chongxinfork.md)》
 - 新手教程全新整理了一下，应该更容易看懂了
 ---

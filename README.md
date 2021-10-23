@@ -3,11 +3,9 @@
 - # 择要
 ---
 - 2021/10/22号更新了最新获取.config方法，和修改了最新的一键同步上游仓库，更人性化
-- 《[全新在线获取.config配置文件教程](https://github.com/danshui-git/shuoming/blob/master/config.md)》
+- 《[全新启动编译教程](https://github.com/danshui-git/shuoming/blob/master/config.md)》
 - 《[全新一键保存配置同步上游仓库和清理仓库说明](https://github.com/danshui-git/shuoming/blob/master/chongxinfork.md)》
 - 新手教程全新整理了一下，应该更容易看懂了
-- 最新仓库修改了获取.config配置文件和保存配置同步上游仓库的方式，所以在.github/workflows文件里面的（build-openwrt.yml和make-menuconfig.yml）文件名是不能修改的，切记！
-- 保持 build-openwrt.yml 和 make-menuconfig.yml 就好，反正这个文件名字也应该没多少人闲地蛋痛去修改吧，就是说一下比较好
 ---
 - # 介绍
 ---

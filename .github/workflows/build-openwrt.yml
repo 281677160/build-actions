@@ -176,7 +176,7 @@ jobs:
           sed -i 's/^#\(.*cron:\)/\1/' sybuild-openwrt.yml
           sed -i "s/${CRON1}/${CRON2}/g" sybuild-openwrt.yml
         else
-          export CRON2="$(grep -A 1 'schedule:' repo/.github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')"
+          export CRON2="$(grep -A 1 'schedule:' repo/.github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed 's/.//' |sed 's/^[ ]*//g' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')"
           export CRON1="$(grep -A 1 'schedule:' sybuild-openwrt.yml |awk 'NR==2' |sed 's/.//' |sed 's/^[ ]*//g' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')"
           sed -i "s/${CRON1}/${CRON2}/g" sybuild-openwrt.yml
         fi

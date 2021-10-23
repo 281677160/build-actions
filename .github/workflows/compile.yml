@@ -9,7 +9,7 @@
 #
 
 
-name: compile.yml
+name: compile
 on:
   workflow_dispatch:
   push:

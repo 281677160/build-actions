@@ -206,7 +206,6 @@ jobs:
         sed -i "s/${QIDONG_paths}/- 'build\/${{matrix.target}}\/start-up\/start'/g" .github/workflows/compile.yml
         mkdir -p build/${{matrix.target}}/start-up
         echo "${{env.CODE}}于$(date +%Y年%m月%d号-%H点%M分)自动触发编译${{env.TARGET_PROFILE}}固件" > build/${Modelfile}/start-up/start
-        chmod -R +x $GITHUB_WORKSPACE/repo
         git add .
         git commit -m "编译${{env.CODE}}-${{env.TARGET_PROFILE}}固件"
         git push --quiet "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main

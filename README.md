@@ -46,9 +46,9 @@ op自带的ttyd或者用putty连接OP都可以，用了命令后会一直使用�
 #
 - > 5、选择要编译的源码文件《[选择编译源码教程](https://github.com/danshui-git/shuoming/blob/master/%E9%80%89%E6%8B%A9%E6%9C%BA%E5%9E%8B.md)》
 #
-- > 6、修改后台登录IP，在build文件夹-->对应您在第5步修改的源码文件夹里点开[diy-part.sh]，然后修改后台登录IP《[修改ip教程](https://github.com/danshui-git/shuoming/blob/master/ip.md)》
+- > 6、修改后台登录IP，在build文件夹-->对应您在第 5 步修改的源码文件夹里点开[diy-part.sh]，然后修改后台登录IP《[修改ip教程](https://github.com/danshui-git/shuoming/blob/master/ip.md)》
 #
-- > 7、开启或者关闭某功能，在build文件夹-->对应您在第5步修改的源码文件夹里点开[settings.ini]，然后按需控制各项目开关《[各开关控制教程](https://github.com/danshui-git/shuoming/blob/master/kaiguan.md)》
+- > 7、开启或者关闭某功能，在build文件夹-->对应您在第 5 步修改的源码文件夹里点开[settings.ini]，然后按需控制各项目开关《[各开关控制教程](https://github.com/danshui-git/shuoming/blob/master/kaiguan.md)》
 #
 - > 8、《[启动编译程序和SSH连接修改插件机型等教程](https://github.com/danshui-git/shuoming/blob/master/config.md)》
 #

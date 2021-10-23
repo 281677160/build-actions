@@ -138,7 +138,7 @@ jobs:
         cd openwrt
         make defconfig
         ./scripts/diffconfig.sh > ${GITHUB_WORKSPACE}/${CONFIG_FILE}
-        cp -r ${GITHUB_WORKSPACE}/${CONFIG_FILE} ${GITHUB_WORKSPACE}/config.txt
+        cp -Rf ${GITHUB_WORKSPACE}/${CONFIG_FILE} ${GITHUB_WORKSPACE}/config.txt
         echo "::set-output name=status::success"
         echo "TARGET_BOARD=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' .config)" >> $GITHUB_ENV
         echo "TARGET_SUBTARGET=$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' .config)" >> $GITHUB_ENV
@@ -162,12 +162,21 @@ jobs:
         path: config.txt
         
     - name: 触发compile.yml启动"${{matrix.target}}"编译
-      if: env.REPO_TOKEN
+      if: steps.compile.outputs.status == 'success' && env.REPO_TOKEN
       run: |
         cd $GITHUB_WORKSPACE
         rm -fr .github
         curl -fsSL https://raw.githubusercontent.com/281677160/build-actions/main/.github/workflows/build-openwrt.yml > sybuild-openwrt.yml
         git clone -b main https://github.com/${{github.repository}}.git repo
+        if [[ `ls -a $GITHUB_WORKSPACE/repo/.github/workflows | grep -c "build-openwrt.yml"` == '0' ]]; then
+          curl -fsSL https://raw.githubusercontent.com/281677160/build-actions/main/.github/workflows/build-openwrt.yml > $GITHUB_WORKSPACE/repo/.github/workflows/build-openwrt.yml
+        fi
+        if [[ `ls -a $GITHUB_WORKSPACE/repo/.github/workflows | grep -c "compile.yml"` == '0' ]]; then
+          curl -fsSL https://raw.githubusercontent.com/281677160/build-actions/main/.github/workflows/compile.yml > $GITHUB_WORKSPACE/repo/.github/workflows/compile.yml
+        fi
+        if [[ `ls -a $GITHUB_WORKSPACE/repo/.github/workflows | grep -c "synchronization.yml"` == '0' ]]; then
+          curl -fsSL https://raw.githubusercontent.com/281677160/build-actions/main/.github/workflows/synchronization.yml > $GITHUB_WORKSPACE/repo/.github/workflows/synchronization.yml
+        fi
         export Sched="$(grep -A 1 'schedule:' repo/.github/workflows/build-openwrt.yml |awk 'NR==2')" && echo "${Sched}" > Schedu
         if [[ `grep -c "\#" Schedu` == '0' ]]; then
           export CRON2="$(grep -A 1 'schedule:' repo/.github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')"

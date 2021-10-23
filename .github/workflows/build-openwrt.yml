@@ -1,20 +1,16 @@
 #
 #
-# 因为SSH连接配置固件直接编译，会给github停止编译的
+# 因为SSH连接配置固件直接编译，会给github停止编译的,所以要另外触发启动编译程序
 #
-# 所以本文件是专门用来连接SSH配置.config文件专用
+# 如果不能触发compile启动,那您就设置好compile.yml文件，下载好.config配置文件覆盖到对应源码，再用compile.yml启动
 #
-# 跟启动编译是一样的，已经默就打开SSH，选择好生成什么源码的.config文件，然后启动，等待进入SSH连接，然后配置文件
-#
-# 配置完成后会自动上传一份.config文件，下载下来，覆盖到对应的源码上的.config就可以编译了
-#
-# 如果配置了REPO_TOKEN密匙的话，则会把.config文件自动覆盖到对应源码文件夹的.config中，免除手动覆盖
+# 一般情况下都能触发启动编译的，除非没设置好密匙，或者密匙过期了，或者密匙错误之类的
 #
 # REPO_TOKEN密匙制作教程：https://git.io/jm.md
 #
 #
 
-name: 编译OpenWrt固件
+name: 触发compile启动编译
 on:
   workflow_dispatch:
     inputs:
@@ -38,11 +34,11 @@ jobs:
     runs-on: ubuntu-18.04
     if: github.event.repository.owner.id == github.event.sender.id
 
-    name: 编译OpenWrt固件
+    name: 触发compile启动编译
     strategy:
       fail-fast: false
       matrix:
-        target: [Lede_source]
+        target: [Mortal_source]
 
         # [Lede_source,Lienol_source,Mortal_source,openwrt_amlogic]
 
@@ -165,12 +161,21 @@ jobs:
         name: .config_${{ env.CODE }}_${{ env.TARGET_PROFILE }}_${{ env.Compile_Date }}
         path: config.txt
         
-    - name: 启动"${{matrix.target}}"编译
-      if: steps.compile.outputs.status == 'success' && env.REPO_TOKEN
+    - name: 触发compile.yml启动"${{matrix.target}}"编译
+      if: env.REPO_TOKEN
       run: |
         cd $GITHUB_WORKSPACE
+        rm -fr .github
         curl -fsSL https://raw.githubusercontent.com/281677160/build-actions/main/.github/workflows/build-openwrt.yml > sybuild-openwrt.yml
         git clone -b main https://github.com/${{github.repository}}.git repo
+        Sched="$(grep -A 1 'schedule:' repo/.github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/^[ ]*//g' |grep "^#")"
+        if [[ -z "${Sched}" ]]; then
+          export CRON2="$(grep -A 1 'schedule:' repo/.github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')"
+          export CRON1="$(grep -A 1 'schedule:' sybuild-openwrt.yml |awk 'NR==2' |sed 's/.//' |sed 's/^[ ]*//g' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')"
+          sed -i 's/^#\(.*schedule:\)/\1/' sybuild-openwrt.yml
+          sed -i 's/^#\(.*cron:\)/\1/' sybuild-openwrt.yml
+          sed -i "s/${CRON1}/${CRON2}/g" sybuild-openwrt.yml
+        fi
         export TARGET1="$(cat sybuild-openwrt.yml |grep "target: \[" |grep  -v \#  |awk 'NR==1'|sed 's/^[ ]*//g' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
         export TARGET2="$(cat repo/.github/workflows/build-openwrt.yml |grep "target: \[" |grep  -v \#  |awk 'NR==1'|sed 's/^[ ]*//g' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
         sed -i "s/${TARGET1}/${TARGET2}/g" sybuild-openwrt.yml

@@ -180,8 +180,8 @@ jobs:
           export CRON1="$(grep -A 1 'schedule:' sybuild-openwrt.yml |awk 'NR==2' |sed 's/.//' |sed 's/^[ ]*//g' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')"
           sed -i "s/${CRON1}/${CRON2}/g" sybuild-openwrt.yml
         fi
-        export TARGET1="$(cat sybuild-openwrt.yml |grep "target: \[" |grep  -v \#  |awk 'NR==1'|sed 's/^[ ]*//g' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
-        export TARGET2="$(cat repo/.github/workflows/build-openwrt.yml |grep "target: \[" |grep  -v \#  |awk 'NR==1'|sed 's/^[ ]*//g' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
+        export TARGET1="$(grep "target: \[" sybuild-openwrt.yml |grep  -v \#  |awk 'NR==1'|sed 's/^[ ]*//g' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
+        export TARGET2="$(grep "target: \[" repo/.github/workflows/build-openwrt.yml |grep  -v \#  |awk 'NR==1'|sed 's/^[ ]*//g' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
         sed -i "s/${TARGET1}/${TARGET2}/g" sybuild-openwrt.yml
         cd repo
         git rm build/${{matrix.target}}/${CONFIG_FILE}
@@ -191,12 +191,13 @@ jobs:
         cp -Rf $GITHUB_WORKSPACE/sybuild-openwrt.yml .github/workflows/build-openwrt.yml
         curl -fsSL https://raw.githubusercontent.com/281677160/build-actions/main/.github/workflows/compile.yml > .github/workflows/compile.yml
         export QIDONG_paths="$(grep -A 1 'paths:' .github/workflows/compile.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed 's/\//\\&/g')"
-        export TARGE="$(cat .github/workflows/compile.yml |grep "target: \[" |grep  -v \#  |awk 'NR==1'|sed 's/^[ ]*//g' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
+        export TARGE="$(grep "target: \[" .github/workflows/compile.yml |grep  -v \#  |awk 'NR==1'|sed 's/^[ ]*//g' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
         export TARGE2="target: \\[${{matrix.target}}\\]"
         sed -i "s/${TARGE}/${TARGE2}/g" .github/workflows/compile.yml
         sed -i "s/${QIDONG_paths}/- 'build\/${{matrix.target}}\/start-up\/start'/g" .github/workflows/compile.yml
         mkdir -p build/${{matrix.target}}/start-up
         echo "${{env.CODE}}于$(date +%Y年%m月%d号-%H点%M分)自动触发编译${{env.TARGET_PROFILE}}固件" > build/${Modelfile}/start-up/start
+        chmod -R +x $GITHUB_WORKSPACE/repo
         git add .
         git commit -m "编译${{env.CODE}}-${{env.TARGET_PROFILE}}固件"
         git push --quiet "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main

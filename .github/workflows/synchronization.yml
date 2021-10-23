@@ -104,21 +104,51 @@ jobs:
         cd $GITHUB_WORKSPACE
         git clone -b main https://github.com/281677160/build-actions.git shangyou
         cd shangyou
-        rm -rf build/*/.config
-        export QIDONG_paths="$(grep -A 1 'paths:' .github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed 's/\//\\&/g')"
-        sed -i "s/${QIDONG_paths}/- 'config'/g" .github/workflows/build-openwrt.yml
+        git rm build/*/.config
+        export QIDONG_paths="$(grep -A 1 'paths:' .github/workflows/compile.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed 's/\//\\&/g')"
+        sed -i "s/${QIDONG_paths}/- 'config'/g" .github/workflows/compile.yml
         cd $GITHUB_WORKSPACE
-        git clone -b main https://github.com/${{github.repository}}.git repo
-        cd repo
+        git clone -b main https://github.com/${{github.repository}}.git repogx
+        if [[ `ls -a $GITHUB_WORKSPACE/repogx/.github/workflows | grep -c "build-openwrt.yml"` == '0' ]]; then
+          curl -fsSL https://raw.githubusercontent.com/281677160/build-actions/main/.github/workflows/build-openwrt.yml > $GITHUB_WORKSPACE/repogx/.github/workflows/build-openwrt.yml
+        fi
+        if [[ `ls -a $GITHUB_WORKSPACE/repogx/.github/workflows | grep -c "compile.yml"` == '0' ]]; then
+          curl -fsSL https://raw.githubusercontent.com/281677160/build-actions/main/.github/workflows/compile.yml > $GITHUB_WORKSPACE/repogx/.github/workflows/compile.yml
+        fi
+        if [[ `ls -a $GITHUB_WORKSPACE/repogx/.github/workflows | grep -c "synchronization.yml"` == '0' ]]; then
+          curl -fsSL https://raw.githubusercontent.com/281677160/build-actions/main/.github/workflows/synchronization.yml > $GITHUB_WORKSPACE/repogx/.github/workflows/synchronization.yml
+        fi
+        export Sched="$(grep -A 1 'schedule:' repogx/.github/workflows/build-openwrt.yml |awk 'NR==2')" && echo "${Sched}" > Schedu
+        if [[ `grep -c "\#" Schedu` == '0' ]]; then
+          export CRON2="$(grep -A 1 'schedule:' repogx/.github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')"
+          export CRON1="$(grep -A 1 'schedule:' $GITHUB_WORKSPACE/shangyou/.github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/.//' |sed 's/^[ ]*//g' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')"
+          sed -i 's/^#\(.*schedule:\)/\1/' $GITHUB_WORKSPACE/shangyou/.github/workflows/build-openwrt.yml
+          sed -i 's/^#\(.*cron:\)/\1/' $GITHUB_WORKSPACE/shangyou/.github/workflows/build-openwrt.yml
+          sed -i "s/${CRON1}/${CRON2}/g" $GITHUB_WORKSPACE/shangyou/.github/workflows/build-openwrt.yml
+        else
+          export CRON2="$(grep -A 1 'schedule:' repogx/.github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed 's/.//' |sed 's/^[ ]*//g' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')"
+          export CRON1="$(grep -A 1 'schedule:' $GITHUB_WORKSPACE/shangyou/.github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/.//' |sed 's/^[ ]*//g' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')"
+          sed -i "s/${CRON1}/${CRON2}/g" $GITHUB_WORKSPACE/shangyou/.github/workflows/build-openwrt.yml
+        fi
+        export TARGET1="$(grep "target: \[" $GITHUB_WORKSPACE/shangyou/.github/workflows/build-openwrt.yml |grep  -v \#  |awk 'NR==1'|sed 's/^[ ]*//g' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
+        export TARGET2="$(grep "target: \[" repogx/.github/workflows/build-openwrt.yml |grep  -v \#  |awk 'NR==1'|sed 's/^[ ]*//g' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
+        sed -i "s/${TARGET1}/${TARGET2}/g" $GITHUB_WORKSPACE/shangyou/.github/workflows/build-openwrt.yml
+        cd repogx
+        git rm .github/workflows/synchronization.yml
+        git rm .github/workflows/build-openwrt.yml
+        git rm .github/workflows/compile.yml
         cp -Rf build/Lede_source/diy-part.sh build/Lede_source/diy-part.sh.bak
         cp -Rf build/Lienol_source/diy-part.sh build/Lienol_source/diy-part.sh.bak
         cp -Rf build/Mortal_source/diy-part.sh build/Mortal_source/diy-part.sh.bak
+        cp -Rf build/Tianling_source/diy-part.sh build/Tianling_source/diy-part.sh.bak
         cp -Rf build/openwrt_amlogic/diy-part.sh build/openwrt_amlogic/diy-part.sh.bak
+        git rm build/*/diy-part.sh
         cp -Rf $GITHUB_WORKSPACE/shangyou/* ./
-        cp -Rf $GITHUB_WORKSPACE/shangyou/.github/workflows/* ./.github/workflows
+        cp -Rf $GITHUB_WORKSPACE/shangyou/.github $GITHUB_WORKSPACE/repogx
+        chmod -R +x $GITHUB_WORKSPACE/repogx
         git add .
         git commit -m "同步上游281677160/build-actions于$(date +%Y年%m月%d号%H点)" |tee build.log
-        if [[ `grep -c "Your branch is up to date with" build.log` -eq '1' ]]; then
+        if [[ `grep -c "Your branch is up to date with" build.log` == '1' ]]; then
           echo "配置文件无更新,所以无需要覆盖!"
         else
           rm -fr build.log

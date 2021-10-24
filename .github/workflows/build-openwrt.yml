@@ -134,7 +134,7 @@ jobs:
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
     - name: 生成"${{matrix.target}}"配置文件
-      id: compile
+      id: compileop
       run: |
         cd openwrt
         make defconfig
@@ -163,7 +163,7 @@ jobs:
         path: config.txt
         
     - name: 同步上游compile.yml和build-openwrt.yml文件
-      if: steps.compile.outputs.status == 'success' && env.REPO_TOKEN
+      if: steps.compileop.outputs.status == 'success' && env.REPO_TOKEN
       run: |
         cd $GITHUB_WORKSPACE
         git clone -b main https://github.com/281677160/build-actions.git shangyouck
@@ -186,7 +186,7 @@ jobs:
         
         
     - name: 触发compile.yml启动"${{matrix.target}}"编译
-      if: steps.compile.outputs.status == 'success' && env.REPO_TOKEN
+      if: steps.compileop.outputs.status == 'success' && env.REPO_TOKEN
       run: |
         cd $GITHUB_WORKSPACE
         sed -i "s/${{env.CRON1}}/${{env.CRON2}}/g" shangyouck/.github/workflows/build-openwrt.yml

@@ -194,7 +194,7 @@ jobs:
         sed -i "s/${{env.TARGE1}}/${{env.TARGE2}}/g" shangyouck/.github/workflows/compile.yml
         sed -i "s/${{env.QIDONG1}}/${{env.QIDONG2}}/g" shangyouck/.github/workflows/compile.yml
         cd repo
-        if [[ -e "build/${{matrix.target}}/${CONFIG_FILE}" ]]; then
+        if [[ -n "$(ls -A "build/${{matrix.target}}/${CONFIG_FILE}" 2>/dev/null)" ]]; then
           git rm -f build/${{matrix.target}}/${CONFIG_FILE}
         fi
         if [[ -n "$(ls -A "$GITHUB_WORKSPACE/repo/.github/workflows/${{env.BILDYML}}" 2>/dev/null)" ]]; then

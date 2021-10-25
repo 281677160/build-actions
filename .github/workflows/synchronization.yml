@@ -56,7 +56,7 @@ jobs:
         cd $GITHUB_WORKSPACE
         echo "BILDYML=$(grep "again-fork" -rl ${GITHUB_WORKSPACE}/.github |cut -d "/" -f9)" >> $GITHUB_ENV
         git clone -b main https://github.com/281677160/build-actions.git shangyou
-        git rm -f shangyou/build/*/.config
+        rm -fr shangyou/build/*/.config
         git clone -b main https://github.com/${{github.repository}}.git repogx
         if [[ -z "$(ls -A "repogx/.github/workflows/build-openwrt.yml" 2>/dev/null)" ]]; then
           cp -Rf shangyou/.github/workflows/synchronization.yml repogx/.github/workflows/build-openwrt.yml

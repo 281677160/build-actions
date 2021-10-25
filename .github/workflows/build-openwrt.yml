@@ -18,6 +18,14 @@ on:
         description: 'ssh-actions改成ssh,再按Run workflow启动,则开启SSH连接配置固件'
         required: false
         default: 'ssh-actions'
+      days:
+        description: '清理X天之前的Actions空间'
+        required: true
+        default: '7'
+      rele:
+        description: '保留X个Releases不删除'
+        required: true
+        default: '10'
 
 
 # 定时触发开始编译(把下面两个#去掉开启,时间设置请看定时编译说明)
@@ -184,7 +192,6 @@ jobs:
         echo "TARGE1=$(grep 'target: \[' shangyouck/.github/workflows/compile.yml |sed 's/^[ ]*//g' |grep '^target' |cut -d '#' -f1 |sed 's/\[/\\&/' |sed 's/\]/\\&/')" >> $GITHUB_ENV
         echo "TARGE2=target: \\[${{matrix.target}}\\]" >> $GITHUB_ENV
         
-        
     - name: 触发compile.yml启动"${{matrix.target}}"编译
       if: steps.compileop.outputs.status == 'success' && env.REPO_TOKEN
       run: |
@@ -211,3 +218,19 @@ jobs:
         git add .
         git commit -m "编译${{env.CODE}}-${{env.TARGET_PROFILE}}固件"
         git push --quiet "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main
+        
+    - name: 清理Actions空间
+      uses: Mattraks/delete-workflow-runs@main
+      with:
+          token: ${{ secrets.REPO_TOKEN }}
+          repository: ${{ github.repository }}
+          keep_minimum_runs: 0
+          retain_days: ${{ github.event.inputs.days }}
+    
+    - name: 删除releases
+      uses: dev-drprasad/delete-older-releases@master
+      with:
+        keep_latest: ${{ github.event.inputs.rele }}
+        delete_tags: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}

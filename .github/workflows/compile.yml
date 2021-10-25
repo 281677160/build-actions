@@ -96,11 +96,7 @@ jobs:
         fi
         echo "NETIP=package/base-files/files/etc/networkip" >> $GITHUB_ENV
         echo "DELETE=package/base-files/files/etc/deletefile" >> $GITHUB_ENV
-        if [ -n "$(ls -A build/common/1022gg 2>/dev/null)" ]; then
-          source build/common/common.sh && Diy_gonggao
-        else
-          source build/common/common.sh && Diy_tongzhi
-        fi
+        source build/common/common.sh && Diy_gonggao
 
     - name: 电报机器人或pushplus信息通知
       if: env.PUSH_PLUS_TOKEN && env.SERVERCHAN_SCKEY == 'PUSH' || env.TELEGRAM_BOT_TOKEN && env.SERVERCHAN_SCKEY == 'TELE'

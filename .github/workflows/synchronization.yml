@@ -7,35 +7,18 @@
 #
 #
 # 说明：
-# 
-# ‘清理Actions空间’ 删除12小时之前在Actions的固件，保留数设置没效，一删除就会把在删除时间段内的固件全部删除
-#
-# ‘删除releases,可设置保留数’ 每次启动都生效，可以设置保留数
 #
 #  手动按钮启动时候参数为true时生效，为false是关闭项目启动
 #
 # ‘同步上游仓库’ 只有在手动启动时参数改为fork再启动才生效，同步仓库时会自动保留config配置文件和备份diy-part.sh文件
 #
-# 同步完上游仓库后，如若你有自建机型文件夹的话，要注意对比diy-part.sh文件有没有更新内容
-#
-#  为防止开启跟关闭时候跟清理空间和删除releases混淆，‘同步上游仓库’的开关开启参数为 fork
-#
-# env:下面的OLDER_WORKFLOW和OLDER_RELEASES是定时启动时候设置开或者关闭项目运行（true为开，false关）
 #
 
 
-name: 同步上游或清理仓库
+name: 同步上游仓库
 on:
   workflow_dispatch:
     inputs:
-      older-actions:
-        description: 'true-actions改true开启清理Actions空间'
-        required: false
-        default: 'true-actions'
-      older-releases:
-        description: 'true-actions改true开启删除releases'
-        required: false
-        default: 'true-actions'
       again-fork:
         description: 'fork-actions改fork开启同步上游仓库'
         required: false
@@ -45,8 +28,6 @@ on:
 #    - cron: 10 4 * * *
 
 env:
-  OLDER_WORKFLOW: true
-  OLDER_RELEASES: true
   REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
   TZ: Asia/Shanghai
 
@@ -68,75 +49,48 @@ jobs:
         sudo timedatectl set-timezone "$TZ"
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
-    
-    - name: 设置项目开关参数控制
-      run: |
-        if [[ -n "${{ github.event.inputs }}" ]]; then
-          if [[ "${{ github.event.inputs.older-actions }}" != 'true' ]]; then
-            echo "OLDER_WORKFLOW=false" >> $GITHUB_ENV
-          fi
-          if [[ "${{ github.event.inputs.older-releases }}" != 'true' ]]; then
-            echo "OLDER_RELEASES=false" >> $GITHUB_ENV
-          fi
-        fi
-    
-    - name: 清理Actions空间
-      if: env.OLDER_WORKFLOW == 'true' || (github.event.inputs.older-actions == 'true')
-      uses: Mattraks/delete-workflow-runs@main
-      with:
-        token: ${{ github.token }}
-        repository: ${{ github.repository }}       
-        retain_days: 0.5
-        keep_minimum_runs: 0
-    
-    - name: 删除releases,可设置保留数
-      if: env.OLDER_RELEASES == 'true' || (github.event.inputs.older-releases == 'true')
-      uses: dev-drprasad/delete-older-releases@master
-      with:
-        keep_latest: 0         # 保留多少个发布不删除
-        delete_tags: true
-      env:
-        GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
           
-    - name: 同步上游仓库(自动保留.config文件和备份diy-part.sh文件，不影响你自建文件夹，需要密匙)
+    - name: 整理数据
       if: env.REPO_TOKEN && (github.event.inputs.again-fork == 'fork')
       run: |
         cd $GITHUB_WORKSPACE
+        echo "BILDYML=$(grep "again-fork" -rl ${GITHUB_WORKSPACE}/.github |cut -d "/" -f9)" >> $GITHUB_ENV
         git clone -b main https://github.com/281677160/build-actions.git shangyou
-        cd shangyou
-        git rm build/*/.config
-        export QIDONG_paths="$(grep -A 1 'paths:' .github/workflows/compile.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed 's/\//\\&/g')"
-        sed -i "s/${QIDONG_paths}/- 'config'/g" .github/workflows/compile.yml
-        cd $GITHUB_WORKSPACE
         git clone -b main https://github.com/${{github.repository}}.git repogx
-        if [[ `ls -a $GITHUB_WORKSPACE/repogx/.github/workflows | grep -c "build-openwrt.yml"` == '0' ]]; then
-          curl -fsSL https://raw.githubusercontent.com/281677160/build-actions/main/.github/workflows/build-openwrt.yml > $GITHUB_WORKSPACE/repogx/.github/workflows/build-openwrt.yml
+        if [[ -z "$(ls -A "repogx/.github/workflows/build-openwrt.yml" 2>/dev/null)" ]]; then
+          cp -Rf shangyou/.github/workflows/synchronization.yml repogx/.github/workflows/build-openwrt.yml
         fi
-        if [[ `ls -a $GITHUB_WORKSPACE/repogx/.github/workflows | grep -c "compile.yml"` == '0' ]]; then
-          curl -fsSL https://raw.githubusercontent.com/281677160/build-actions/main/.github/workflows/compile.yml > $GITHUB_WORKSPACE/repogx/.github/workflows/compile.yml
+        echo "CRON2=$(grep -A 1 'schedule:' repogx/.github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed s/^#// |sed 's/^[ ]*//g' |cut -d "#" -f1 |sed 's/\//\\&/g' |sed 's/\*/\\&/g')" >> $GITHUB_ENV
+        echo "CRON1=$(grep -A 1 'schedule:' shangyou/.github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed s/^#// |sed 's/^[ ]*//g' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')" >> $GITHUB_ENV
+        if [[ `grep 'cron:' repogx/.github/workflows/build-openwrt.yml |sed 's/^[ ]*//g' |grep '^-\ cron'` ]]; then
+          sed -i 's/^#\(.*schedule:\)/\1/' shangyou/.github/workflows/build-openwrt.yml
+          sed -i 's/^#\(.*- cron:\)/\1/' shangyou/.github/workflows/build-openwrt.yml
         fi
-        if [[ `ls -a $GITHUB_WORKSPACE/repogx/.github/workflows | grep -c "synchronization.yml"` == '0' ]]; then
-          curl -fsSL https://raw.githubusercontent.com/281677160/build-actions/main/.github/workflows/synchronization.yml > $GITHUB_WORKSPACE/repogx/.github/workflows/synchronization.yml
-        fi
-        export Sched="$(grep -A 1 'schedule:' repogx/.github/workflows/build-openwrt.yml |awk 'NR==2')" && echo "${Sched}" > Schedu
-        if [[ `grep -c "\#" Schedu` == '0' ]]; then
-          export CRON2="$(grep -A 1 'schedule:' repogx/.github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')"
-          export CRON1="$(grep -A 1 'schedule:' $GITHUB_WORKSPACE/shangyou/.github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/.//' |sed 's/^[ ]*//g' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')"
-          sed -i 's/^#\(.*schedule:\)/\1/' $GITHUB_WORKSPACE/shangyou/.github/workflows/build-openwrt.yml
-          sed -i 's/^#\(.*cron:\)/\1/' $GITHUB_WORKSPACE/shangyou/.github/workflows/build-openwrt.yml
-          sed -i "s/${CRON1}/${CRON2}/g" $GITHUB_WORKSPACE/shangyou/.github/workflows/build-openwrt.yml
-        else
-          export CRON2="$(grep -A 1 'schedule:' repogx/.github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed 's/.//' |sed 's/^[ ]*//g' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')"
-          export CRON1="$(grep -A 1 'schedule:' $GITHUB_WORKSPACE/shangyou/.github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/.//' |sed 's/^[ ]*//g' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')"
-          sed -i "s/${CRON1}/${CRON2}/g" $GITHUB_WORKSPACE/shangyou/.github/workflows/build-openwrt.yml
-        fi
-        export TARGET1="$(grep "target: \[" $GITHUB_WORKSPACE/shangyou/.github/workflows/build-openwrt.yml |grep  -v \#  |awk 'NR==1'|sed 's/^[ ]*//g' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
-        export TARGET2="$(grep "target: \[" repogx/.github/workflows/build-openwrt.yml |grep  -v \#  |awk 'NR==1'|sed 's/^[ ]*//g' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
-        sed -i "s/${TARGET1}/${TARGET2}/g" $GITHUB_WORKSPACE/shangyou/.github/workflows/build-openwrt.yml
+        echo "TARGET1=$(grep 'target: \[' shangyou/.github/workflows/build-openwrt.yml  |sed 's/^[ ]*//g' |grep '^target' |cut -d '#' -f1 |sed 's/\[/\\&/' |sed 's/\]/\\&/')" >> $GITHUB_ENV
+        echo "TARGET2=$(grep 'target: \[' repogx/.github/workflows/build-openwrt.yml |sed 's/^[ ]*//g' |grep '^target' |cut -d '#' -f1 |sed 's/\[/\\&/' |sed 's/\]/\\&/')" >> $GITHUB_ENV
+        echo "QIDONG1=$(grep -A 1 'paths:' shangyou/.github/workflows/compile.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed 's/\//\\&/g')" >> $GITHUB_ENV
+        echo "QIDONG2=- 'build\/${{matrix.target}}\/start-up\/start'" >> $GITHUB_ENV
+        echo "TARGE1=$(grep 'target: \[' shangyou/.github/workflows/compile.yml |sed 's/^[ ]*//g' |grep '^target' |cut -d '#' -f1 |sed 's/\[/\\&/' |sed 's/\]/\\&/')" >> $GITHUB_ENV
+        echo "TARGE2=target: \\[${{matrix.target}}\\]" >> $GITHUB_ENV
+        
+    - name: 同步上游仓库
+      if: env.REPO_TOKEN && (github.event.inputs.again-fork == 'fork')
+      run: |
+        cd $GITHUB_WORKSPACE
+        sed -i "s/${{env.CRON1}}/${{env.CRON2}}/g" shangyou/.github/workflows/build-openwrt.yml
+        sed -i "s/${{env.TARGET1}}/${{env.TARGET2}}/g" shangyou/.github/workflows/build-openwrt.yml
+        sed -i "s/${{env.TARGE1}}/${{env.TARGE2}}/g" shangyou/.github/workflows/compile.yml
+        sed -i "s/${{env.QIDONG1}}/${{env.QIDONG2}}/g" shangyou/.github/workflows/compile.yml
         cd repogx
-        git rm .github/workflows/synchronization.yml
-        git rm .github/workflows/build-openwrt.yml
-        git rm .github/workflows/compile.yml
+        if [[ -n "$(ls -A "$GITHUB_WORKSPACE/repo/.github/workflows/build-openwrt.yml" 2>/dev/null)" ]]; then
+          git rm -f $GITHUB_WORKSPACE/repo/.github/workflows/build-openwrt.yml
+        fi
+        if [[ -n "$(ls -A "$GITHUB_WORKSPACE/repo/.github/workflows/${{env.BILDYML}}" 2>/dev/null)" ]]; then
+          git rm -f $GITHUB_WORKSPACE/repo/.github/workflows/${{env.BILDYML}}
+        fi
+        if [[ -n "$(ls -A "$GITHUB_WORKSPACE/repo/.github/workflows/compile.yml" 2>/dev/null)" ]]; then
+          git rm -f $GITHUB_WORKSPACE/repo/.github/workflows/compile.yml
+        fi
         cp -Rf build/Lede_source/diy-part.sh build/Lede_source/diy-part.sh.bak
         cp -Rf build/Lienol_source/diy-part.sh build/Lienol_source/diy-part.sh.bak
         cp -Rf build/Mortal_source/diy-part.sh build/Mortal_source/diy-part.sh.bak

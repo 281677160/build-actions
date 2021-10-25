@@ -46,9 +46,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [Lede_source,Mortal_source,Tianling_source]
+        target: [Lede_source]
 
-        # [Lede_source]
+        # [Lede_source,Lienol_source,Mortal_source,Tianling_source,openwrt_amlogic]
 
     steps:
     - name: 准备结束

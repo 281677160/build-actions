@@ -24,9 +24,6 @@ on:
         required: false
         default: 'fork-actions'
 
-#  schedule:
-#    - cron: 10 4 * * *
-
 env:
   REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
   TZ: Asia/Shanghai
@@ -34,7 +31,7 @@ env:
 jobs:
   del_runs:
     runs-on: Ubuntu-20.04
-    name: 同步上游或清理仓库
+    name: 同步上游仓库
     steps:
     
     - name: 准备结束
@@ -56,8 +53,12 @@ jobs:
         cd $GITHUB_WORKSPACE
         echo "BILDYML=$(grep "again-fork" -rl ${GITHUB_WORKSPACE}/.github |cut -d "/" -f9)" >> $GITHUB_ENV
         git clone -b main https://github.com/281677160/build-actions.git shangyou
-        rm -fr shangyou/build/*/.config
         git clone -b main https://github.com/${{github.repository}}.git repogx
+        [[ -f repogx/build/Lede_source ]] && rm -fr shangyou/build/Lede_source/.config
+        [[ -f repogx/build/Lienol_source ]] && rm -fr shangyou/build/Lienol_source/.config
+        [[ -f repogx/build/Mortal_source ]] && rm -fr shangyou/build/Mortal_source/.config
+        [[ -f repogx/build/Tianling_source ]] && rm -fr shangyou/build/Tianling_source/.config
+        [[ -f repogx/build/openwrt_amlogic ]] && rm -fr shangyou/build/openwrt_amlogic/.config
         if [[ -z "$(ls -A "repogx/.github/workflows/build-openwrt.yml" 2>/dev/null)" ]]; then
           cp -Rf shangyou/.github/workflows/synchronization.yml repogx/.github/workflows/build-openwrt.yml
         fi
@@ -97,7 +98,9 @@ jobs:
         cp -Rf build/Mortal_source/diy-part.sh build/Mortal_source/diy-part.sh.bak
         cp -Rf build/Tianling_source/diy-part.sh build/Tianling_source/diy-part.sh.bak
         cp -Rf build/openwrt_amlogic/diy-part.sh build/openwrt_amlogic/diy-part.sh.bak
-        git rm -f build/*/diy-part.sh
+        if [[ -n "$(ls -A "build/*/diy-part.sh" 2>/dev/null)" ]]; then
+          git rm -f build/*/diy-part.sh
+        fi
         cp -Rf $GITHUB_WORKSPACE/shangyou/* ./
         cp -Rf $GITHUB_WORKSPACE/shangyou/.github $GITHUB_WORKSPACE/repogx
         git add .

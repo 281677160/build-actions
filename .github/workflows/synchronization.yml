@@ -20,7 +20,7 @@ on:
   workflow_dispatch:
     inputs:
       again-fork:
-        description: 'fork-actions改fork开启同步上游仓库'
+        description: 'fork-actions改fork,再按Run workflow启动,开启同步上游仓库'
         required: false
         default: 'fork-actions'
 

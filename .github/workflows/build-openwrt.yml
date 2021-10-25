@@ -15,7 +15,7 @@ on:
   workflow_dispatch:
     inputs:
       ssh:
-        description: 'ssh-actions改成ssh,再按Run workflow启动,则开启SSH连接配置固件'
+        description: '[ssh-actions]改成[ssh],再按[Run workflow]按钮启动,则开启SSH连接配置固件'
         required: false
         default: 'ssh-actions'
       days:

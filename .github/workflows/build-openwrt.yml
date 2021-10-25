@@ -30,7 +30,7 @@ on:
 
 # 定时触发开始编译(把下面两个#去掉开启,时间设置请看定时编译说明)
 #  schedule:
-#   - cron: 0 8 */7 * *
+#   - cron: 0 9 */7 * *
 
 
 env: 
@@ -46,9 +46,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [Lede_source]
+        target: [Lede_source,Mortal_source,Tianling_source]
 
-        # [Lede_source,Lienol_source,Mortal_source,Tianling_source,openwrt_amlogic]
+        # [Lede_source]
 
     steps:
     - name: 准备结束
@@ -176,9 +176,6 @@ jobs:
         cd $GITHUB_WORKSPACE
         git clone -b main https://github.com/281677160/build-actions.git shangyouck
         git clone -b main https://github.com/${{github.repository}}.git repo
-        if [[ -z "$(ls -A "repo/.github/workflows/synchronization.yml" 2>/dev/null)" ]]; then
-          cp -Rf shangyouck/.github/workflows/synchronization.yml repo/.github/workflows/synchronization.yml
-        fi
         echo "CRON2=$(grep -A 1 'schedule:' $GITHUB_WORKSPACE/.github/workflows/${{env.BILDYML}} |awk 'NR==2' |sed 's/^[ ]*//g' |sed s/^#// |sed 's/^[ ]*//g' |cut -d "#" -f1 |sed 's/\//\\&/g' |sed 's/\*/\\&/g')" >> $GITHUB_ENV
         echo "CRON1=$(grep -A 1 'schedule:' shangyouck/.github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed s/^#// |sed 's/^[ ]*//g' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')" >> $GITHUB_ENV
         if [[ `grep 'cron:' $GITHUB_WORKSPACE/.github/workflows/${{env.BILDYML}} |sed 's/^[ ]*//g' |grep '^-\ cron'` ]]; then
@@ -210,9 +207,13 @@ jobs:
         if [[ -n "$(ls -A "$GITHUB_WORKSPACE/repo/.github/workflows/compile.yml" 2>/dev/null)" ]]; then
           git rm -f $GITHUB_WORKSPACE/repo/.github/workflows/compile.yml
         fi
+        if [[ -n "$(ls -A "$GITHUB_WORKSPACE/repo/.github/workflows/synchronization.yml" 2>/dev/null)" ]]; then
+          git rm -f $GITHUB_WORKSPACE/repo/.github/workflows/synchronization.yml
+        fi
         cp -Rf $GITHUB_WORKSPACE/${CONFIG_FILE} build/${{matrix.target}}/${CONFIG_FILE}
         cp -Rf $GITHUB_WORKSPACE/shangyouck/.github/workflows/build-openwrt.yml .github/workflows/build-openwrt.yml
         cp -Rf $GITHUB_WORKSPACE/shangyouck/.github/workflows/compile.yml .github/workflows/compile.yml
+        cp -Rf $GITHUB_WORKSPACE/shangyouck/.github/workflows/synchronization.yml .github/workflows/synchronization.yml
         mkdir -p build/${{matrix.target}}/start-up
         echo "${{env.CODE}}于$(date +%Y年%m月%d号%H时%M分%S秒)自动触发编译${{env.TARGET_PROFILE}}固件" > build/${Modelfile}/start-up/start
         git add .

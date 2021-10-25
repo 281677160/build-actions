@@ -220,6 +220,7 @@ jobs:
         git push --quiet "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main
         
     - name: 清理Actions空间
+      if: env.REPO_TOKEN
       uses: Mattraks/delete-workflow-runs@main
       with:
           token: ${{ secrets.REPO_TOKEN }}
@@ -228,9 +229,12 @@ jobs:
           retain_days: ${{ github.event.inputs.days }}
     
     - name: 删除releases
+      if: env.REPO_TOKEN
       uses: dev-drprasad/delete-older-releases@master
       with:
+        repo: ${{ github.repository }}
         keep_latest: ${{ github.event.inputs.rele }}
+        delete_tag_pattern : AutoUpdate
         delete_tags: true
       env:
         GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}

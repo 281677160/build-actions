@@ -94,15 +94,16 @@ jobs:
         sed -i "s/${{env.TARGE1}}/${{env.TARGE2}}/g" shangyou/.github/workflows/compile.yml
         sed -i "s/${{env.QIDONG1}}/${{env.QIDONG2}}/g" shangyou/.github/workflows/compile.yml
         cd repogx
-        if [[ -n "$(ls -A "$GITHUB_WORKSPACE/repo/.github/workflows/build-openwrt.yml" 2>/dev/null)" ]]; then
-          git rm -f $GITHUB_WORKSPACE/repo/.github/workflows/build-openwrt.yml
-        fi
-        if [[ -n "$(ls -A "$GITHUB_WORKSPACE/repo/.github/workflows/${{env.BILDYML}}" 2>/dev/null)" ]]; then
-          git rm -f $GITHUB_WORKSPACE/repo/.github/workflows/${{env.BILDYML}}
-        fi
         if [[ -n "$(ls -A "$GITHUB_WORKSPACE/repo/.github/workflows/compile.yml" 2>/dev/null)" ]]; then
           git rm -f $GITHUB_WORKSPACE/repo/.github/workflows/compile.yml
         fi
+        cp -Rf $GITHUB_WORKSPACE/shangyouck/.github/workflows/compile.yml .github/workflows/compile.yml
+        if [[ -n "$(ls -A "$GITHUB_WORKSPACE/repo/.github/workflows/synchronization.yml" 2>/dev/null)" ]]; then
+          git rm -f $GITHUB_WORKSPACE/repo/.github/workflows/synchronization.yml
+        fi
+        cp -Rf $GITHUB_WORKSPACE/shangyouck/.github/workflows/synchronization.yml .github/workflows/synchronization.yml
+        git rm -f $GITHUB_WORKSPACE/repo/.github/workflows/${{env.BILDYML}}
+        cp -Rf $GITHUB_WORKSPACE/shangyouck/.github/workflows/build-openwrt.yml .github/workflows/build-openwrt.yml
         if [[ -f build/Lede_source/diy-part.sh ]];then
           cp -Rf build/Lede_source/diy-part.sh build/Lede_source/diy-part.sh.bak
           git rm -f build/Lede_source/diy-part.sh
@@ -144,7 +145,6 @@ jobs:
           git rm -f build/openwrt_amlogic/settings.ini
         fi
         cp -Rf $GITHUB_WORKSPACE/shangyou/* ./
-        cp -Rf $GITHUB_WORKSPACE/shangyou/.github $GITHUB_WORKSPACE/repogx
         git add .
         git commit -m "同步上游281677160/build-actions于$(date +%Y年%m月%d号%H时%M分%S秒)" |tee build.log
         if [[ `grep -c "Your branch is up to date with" build.log` == '1' ]]; then

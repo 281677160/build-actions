@@ -201,16 +201,17 @@ jobs:
         if [[ -n "$(ls -A "build/${{matrix.target}}/${CONFIG_FILE}" 2>/dev/null)" ]]; then
           git rm -f build/${{matrix.target}}/${CONFIG_FILE}
         fi
-        if [[ -n "$(ls -A "$GITHUB_WORKSPACE/repo/.github/workflows/${{env.BILDYML}}" 2>/dev/null)" ]]; then
-          git rm -f $GITHUB_WORKSPACE/repo/.github/workflows/${{env.BILDYML}}
-        fi
+        cp -Rf $GITHUB_WORKSPACE/${CONFIG_FILE} build/${{matrix.target}}/${CONFIG_FILE}
         if [[ -n "$(ls -A "$GITHUB_WORKSPACE/repo/.github/workflows/compile.yml" 2>/dev/null)" ]]; then
           git rm -f $GITHUB_WORKSPACE/repo/.github/workflows/compile.yml
         fi
-        cp -Rf $GITHUB_WORKSPACE/${CONFIG_FILE} build/${{matrix.target}}/${CONFIG_FILE}
-        cp -Rf $GITHUB_WORKSPACE/shangyouck/.github/workflows/build-openwrt.yml .github/workflows/build-openwrt.yml
         cp -Rf $GITHUB_WORKSPACE/shangyouck/.github/workflows/compile.yml .github/workflows/compile.yml
+        if [[ -n "$(ls -A "$GITHUB_WORKSPACE/repo/.github/workflows/synchronization.yml" 2>/dev/null)" ]]; then
+          git rm -f $GITHUB_WORKSPACE/repo/.github/workflows/synchronization.yml
+        fi
         cp -Rf $GITHUB_WORKSPACE/shangyouck/.github/workflows/synchronization.yml .github/workflows/synchronization.yml
+        git rm -f $GITHUB_WORKSPACE/repo/.github/workflows/${{env.BILDYML}}
+        cp -Rf $GITHUB_WORKSPACE/shangyouck/.github/workflows/build-openwrt.yml .github/workflows/build-openwrt.yml
         mkdir -p build/${{matrix.target}}/start-up
         echo "${{env.CODE}}于$(date +%Y年%m月%d号%H时%M分%S秒)自动触发编译${{env.TARGET_PROFILE}}固件" > build/${Modelfile}/start-up/start
         git add .

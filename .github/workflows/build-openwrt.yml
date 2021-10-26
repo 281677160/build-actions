@@ -176,6 +176,7 @@ jobs:
         cd $GITHUB_WORKSPACE
         git clone -b main https://github.com/281677160/build-actions.git shangyouck
         git clone -b main https://github.com/${{github.repository}}.git repo
+        curl -fsSL https://raw.githubusercontent.com/281677160/build-actions/main/.github/workflows/synchronization.yml $GITHUB_WORKSPACE/repo/.github/workflows/synchronization.yml
         echo "CRON2=$(grep -A 1 'schedule:' $GITHUB_WORKSPACE/.github/workflows/${{env.BILDYML}} |awk 'NR==2' |sed 's/^[ ]*//g' |sed s/^#// |sed 's/^[ ]*//g' |cut -d "#" -f1 |sed 's/\//\\&/g' |sed 's/\*/\\&/g')" >> $GITHUB_ENV
         echo "CRON1=$(grep -A 1 'schedule:' shangyouck/.github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed s/^#// |sed 's/^[ ]*//g' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')" >> $GITHUB_ENV
         if [[ `grep 'cron:' $GITHUB_WORKSPACE/.github/workflows/${{env.BILDYML}} |sed 's/^[ ]*//g' |grep '^-\ cron'` ]]; then
@@ -206,10 +207,6 @@ jobs:
         fi
         if [[ -n "$(ls -A "$GITHUB_WORKSPACE/repo/.github/workflows/compile.yml" 2>/dev/null)" ]]; then
           git rm -f $GITHUB_WORKSPACE/repo/.github/workflows/compile.yml
-        fi
-        if [[ ! -d $GITHUB_WORKSPACE/repo/.github/workflows ]]; then
-          mkdir -p $GITHUB_WORKSPACE/repo/.github/workflows
-          chmod -R +x $GITHUB_WORKSPACE/repo/.github/workflows
         fi
         cp -Rf $GITHUB_WORKSPACE/${CONFIG_FILE} build/${{matrix.target}}/${CONFIG_FILE}
         cp -Rf $GITHUB_WORKSPACE/shangyouck/.github/workflows/build-openwrt.yml .github/workflows/build-openwrt.yml

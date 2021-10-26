@@ -106,7 +106,7 @@ jobs:
       working-directory: /workdir
       run: |
         git clone -b "$REPO_BRANCH" --single-branch "$REPO_URL" openwrt > /dev/null 2>&1
-        git clone -b main https://github.com/281677160/build-actions.git shangyouck
+        git clone -b main https://github.com/281677160/autobuild.git shangyouck
         git clone -b main https://github.com/${{github.repository}}.git repo
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
         ln -sf /workdir/shangyouck $GITHUB_WORKSPACE/shangyouck

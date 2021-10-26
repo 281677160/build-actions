@@ -218,7 +218,7 @@ jobs:
         echo "${{env.CODE}}于$(date +%Y年%m月%d号%H时%M分%S秒)自动触发编译${{env.TARGET_PROFILE}}固件" > build/${Modelfile}/start-up/start
         git add .
         git commit -m "编译${{env.CODE}}-${{env.TARGET_PROFILE}}固件"
-        git push --quiet "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main
+        git push --force "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main
         
     - name: 清理Actions空间
       if: env.REPO_TOKEN

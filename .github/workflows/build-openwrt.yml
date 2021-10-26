@@ -30,7 +30,7 @@ on:
 
 # 定时触发开始编译(把下面两个#去掉开启,时间设置请看定时编译说明)
 #  schedule:
-#   - cron: 0 9 */7 * *
+#   - cron: 0 9 * * *
 
 
 env: 
@@ -46,7 +46,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [Lede_source]
+        target: [Lede_source,Lienol_source]
 
         # [Lede_source,Lienol_source,Mortal_source,Tianling_source,openwrt_amlogic]
 
@@ -65,7 +65,6 @@ jobs:
         echo "UPLOAD_CONFIG=${UPLOAD_CONFIG}" >> $GITHUB_ENV
         echo "SERVERCHAN_SCKEY=${SERVERCHAN_SCKEY}" >> $GITHUB_ENV
         echo "Modelfile=${{matrix.target}}" >> $GITHUB_ENV
-
     - name: 读取扩展文件
       run: |
         echo

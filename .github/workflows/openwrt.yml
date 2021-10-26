@@ -1,0 +1,320 @@
+#
+#
+# 此文件为编译文件,一般情况下不使用这个来启动,运行build-openwrt.yml会自动触发编译
+#
+# 如果自动触发挂了的情况下，可以在这里选择好机型，选择compile.yml启动编译
+#
+# REPO_TOKEN密匙制作教程：https://git.io/jm.md
+#
+#
+
+
+name: compile
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'build/Lede_source/start-up/start'
+
+env:
+  Github: https://github.com/${{github.repository}}
+  Author: ${{github.actor}}
+  Apidz: ${{github.repository}}
+  Run_number: ${{github.run_number}}
+  Run_workflow: ${{github.workflow}}
+  REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
+  SCKEY: ${{ secrets.SCKEY }}
+  PUSH_PLUS_TOKEN: ${{ secrets.PUSH_PLUS_TOKEN }}
+  TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+  TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+  TZ: Asia/Shanghai
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    if: github.event.repository.owner.id == github.event.sender.id
+
+    name: 编译 "${{matrix.target}}"
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [Lede_source]
+        
+        # [Lede_source,Lienol_source,Mortal_source,Tianling_source,openwrt_amlogic]
+
+    steps:
+    - name: 准备结束
+      uses: actions/checkout@v2
+
+    - name: 读取脚本设置
+      run: |
+        source "${GITHUB_WORKSPACE}/build/${{matrix.target}}/settings.ini"
+        echo "REPO_URL=${REPO_URL}" >> $GITHUB_ENV
+        echo "REPO_BRANCH=${REPO_BRANCH}" >> $GITHUB_ENV
+        echo "CONFIG_FILE=${CONFIG_FILE}" >> $GITHUB_ENV
+        echo "DIY_PART_SH=${DIY_PART_SH}" >> $GITHUB_ENV
+        echo "UPLOAD_BIN_DIR=${UPLOAD_BIN_DIR}" >> $GITHUB_ENV
+        echo "UPLOAD_CONFIG=${UPLOAD_CONFIG}" >> $GITHUB_ENV
+        echo "UPLOAD_FIRMWARE=${UPLOAD_FIRMWARE}" >> $GITHUB_ENV
+        echo "UPLOAD_COWTRANSFER=${UPLOAD_COWTRANSFER}" >> $GITHUB_ENV
+        echo "UPLOAD_RELEASE=${UPLOAD_RELEASE}" >> $GITHUB_ENV
+        echo "SERVERCHAN_SCKEY=${SERVERCHAN_SCKEY}" >> $GITHUB_ENV
+        echo "REGULAR_UPDATE=${REGULAR_UPDATE}" >> $GITHUB_ENV
+        echo "USE_CACHEWRTBUILD=${USE_CACHEWRTBUILD}" >> $GITHUB_ENV
+        echo "BY_INFORMATION=${BY_INFORMATION}" >> $GITHUB_ENV
+        echo "AUTOMATIC_AMLOGIC=${AUTOMATIC_AMLOGIC}" >> $GITHUB_ENV
+        echo "CangKu=${Apidz##*/}" >> $GITHUB_ENV
+        echo "Modelfile=${{matrix.target}}" >> $GITHUB_ENV 
+
+    - name: 公 告
+      run: |
+        echo
+        git clone --depth 1 -b main https://github.com/281677160/common build/common > /dev/null 2>&1
+        chmod -R +x "${GITHUB_WORKSPACE}/build/common"
+        if [[ "${Modelfile}" == "openwrt_amlogic" ]]; then
+          echo "ZZZ=package/lean/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
+          echo "CODE=amlogic" >> $GITHUB_ENV
+          echo "OpenWrt_name=18.06" >> $GITHUB_ENV
+        elif [[ "${REPO_BRANCH}" == "master" ]]; then
+          echo "ZZZ=package/lean/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
+          echo "CODE=Lede" >> $GITHUB_ENV
+          echo "OpenWrt_name=18.06" >> $GITHUB_ENV
+        elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
+          echo "ZZZ=package/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
+          echo "CODE=Lienol" >> $GITHUB_ENV
+          echo "OpenWrt_name=19.07" >> $GITHUB_ENV
+        elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
+          echo "ZZZ=package/emortal/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
+          echo "CODE=Tianling" >> $GITHUB_ENV
+          echo "OpenWrt_name=tl-18.06" >> $GITHUB_ENV
+        elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
+          echo "ZZZ=package/emortal/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
+          echo "CODE=Mortal" >> $GITHUB_ENV
+          echo "OpenWrt_name=21.02" >> $GITHUB_ENV
+        fi
+        echo "NETIP=package/base-files/files/etc/networkip" >> $GITHUB_ENV
+        echo "DELETE=package/base-files/files/etc/deletefile" >> $GITHUB_ENV
+        source build/common/common.sh && Diy_gonggao
+
+    - name: 电报机器人或pushplus信息通知
+      if: env.PUSH_PLUS_TOKEN && env.SERVERCHAN_SCKEY == 'PUSH' || env.TELEGRAM_BOT_TOKEN && env.SERVERCHAN_SCKEY == 'TELE'
+      run: |
+        if [[ "${SERVERCHAN_SCKEY}" == "TELE" ]]; then
+          curl -k --data chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" --data "text=🎉 主人：您正在使用【${{matrix.target}}】文件夹编译固件中(${{env.CangKu}}仓库的#${{env.Run_number}}号),请耐心等待...... 😋" "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage"
+        elif [[ "${SERVERCHAN_SCKEY}" == "PUSH" ]]; then
+          curl -k --data token="${{ secrets.PUSH_PLUS_TOKEN }}" --data title="开始编译【${{matrix.target}}】" --data "content=🎉 主人：您正在使用【${{matrix.target}}】文件夹编译固件中(${{env.CangKu}}仓库的#${{env.Run_number}}号),请耐心等待...... 😋💐" "http://www.pushplus.plus/send"
+        fi
+
+    - name: 部署编译环境
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /usr/lib/jvm /opt/ghc
+        sudo -E apt-get -qq update
+        sudo -E apt-get -qq install -y build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 lib32stdc++6 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf wget curl rename libpcap0.8-dev swig rsync
+        sudo -E apt-get -qq autoremove --purge
+        sudo -E apt-get -qq clean
+        sudo timedatectl set-timezone "$TZ"
+        sudo mkdir -p /${{matrix.target}}
+        sudo chown $USER:$GROUPS /${{matrix.target}}
+    
+    - name: 下载"${{matrix.target}}"源码
+      working-directory: /${{matrix.target}}
+      run: |
+        git clone -b "$REPO_BRANCH" --single-branch "$REPO_URL" openwrt
+        cd openwrt
+        ./scripts/feeds update -a > /dev/null 2>&1
+        ln -sf /${{matrix.target}}/openwrt $GITHUB_WORKSPACE/openwrt
+        echo "Home=${GITHUB_WORKSPACE}/openwrt" >> $GITHUB_ENV
+        echo "PATH1=${GITHUB_WORKSPACE}/openwrt/build/${{matrix.target}}" >> $GITHUB_ENV
+ 
+    - name: 加载源,补丁和自定义设置
+      run: |
+        echo "Compile_Date=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
+        cp -Rf `find ./ -maxdepth 1 -type d ! -path './openwrt' ! -path './'` openwrt
+        mv -f "${Home}"/build/common/*.sh "${PATH1}"
+        source "${PATH1}/common.sh" && Diy_settings
+        [[ "${{ github.event.inputs.ssh }}" == 'ssh' ]] && echo "SSHYC=true" >> $GITHUB_ENV
+        cd openwrt
+        if [[ "${REPO_BRANCH}" == "master" ]]; then
+          source "${PATH1}/common.sh" && Diy_lede
+        elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
+          source "${PATH1}/common.sh" && Diy_lienol
+        elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
+          source "${PATH1}/common.sh" && Diy_Tianling
+        elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
+          source "${PATH1}/common.sh" && Diy_mortal
+        fi
+        source "${PATH1}/common.sh" && Diy_all
+        /bin/bash "${PATH1}/$DIY_PART_SH"
+        ./scripts/feeds update -a
+        ./scripts/feeds install -a > /dev/null 2>&1
+        ./scripts/feeds install -a
+        mv "$PATH1/$CONFIG_FILE" .config
+        if [[ "${REGULAR_UPDATE}" == "true" ]]; then
+          source "${PATH1}/upgrade.sh" && Diy_Part1
+        fi
+    
+    - name: 缓存加速(7天内对应源码相同机型二次编译有效，每次只保留一个源码的缓存)
+      if: env.USE_CACHEWRTBUILD == 'true'
+      uses: klever1988/cachewrtbuild@test
+      with:
+        ccache: 'true'
+        prefix: ${{ github.workspace }}/openwrt
+
+    - name: 生成配置文件
+      run: |
+        cd openwrt
+        source "${PATH1}/common.sh" && Diy_chajian > /dev/null 2>&1
+        make defconfig > /dev/null 2>&1
+        echo "TARGET_BOARD=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' .config)" >> $GITHUB_ENV
+        echo "TARGET_SUBTARGET=$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' .config)" >> $GITHUB_ENV
+        if [ `grep -c "CONFIG_TARGET_x86_64=y" .config` -eq '1' ]; then
+          echo "TARGET_PROFILE=x86-64" >> $GITHUB_ENV
+        elif [ `grep -c "CONFIG_TARGET_x86_generic=y" .config` -eq '1' ]; then
+         echo "TARGET_PROFILE=x86-32" >> $GITHUB_ENV
+        elif [ `grep -c "CONFIG_TARGET.*DEVICE.*=y" .config` -eq '1' ]; then
+          grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
+          [ -s DEVICE_NAME ] && echo "TARGET_PROFILE=$(cat DEVICE_NAME)" >> $GITHUB_ENV
+        else
+          echo "TARGET_PROFILE=armvirt" >> $GITHUB_ENV
+        fi
+        
+    - name: 编译信息
+      run: |
+        cd openwrt
+        source "${PATH1}/common.sh" && Diy_chuli > /dev/null 2>&1
+        if [ "${REGULAR_UPDATE}" == "true" ]; then
+          source "${PATH1}/upgrade.sh" && Diy_Part2 > /dev/null 2>&1
+        fi
+        if [ "${BY_INFORMATION}" == "true" ]; then
+          source "${PATH1}/upgrade.sh" && GET_TARGET_INFO
+          source "${PATH1}/common.sh" && Diy_xinxi
+        fi
+
+    - name: 下载软件包
+      id: package
+      run: |
+        cd openwrt
+        make defconfig
+        make download -j8
+        find dl -size -1024c -exec ls -l {} \;
+        find dl -size -1024c -exec rm -f {} \;
+
+    - name: 开始编译固件
+      id: compile
+      run: |
+        cd openwrt
+        echo -e "$(nproc) thread compile"
+        make -j$(nproc) || make -j1 V=s
+        echo "::set-output name=status::success"
+        echo "date=$(date "+%Y%m%d%H%M%S")" >> $GITHUB_ENV
+        echo "date1=$(date +'%m-%d')" >> $GITHUB_ENV
+
+    - name: 上传bin文件夹(固件+ipk)在 github actions
+      if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
+      uses: actions/upload-artifact@v2
+      with:
+        name: filename+ipk_${{ env.CODE }}_${{ env.TARGET_PROFILE }}_${{ env.Compile_Date }}
+        path: openwrt/bin
+    
+    - name: 整理固件文件夹
+      id: organizer
+      run: |
+        if [ "${AUTOMATIC_AMLOGIC}" == "true" ]; then
+          source "${PATH1}/common.sh" && Diy_amlogic
+        fi
+        cd openwrt
+        cp -Rf bin/targets/*/* "${Home}"/upgrade
+        cd bin/targets/*/*
+        find -name "*buildinfo*" | xargs -i rm -rf {}
+        find -name "*sha256sums*" | xargs -i rm -rf {}
+        find -name "*manifest*" | xargs -i rm -rf {}
+        find -name "*vmlinuz*" | xargs -i rm -rf {}
+        find -name "*Image*" | xargs -i rm -rf {}
+        rm -rf packages
+        rename -v "s/^openwrt/${{ env.date1 }}-${{ env.CODE }}/" *
+        echo "FIRMWARE=$PWD" >> $GITHUB_ENV
+        echo "::set-output name=status::success"
+        
+    - name: 上传固件在 github actions
+      if: steps.organizer.outputs.status == 'success' && env.UPLOAD_FIRMWARE == 'true'
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ env.OpenWrt_name }}-${{ env.CODE }}-${{ env.TARGET_PROFILE }}-firmware-${{ env.Compile_Date }}
+        path: ${{ env.FIRMWARE }}
+    
+    - name: 上传固件到「奶牛快传」和「WeTransfer」
+      if: steps.compile.outputs.status == 'success' && env.UPLOAD_COWTRANSFER == 'true' && !cancelled()
+      run: |
+        curl -fsSL git.io/file-transfer | sh
+        ./transfer cow --block 2621440 -s -p 64 --no-progress ${FIRMWARE} 2>&1 | tee cowtransfer.log
+        sed -i "s/Download Link/奶牛快传/g" cowtransfer.log
+        echo "::warning file=cowtransfer.com::$(cat cowtransfer.log | grep https)"
+        ./transfer wet -s -p 16 --no-progress ${FIRMWARE} 2>&1 | tee wetransfer.log
+        sed -i "s/Download Link/WETRANSFER/g" wetransfer.log
+        echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
+    
+    - name: 整理发布信息
+      if: steps.organizer.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true'
+      run: |
+        echo "### $(date +"%Y年%m月%d号-%H点%M分")" > update_log.txt
+        curl -fsSL git.io/file-transfer | sh
+        ./transfer cow --block 2621440 -s -p 64 --no-progress ${FIRMWARE} 2>&1 | tee cowtransfer.log
+        echo "##### 奶牛快传：$(cat cowtransfer.log | grep https | cut -f3 -d" ")" >> update_log.txt
+        ./transfer wet -s -p 16 --no-progress ${FIRMWARE} 2>&1 | tee wetransfer.log
+        echo "##### WETRANSFER：$(cat wetransfer.log | grep https | cut -f3 -d" ")" >> update_log.txt
+    
+    - name: 发布固件
+      if: steps.organizer.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && env.REPO_TOKEN
+      uses: ncipollo/release-action@v1
+      with:
+        name: ${{ env.CODE }}-${{ env.TARGET_PROFILE }}
+        tag: ${{ env.date }}
+        token: ${{ secrets.REPO_TOKEN }}
+        bodyFile: "update_log.txt"
+        artifacts: "${{ env.FIRMWARE }}/*"
+        
+    - name: 把定时更新固件发布到云端1
+      if: steps.compile.outputs.status == 'success' && env.REGULAR_UPDATE == 'true' && env.REPO_TOKEN
+      run: |
+       cd openwrt
+       source "${PATH1}/upgrade.sh" && Diy_Part3
+        
+    - name: 把定时更新固件发布到云端2
+      if: steps.compile.outputs.status == 'success' && env.REGULAR_UPDATE == 'true' && env.REPO_TOKEN
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.REPO_TOKEN }}
+        file: openwrt/bin/Firmware/*
+        tag: AutoUpdate
+        overwrite: true
+        file_glob: true
+        
+    - name: 把定时更新固件发布到云端3
+      if: steps.compile.outputs.status == 'success' && env.REGULAR_UPDATE == 'true' && env.REPO_TOKEN
+      run: |
+        mkdir -p Github_Tags
+        cd Github_Tags
+        wget -q --no-cookie --no-check-certificate https://api.github.com/repos/${{github.repository}}/releases/tags/AutoUpdate -O Github_Tags
+        
+    - name: 把定时更新固件发布到云端4
+      if: steps.compile.outputs.status == 'success' && env.REGULAR_UPDATE == 'true' && env.REPO_TOKEN
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.REPO_TOKEN }}
+        file: Github_Tags/*
+        tag: AutoUpdate
+        overwrite: true
+        file_glob: true
+
+    - name: 电报机器人或pushplus信息通知
+      if: steps.compile.outputs.status == 'success' && env.PUSH_PLUS_TOKEN && env.SERVERCHAN_SCKEY == 'PUSH' || steps.compile.outputs.status == 'success' && env.TELEGRAM_BOT_TOKEN && env.SERVERCHAN_SCKEY == 'TELE'
+      run: |
+        if [[ "${SERVERCHAN_SCKEY}" == "TELE" ]]; then
+          curl -k --data chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" --data "text=我亲爱的✨主人✨：您使用【${{matrix.target}}】文件夹编译的[${{ env.CODE }}-${{ env.TARGET_PROFILE }}]固件(${{env.CangKu}}仓库的#${{env.Run_number}}号)顺利编译完成了！💐" "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage"
+        elif [[ "${SERVERCHAN_SCKEY}" == "PUSH" ]]; then
+          curl -k --data token="${{ secrets.PUSH_PLUS_TOKEN }}" --data title="[${{ env.CODE }}-${{ env.TARGET_PROFILE }}]编译成功" --data "content=我亲爱的✨主人✨：您使用【${{matrix.target}}】文件夹编译的[${{ env.CODE }}-${{ env.TARGET_PROFILE }}]固件(${{env.CangKu}}仓库的#${{env.Run_number}}号)顺利编译完成了！💐" "http://www.pushplus.plus/send"
+        fi

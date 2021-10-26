@@ -207,6 +207,10 @@ jobs:
         if [[ -n "$(ls -A "$GITHUB_WORKSPACE/repo/.github/workflows/compile.yml" 2>/dev/null)" ]]; then
           git rm -f $GITHUB_WORKSPACE/repo/.github/workflows/compile.yml
         fi
+        if [[ -z $GITHUB_WORKSPACE/repo/.github/workflows ]]; then
+          mkdir -p $GITHUB_WORKSPACE/repo/.github/workflows
+          chmod -R +x $GITHUB_WORKSPACE/repo/.github/workflows
+        fi
         cp -Rf $GITHUB_WORKSPACE/${CONFIG_FILE} build/${{matrix.target}}/${CONFIG_FILE}
         cp -Rf $GITHUB_WORKSPACE/shangyouck/.github/workflows/build-openwrt.yml .github/workflows/build-openwrt.yml
         cp -Rf $GITHUB_WORKSPACE/shangyouck/.github/workflows/compile.yml .github/workflows/compile.yml

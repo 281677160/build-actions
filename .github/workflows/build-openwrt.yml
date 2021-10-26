@@ -207,7 +207,7 @@ jobs:
         if [[ -n "$(ls -A "$GITHUB_WORKSPACE/repo/.github/workflows/compile.yml" 2>/dev/null)" ]]; then
           git rm -f $GITHUB_WORKSPACE/repo/.github/workflows/compile.yml
         fi
-        if [[ -z $GITHUB_WORKSPACE/repo/.github/workflows ]]; then
+        if [[ ! -d $GITHUB_WORKSPACE/repo/.github/workflows ]]; then
           mkdir -p $GITHUB_WORKSPACE/repo/.github/workflows
           chmod -R +x $GITHUB_WORKSPACE/repo/.github/workflows
         fi

@@ -62,7 +62,7 @@ op自带的ttyd或者用putty连接OP都可以，用了命令后会一直使用�
 - > 12、
 - 《[仓库密匙获取跟使用](https://github.com/danshui-git/shuoming/blob/master/jm.md)》
 - 《[增加编译机型文件夹的方法](https://github.com/danshui-git/shuoming/blob/master/jlck.md)》
-- 《[定时触发编译说明](https://github.com/danshui-git/shuoming/blob/master/%E5%AE%9A%E6%97%B6%E7%BC%96%E8%AF%91%E8%AF%B4%E6%98%8E.md)》
+- 《[定时触发开启编译说明](https://github.com/danshui-git/shuoming/blob/master/%E5%AE%9A%E6%97%B6%E7%BC%96%E8%AF%91%E8%AF%B4%E6%98%8E.md)》
 - 《[一键保存配置同步上游仓库启动说明](https://github.com/danshui-git/shuoming/blob/master/chongxinfork.md)》
 - 《[IPV4/IPV6选择](https://github.com/danshui-git/shuoming/blob/master/%E5%85%B6%E4%BB%96%E8%AF%B4%E6%98%8E.md)》
 - 《[banner的说明](https://github.com/danshui-git/shuoming/blob/master/banner%E8%AF%B4%E6%98%8E.md)》

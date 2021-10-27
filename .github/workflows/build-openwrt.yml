@@ -132,6 +132,7 @@ jobs:
         /bin/bash "${PATH1}/$DIY_PART_SH"
         ./scripts/feeds update -a > /dev/null 2>&1
         ./scripts/feeds install -a > /dev/null 2>&1
+        ./scripts/feeds install -a
         [[ -e "$PATH1/$CONFIG_FILE" ]] && mv "$PATH1/$CONFIG_FILE" .config
         
     - name: SSH远程连接（制作.config配置文件）

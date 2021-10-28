@@ -235,6 +235,10 @@ jobs:
           sed -i "s/${{env.QIDONG1}}/${{env.QIDONG2}}/g" shangyouck/.github/workflows/compile.yml
         fi
         cd repo
+        if [[ -n "$(ls -A "$GITHUB_WORKSPACE/repo/README.md" 2>/dev/null)" ]]; then
+          git rm -rf $GITHUB_WORKSPACE/repo/README.md
+        fi
+        cp -Rf $GITHUB_WORKSPACE/shangyouck/README.md $GITHUB_WORKSPACE/repo/README.md
         if [[ -n "$(ls -A "build/${{matrix.target}}/${CONFIG_FILE}" 2>/dev/null)" ]]; then
           git rm -rf build/${{matrix.target}}/${CONFIG_FILE}
         fi

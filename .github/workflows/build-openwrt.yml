@@ -217,13 +217,21 @@ jobs:
       if: steps.compileop.outputs.status == 'success' && env.REPO_TOKEN
       run: |
         cd $GITHUB_WORKSPACE
-        if [[ -n "${BEIYONG1}" ]] && [[ -n "${BEIYONG2}" ]]; then
+        if [[ -n "${{env.BEIYONG1}}" ]] && [[ -n "${{env.BEIYONG2}}" ]]; then
           sed -i "s/${{env.BEIYONG1}}/${{env.BEIYONG2}}/g" shangyouck/.github/workflows/build-openwrt.yml
         fi
-        sed -i "s/${{env.CRON1}}/${{env.CRON2}}/g" shangyouck/.github/workflows/build-openwrt.yml
-        sed -i "s/${{env.TARGET1}}/${{env.TARGET2}}/g" shangyouck/.github/workflows/build-openwrt.yml
-        sed -i "s/${{env.TARGE1}}/${{env.TARGE2}}/g" shangyouck/.github/workflows/compile.yml
-        sed -i "s/${{env.QIDONG1}}/${{env.QIDONG2}}/g" shangyouck/.github/workflows/compile.yml
+        if [[ -n "${{env.CRON1}}" ]] && [[ -n "${{env.CRON2}}" ]]; then
+          sed -i "s/${{env.CRON1}}/${{env.CRON2}}/g" shangyouck/.github/workflows/build-openwrt.yml
+        fi
+        if [[ -n "${{env.TARGET1}}" ]] && [[ -n "${{env.TARGET2}}" ]]; then
+          sed -i "s/${{env.TARGET1}}/${{env.TARGET2}}/g" shangyouck/.github/workflows/build-openwrt.yml
+        fi
+        if [[ -n "${{env.TARGE1}}" ]] && [[ -n "${{env.TARGE2}}" ]]; then
+          sed -i "s/${{env.TARGE1}}/${{env.TARGE2}}/g" shangyouck/.github/workflows/compile.yml
+        fi
+        if [[ -n "${{env.QIDONG1}}" ]] && [[ -n "${{env.QIDONG2}}" ]]; then
+          sed -i "s/${{env.QIDONG1}}/${{env.QIDONG2}}/g" shangyouck/.github/workflows/compile.yml
+        fi
         cd repo
         if [[ -n "$(ls -A "build/${{matrix.target}}/${CONFIG_FILE}" 2>/dev/null)" ]]; then
           git rm -rf build/${{matrix.target}}/${CONFIG_FILE}

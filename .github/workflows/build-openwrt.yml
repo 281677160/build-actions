@@ -35,9 +35,15 @@ on:
 #   - cron: 0 9 * * *
 
 
-env: 
- REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
- TZ: Asia/Shanghai
+env:
+  Github: https://github.com/${{github.repository}}
+  Author: ${{github.actor}}
+  Apidz: ${{github.repository}}
+  Run_number: ${{github.run_number}}
+  Run_workflow: ${{github.workflow}}
+  REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
+  TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+  TZ: Asia/Shanghai
 
 jobs:
   build:
@@ -63,34 +69,46 @@ jobs:
         echo "REPO_BRANCH=${REPO_BRANCH}" >> $GITHUB_ENV
         echo "CONFIG_FILE=${CONFIG_FILE}" >> $GITHUB_ENV
         echo "DIY_PART_SH=${DIY_PART_SH}" >> $GITHUB_ENV
-        echo "SSH_ACTIONS=${SSH_ACTIONS}" >> $GITHUB_ENV
+        echo "UPLOAD_BIN_DIR=${UPLOAD_BIN_DIR}" >> $GITHUB_ENV
         echo "UPLOAD_CONFIG=${UPLOAD_CONFIG}" >> $GITHUB_ENV
+        echo "UPLOAD_FIRMWARE=${UPLOAD_FIRMWARE}" >> $GITHUB_ENV
+        echo "UPLOAD_COWTRANSFER=${UPLOAD_COWTRANSFER}" >> $GITHUB_ENV
+        echo "UPLOAD_RELEASE=${UPLOAD_RELEASE}" >> $GITHUB_ENV
         echo "SERVERCHAN_SCKEY=${SERVERCHAN_SCKEY}" >> $GITHUB_ENV
-        echo "Modelfile=${{matrix.target}}" >> $GITHUB_ENV
+        echo "REGULAR_UPDATE=${REGULAR_UPDATE}" >> $GITHUB_ENV
+        echo "USE_CACHEWRTBUILD=${USE_CACHEWRTBUILD}" >> $GITHUB_ENV
+        echo "BY_INFORMATION=${BY_INFORMATION}" >> $GITHUB_ENV
+        echo "CangKu=${Apidz##*/}" >> $GITHUB_ENV
+        echo "Modelfile=${{matrix.target}}" >> $GITHUB_ENV 
 
     - name: 读取扩展文件
       run: |
         echo
         git clone --depth 1 -b main https://github.com/281677160/common build/common > /dev/null 2>&1
+        chmod -R +x "${GITHUB_WORKSPACE}/build/common"
         echo "BILDYML=$(grep "compileop" -rl ${GITHUB_WORKSPACE}/.github |cut -d "/" -f9)" >> $GITHUB_ENV
         echo "NETIP=package/base-files/files/etc/networkip" >> $GITHUB_ENV
         echo "DELETE=package/base-files/files/etc/deletefile" >> $GITHUB_ENV
-        chmod -R +x "${GITHUB_WORKSPACE}/build/common"
         if [[ "${Modelfile}" == "openwrt_amlogic" ]]; then
           echo "ZZZ=package/lean/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
           echo "CODE=amlogic" >> $GITHUB_ENV
+          echo "OpenWrt_name=18.06" >> $GITHUB_ENV
         elif [[ "${REPO_BRANCH}" == "master" ]]; then
           echo "ZZZ=package/lean/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
           echo "CODE=Lede" >> $GITHUB_ENV
+          echo "OpenWrt_name=18.06" >> $GITHUB_ENV
         elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
           echo "ZZZ=package/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
           echo "CODE=Lienol" >> $GITHUB_ENV
+          echo "OpenWrt_name=19.07" >> $GITHUB_ENV
         elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
           echo "ZZZ=package/emortal/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
           echo "CODE=Tianling" >> $GITHUB_ENV
+          echo "OpenWrt_name=tl-18.06" >> $GITHUB_ENV
         elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
           echo "ZZZ=package/emortal/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
           echo "CODE=Mortal" >> $GITHUB_ENV
+          echo "OpenWrt_name=21.02" >> $GITHUB_ENV
         fi
         
     - name: 部署编译环境
@@ -202,18 +220,18 @@ jobs:
         sed -i "s/${{env.QIDONG1}}/${{env.QIDONG2}}/g" shangyouck/.github/workflows/compile.yml
         cd repo
         if [[ -n "$(ls -A "build/${{matrix.target}}/${CONFIG_FILE}" 2>/dev/null)" ]]; then
-          git rm -f build/${{matrix.target}}/${CONFIG_FILE}
+          git rm -rf build/${{matrix.target}}/${CONFIG_FILE}
         fi
         cp -Rf $GITHUB_WORKSPACE/${CONFIG_FILE} build/${{matrix.target}}/${CONFIG_FILE}
         if [[ -n "$(ls -A "$GITHUB_WORKSPACE/repo/.github/workflows/compile.yml" 2>/dev/null)" ]]; then
-          git rm -f $GITHUB_WORKSPACE/repo/.github/workflows/compile.yml
+          git rm -rf $GITHUB_WORKSPACE/repo/.github/workflows/compile.yml
         fi
         cp -Rf $GITHUB_WORKSPACE/shangyouck/.github/workflows/compile.yml .github/workflows/compile.yml
         if [[ -n "$(ls -A "$GITHUB_WORKSPACE/repo/.github/workflows/synchronization.yml" 2>/dev/null)" ]]; then
-          git rm -f $GITHUB_WORKSPACE/repo/.github/workflows/synchronization.yml
+          git rm -rf $GITHUB_WORKSPACE/repo/.github/workflows/synchronization.yml
         fi
         cp -Rf $GITHUB_WORKSPACE/shangyouck/.github/workflows/synchronization.yml .github/workflows/synchronization.yml
-        git rm -f $GITHUB_WORKSPACE/repo/.github/workflows/${{env.BILDYML}}
+        git rm -rf $GITHUB_WORKSPACE/repo/.github/workflows/${{env.BILDYML}}
         cp -Rf $GITHUB_WORKSPACE/shangyouck/.github/workflows/build-openwrt.yml .github/workflows/build-openwrt.yml
         mkdir -p build/${{matrix.target}}/start-up
         echo "${{env.CODE}}于$(date +%Y年%m月%d号%H时%M分%S秒)自动触发编译${{env.TARGET_PROFILE}}固件" > build/${Modelfile}/start-up/start
@@ -221,6 +239,17 @@ jobs:
         git commit -m "编译${{env.CODE}}-${{env.TARGET_PROFILE}}固件"
         git push --force "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main
         
+    
+    - name: 编译信息
+      continue-on-error: true
+      if: env.BY_INFORMATION == 'true'
+      run: |
+        cd openwrt
+        source "${PATH1}/common.sh" && Diy_chuli > /dev/null 2>&1
+        source "${PATH1}/upgrade.sh" && GET_TARGET_INFO
+        source "${PATH1}/common.sh" && Diy_xinxi
+    
+    
     - name: 清理Actions空间
       if: env.REPO_TOKEN
       uses: Mattraks/delete-workflow-runs@main

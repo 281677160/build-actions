@@ -217,7 +217,7 @@ jobs:
       if: steps.compileop.outputs.status == 'success' && env.REPO_TOKEN
       run: |
         cd $GITHUB_WORKSPACE
-        if [[ -n "${BEIYONG2}" ]]; then
+        if [[ -n "${BEIYONG1}" ]] && [[ -n "${BEIYONG2}" ]]; then
           sed -i "s/${{env.BEIYONG1}}/${{env.BEIYONG2}}/g" shangyouck/.github/workflows/build-openwrt.yml
         fi
         sed -i "s/${{env.CRON1}}/${{env.CRON2}}/g" shangyouck/.github/workflows/build-openwrt.yml

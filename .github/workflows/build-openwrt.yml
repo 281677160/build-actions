@@ -209,11 +209,17 @@ jobs:
         echo "QIDONG2=- 'build\/${{matrix.target}}\/start-up\/start'" >> $GITHUB_ENV
         echo "TARGE1=$(grep 'target: \[' shangyouck/.github/workflows/compile.yml |sed 's/^[ ]*//g' |grep '^target' |cut -d '#' -f1 |sed 's/\[/\\&/' |sed 's/\]/\\&/')" >> $GITHUB_ENV
         echo "TARGE2=target: \\[${{matrix.target}}\\]" >> $GITHUB_ENV
-        
+        echo "BEIYONG1=$(grep -A 2 'target:' shangyouck/.github/workflows/build-openwrt.yml |grep '\# \[.*\]' | sed -r 's/\# \[(.*)\]/\1/' |sed 's/^[ ]*//g')" >> $GITHUB_ENV
+        echo "BEIYONG2=$(grep -A 2 'target:' $GITHUB_WORKSPACE/.github/workflows/${{env.BILDYML}} |grep '\# \[.*\]' | sed -r 's/\# \[(.*)\]/\1/' |sed 's/^[ ]*//g')" >> $GITHUB_ENV
+    
+    
     - name: 触发compile.yml启动"${{matrix.target}}"编译
       if: steps.compileop.outputs.status == 'success' && env.REPO_TOKEN
       run: |
         cd $GITHUB_WORKSPACE
+        if [[ -n "${BEIYONG2}" ]]; then
+          sed -i "s/${{env.BEIYONG1}}/${{env.BEIYONG2}}/g" shangyouck/.github/workflows/build-openwrt.yml
+        fi
         sed -i "s/${{env.CRON1}}/${{env.CRON2}}/g" shangyouck/.github/workflows/build-openwrt.yml
         sed -i "s/${{env.TARGET1}}/${{env.TARGET2}}/g" shangyouck/.github/workflows/build-openwrt.yml
         sed -i "s/${{env.TARGE1}}/${{env.TARGE2}}/g" shangyouck/.github/workflows/compile.yml

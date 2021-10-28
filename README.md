@@ -4,7 +4,7 @@
 ---
 - 2021/10/23号更新
 - 《[全新启动编译教程（必须获取密匙后才可以）](https://github.com/danshui-git/shuoming/blob/master/config.md)》
-- 《[全新一键保存配置同步上游仓库和清理仓库说明](https://github.com/danshui-git/shuoming/blob/master/chongxinfork.md)》
+- 《[全新一键保存配置同步上游仓库说明](https://github.com/danshui-git/shuoming/blob/master/chongxinfork.md)》
 - 新手教程全新整理了一下，应该更容易看懂了
 ---
 - # 介绍

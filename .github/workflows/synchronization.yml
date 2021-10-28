@@ -22,8 +22,8 @@ jobs:
   del_runs:
     runs-on: Ubuntu-20.04
     name: 同步上游仓库
-    steps:
     
+    steps:
     - name: 准备结束
       uses: actions/checkout@v2
       

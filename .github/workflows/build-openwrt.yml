@@ -239,7 +239,6 @@ jobs:
         git commit -m "编译${{env.CODE}}-${{env.TARGET_PROFILE}}固件"
         git push --force "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main
         
-    
     - name: 编译信息
       continue-on-error: true
       if: env.BY_INFORMATION == 'true'
@@ -248,7 +247,6 @@ jobs:
         source "${PATH1}/common.sh" && Diy_chuli > /dev/null 2>&1
         source "${PATH1}/upgrade.sh" && GET_TARGET_INFO
         source "${PATH1}/common.sh" && Diy_xinxi
-    
     
     - name: 清理Actions空间
       if: env.REPO_TOKEN

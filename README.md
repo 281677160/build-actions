@@ -85,17 +85,15 @@ op自带的ttyd或者用putty连接OP都可以，用了命令后会一直使用�
 #
 #
 - # 鸣谢
-- [coolsnowwolf](https://github.com/coolsnowwolf/lede.git)
-- [Lienol](https://github.com/Lienol/openwrt.git)
-- [ctcgfw](https://github.com/project-openwrt/openwrt.git)
-- [P3TERX](https://github.com/P3TERX/Actions-OpenWrt)
-- [tuanqing](https://github.com/tuanqing/mknop)
-- [Hyy2001X](https://github.com/Hyy2001X/AutoBuild-Actions)
-- [ophub](https://github.com/ophub/amlogic-s9xxx-openwrt)
-- [nicholas-opensource](https://github.com/nicholas-opensource/OpenWrt-Autobuild)
-- [hx210](https://github.com/hx210/build-actions)
-- <a href="#/README.md">hyird</a>
-- <a href="#/README.md">World Peace</a>
-- [github平台](https://github.com/)
-- <a href="#/README.md">感谢各位大佬提供的各种各样的插件</a>
-- <a href="#/README.md">感谢各位帮助过我的人，祝福各位好人一生平安</a>
+> [`coolsnowwolf`](https://github.com/coolsnowwolf/lede.git)
+> [`Lienol`](https://github.com/Lienol/openwrt.git)
+> [`ctcgfw`](https://github.com/project-openwrt/openwrt.git)
+> [`P3TERX`](https://github.com/P3TERX/Actions-OpenWrt)
+> [`tuanqing`](https://github.com/tuanqing/mknop)
+> [`Hyy2001X`](https://github.com/Hyy2001X/AutoBuild-Actions)
+> [`ophub`](https://github.com/ophub/amlogic-s9xxx-openwrt)
+> [`nicholas-opensource`](https://github.com/nicholas-opensource/OpenWrt-Autobuild)
+> [`hx210`](#/README.md)
+> [`hyird`](#/README.md)
+> [`World Peace`](#/README.md)
+> [`感谢各位大佬提供的各种各样的插件`](#/README.md)

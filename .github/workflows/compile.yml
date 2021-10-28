@@ -63,7 +63,6 @@ jobs:
         echo "SERVERCHAN_SCKEY=${SERVERCHAN_SCKEY}" >> $GITHUB_ENV
         echo "REGULAR_UPDATE=${REGULAR_UPDATE}" >> $GITHUB_ENV
         echo "USE_CACHEWRTBUILD=${USE_CACHEWRTBUILD}" >> $GITHUB_ENV
-        echo "BY_INFORMATION=${BY_INFORMATION}" >> $GITHUB_ENV
         echo "AUTOMATIC_AMLOGIC=${AUTOMATIC_AMLOGIC}" >> $GITHUB_ENV
         echo "CangKu=${Apidz##*/}" >> $GITHUB_ENV
         echo "Modelfile=${{matrix.target}}" >> $GITHUB_ENV 
@@ -182,18 +181,11 @@ jobs:
           echo "TARGET_PROFILE=armvirt" >> $GITHUB_ENV
         fi
         
-    - name: 编译信息
-      continue-on-error: true
+    - name: 编译前的最后整理文件
       run: |
         cd openwrt
         source "${PATH1}/common.sh" && Diy_chuli > /dev/null 2>&1
-        if [ "${REGULAR_UPDATE}" == "true" ]; then
-          source "${PATH1}/upgrade.sh" && Diy_Part2 > /dev/null 2>&1
-        fi
-        if [ "${BY_INFORMATION}" == "true" ]; then
-          source "${PATH1}/upgrade.sh" && GET_TARGET_INFO
-          source "${PATH1}/common.sh" && Diy_xinxi
-        fi
+        source "${PATH1}/upgrade.sh" && Diy_Part2 > /dev/null 2>&1
 
     - name: 下载软件包
       id: package

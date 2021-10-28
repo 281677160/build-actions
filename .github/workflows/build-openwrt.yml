@@ -241,12 +241,13 @@ jobs:
         
     - name: 编译信息
       continue-on-error: true
-      if: env.BY_INFORMATION == 'true'
       run: |
         cd openwrt
         source "${PATH1}/common.sh" && Diy_chuli > /dev/null 2>&1
-        source "${PATH1}/upgrade.sh" && GET_TARGET_INFO
-        source "${PATH1}/common.sh" && Diy_xinxi
+        if [ "${BY_INFORMATION}" == "true" ]; then
+          source "${PATH1}/upgrade.sh" && GET_TARGET_INFO
+          source "${PATH1}/common.sh" && Diy_xinxi
+        fi
     
     - name: 清理Actions空间
       if: env.REPO_TOKEN

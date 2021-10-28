@@ -94,4 +94,10 @@ op自带的ttyd或者用putty连接OP都可以，用了命令后会一直使用�
 - [github平台](https://github.com/)
 - <a href="#/README.md">感谢各位大佬提供的各种各样的插件</a>
 - <a href="#/README.md">感谢各位帮助过我的人，祝福各位好人一生平安</a>
+- 
+#
+- # 捐赠
+- 如果你觉得此项目对你有帮助，请请我喝一杯82年的凉白开，感谢！
 
+-微信-
+# <img src="https://github.com/danshui-git/shuoming/blob/master/doc/weixin4.png" />

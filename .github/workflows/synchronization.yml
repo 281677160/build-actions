@@ -1,6 +1,8 @@
 #
 # 同步上游仓库或者清理发布都需要用REPO_TOKEN密匙
 #
+# 记住，同步上游是不会同步您任何自建文件夹的，所以同步后您要自己对比我现有的文件夹里面diy-part.sh和settings.ini文件有没有更新
+#
 # REPO_TOKEN密匙制作教程：https://git.io/jm.md
 #
 

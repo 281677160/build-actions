@@ -219,7 +219,7 @@ jobs:
         echo "QDMAME1=$(sed -n '1,50p' shangyouck/.github/workflows/build-openwrt.yml |grep '^name' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')" >> $GITHUB_ENV
         echo "QDMAME2=$(sed -n '1,50p' $GITHUB_WORKSPACE/.github/workflows/${{env.BILDYML}} |grep '^name' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')" >> $GITHUB_ENV
         echo "N1BUG1=$(sed -n '13p' $GITHUB_WORKSPACE/openwrt/build/openwrt_amlogic/settings.ini |grep 'BY_INFORMATION' |sed 's/\（/\\&/g' |sed 's/\）/\\&/g' |sed 's/\#/\\&/g'|sed 's/\"/\\&/g')" >> $GITHUB_ENV
-        echo "N1BUG2=USE_CACHEWRTBUILD=\\"true\\"         \# 是否开启缓存加速,如出现带有缓存编译时莫名错误导致失败的,请关闭\（true=开启\）\（false=关闭\）" >> $GITHUB_ENV
+        echo "N1BUG2=USE_CACHEWRTBUILD=\"\"true\"\"         \# 是否开启缓存加速,如出现带有缓存编译时莫名错误导致失败的,请关闭\（true=开启\）\（false=关闭\）" >> $GITHUB_ENV
     
     - name: 触发compile.yml启动"${{matrix.target}}"编译
       if: steps.compileop.outputs.status == 'success' && env.REPO_TOKEN

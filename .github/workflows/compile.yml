@@ -134,7 +134,6 @@ jobs:
         cp -Rf `find ./ -maxdepth 1 -type d ! -path './openwrt' ! -path './'` openwrt
         mv -f "${Home}"/build/common/*.sh "${PATH1}"
         source "${PATH1}/common.sh" && Diy_settings
-        [[ "${{ github.event.inputs.ssh }}" == 'ssh' ]] && echo "SSHYC=true" >> $GITHUB_ENV
         cd openwrt
         if [[ "${REPO_BRANCH}" == "master" ]]; then
           source "${PATH1}/common.sh" && Diy_lede
@@ -225,8 +224,10 @@ jobs:
         cp -Rf bin/targets/*/* "${Home}"/upgrade
         cd bin/targets/*/*
         rename -v "s/^immortalwrt/openwrt/" *
-        cp -Rf ${GITHUB_WORKSPACE}/Clear ./
-        chmod +x Clear && source Clear
+        if [[ -e ${GITHUB_WORKSPACE}/Clear ]]; then
+          cp -Rf ${GITHUB_WORKSPACE}/Clear ./
+          chmod +x Clear && source Clear
+        fi
         rm -rf packages
         rename -v "s/^openwrt/${{ env.date1 }}-${{ env.CODE }}/" *
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV

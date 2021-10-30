@@ -224,11 +224,9 @@ jobs:
         cd openwrt
         cp -Rf bin/targets/*/* "${Home}"/upgrade
         cd bin/targets/*/*
-        find -name "*buildinfo*" | xargs -i rm -rf {}
-        find -name "*sha256sums*" | xargs -i rm -rf {}
-        find -name "*manifest*" | xargs -i rm -rf {}
-        find -name "*vmlinuz*" | xargs -i rm -rf {}
-        find -name "*Image*" | xargs -i rm -rf {}
+        rename -v "s/^immortalwrt/openwrt/" *
+        cp -Rf ${GITHUB_WORKSPACE}/Clear ./
+        chmod +x Clear && source Clear
         rm -rf packages
         rename -v "s/^openwrt/${{ env.date1 }}-${{ env.CODE }}/" *
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV

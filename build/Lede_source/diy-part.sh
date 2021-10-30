@@ -59,6 +59,7 @@ sed -i 's/"Argon 主题设置"/"Argon设置"/g' `grep "Argon 主题设置" -rl .
 cat >${GITHUB_WORKSPACE}/Clear <<-EOF
 rm -rf config.buildinfo
 rm -rf feeds.buildinfo
+rm -rf openwrt-x86-64-generic-kernel.bin
 rm -rf openwrt-x86-64-generic.manifest
 rm -rf openwrt-x86-64-generic-squashfs-rootfs.img.gz
 rm -rf sha256sums

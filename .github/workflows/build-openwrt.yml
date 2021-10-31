@@ -219,10 +219,10 @@ jobs:
         echo "QDMAME1=$(sed -n '1,50p' shangyouck/.github/workflows/build-openwrt.yml |grep '^name' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')" >> $GITHUB_ENV
         echo "QDMAME2=$(sed -n '1,50p' $GITHUB_WORKSPACE/.github/workflows/${{env.BILDYML}} |grep '^name' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')" >> $GITHUB_ENV
         echo "N1BUG1=$(sed -n '13p' $GITHUB_WORKSPACE/openwrt/build/openwrt_amlogic/settings.ini |grep 'BY_INFORMATION')" >> $GITHUB_ENV
-        if [[ `grep -c "${GITHUB_WORKSPACE}/Clear" $GITHUB_WORKSPACE/repo/build/${{matrix.target}}/diy-part.sh` == '0' ]]; then
+        if [[ `grep -c "WORKSPACE}/Clear" $GITHUB_WORKSPACE/repo/build/${{matrix.target}}/diy-part.sh` == '0' ]]; then
         echo '
         # 整理固件包时候,删除您不想要的固件或者文件,让它不需要上传到Actions空间
-        cat >WORKSPACE}/Clear <<-EOF
+        cat >${GITHUB_WORKSPACE}/Clear <<-EOF
         rm -rf config.buildinfo
         rm -rf feeds.buildinfo
         rm -rf sha256sums

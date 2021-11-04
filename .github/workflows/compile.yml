@@ -16,7 +16,7 @@ on:
     branches:
       - main
     paths:
-      - 'build/Lienol_source/start-up/start'
+      - 'build/Mortal_source/start-up/start'
 
 env:
   Github: https://github.com/${{github.repository}}
@@ -40,7 +40,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [Lienol_source]
+        target: [Mortal_source]
         
         # [Lede_source,Lienol_source,Mortal_source,Tianling_source,openwrt_amlogic]
 

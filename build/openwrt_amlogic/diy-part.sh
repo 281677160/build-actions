@@ -35,7 +35,7 @@ sed -i '/CYXluq4wUazHjmCDBCqXF/d' $ZZZ                                          
 cat >$GITHUB_WORKSPACE/amlogic_openwrt <<-EOF
 amlogic_model=s905x3_s905x2_s905x_s905d_s922x_s912
 amlogic_kernel=5.10.70_5.4.150
-rootfs_size=1024
+rootfs_size=960
 EOF
 
 

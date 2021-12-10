@@ -56,9 +56,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [Lede_minano]
+        target: [Lede_cr660x]
 
-        # [Lede_minano,Lienol_source,Mortal_source,Tianling_source,openwrt_amlogic]
+        # [Lede_cr660x,Lienol_cr660x,Lienol_source,openwrt_cr660x,Tianling_source,openwrt_amlogic]
 
     
     steps:

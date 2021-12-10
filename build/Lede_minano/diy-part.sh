@@ -24,9 +24,9 @@ EOF
 
 sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/Makefile           # 选择argon为默认主题
 
-sed -i ‘$a src-git small-package https://github.com/small1ee/small-package' feed.conf.default     #添加small-package到源
+#sed -i ‘$a src-git small-package https://github.com/small1ee/small-package' feed.conf.default     #添加small-package到源
 
-sed -i ‘$a src-git luci-app-overwall https://github.com/small1ee/luci-app-overwall' feed.conf.default #添加overwall到源
+#sed -i ‘$a src-git luci-app-overwall https://github.com/small1ee/luci-app-overwall' feed.conf.default #添加overwall到源
 
 #sed -i "s/OpenWrt /${Author} compiled in $(TZ=UTC-8 date "+%Y.%m.%d") @ OpenWrt /g" $ZZZ           # 增加个性名字 ${Author} 默认为你的github帐号
 

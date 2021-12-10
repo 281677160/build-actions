@@ -1,0 +1,14 @@
+﻿替换openwrt设置文件的文件夹，设置好openwrt后
+记住这个不是源码文件，是源码编译好固件后的openwrt，安装好后，设置好后，openwrt里面etc
+用WinSCP(文件协议F选择SCP)连接openwrt，找到etc文件夹，里面就是openwrt的所有设置文件
+
+
+1、在这里按 Add file 然后选 Create new file 然后要替换文件的路径跟名字，下面大方框粘贴补丁内容，然后最下面绿色按钮保存
+比如替换smartdns，在openwrt的路径是‘etc/config/smartdns’，按 Add file 然后选 Create new file，粘贴这个路径，下面大方框粘贴补丁内容，然后最下面绿色按钮保存完成
+这个上替换单个文件方便，如果文件很多就比较麻烦，用下面的方法更好，就比如smartdns就有4个设置文件，不过一般都只用etc/config/smartdns的就是
+
+2、在这里按 Create new file 然后选择 Upload files 然后把openwrt的对应路径制作好的etc文件夹，拖进来，等文件传输完毕，然后最下绿色按钮保存就可以了
+比如替换smartdns，在电脑创建etc文件夹，etc文件夹里面创建config文件夹，然后在WinSCP里面etc/config里面的smartdns拖进来，上面说到smartdns有4个设置文件，
+就在etc文件夹里面还有一个smartdns文件夹的，里面有三个设置文件，你把WinSCP里etc里面的smartdns文件夹直接拖到在你电脑创建的etc文件夹里面就好了
+这样你在电脑创建的etc文件夹里面就有两个文件夹，一个config文件夹放着一个smartdns文件，一个smartdns文件夹里面放着address.conf、blacklist-ip.conf、custom.con三个设置文件
+然后在这里按 Create new file 然后选择 Upload files 然后把在你电脑上etc文件夹拖进来，等文件传输完毕，然后最下绿色按钮保存就可以了

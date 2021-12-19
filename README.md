@@ -2,6 +2,8 @@
 
 - # 择要
 ---
+- # 最近luci-theme-argon主题有点问题，请大家最近编译的时候选其他主题用
+---
 - 2021/10/29号更新
 - 《[全新启动编译教程（必须获取密匙后才可以）](https://github.com/danshui-git/shuoming/blob/master/config.md)》
 - 《[全新一键保存配置同步上游仓库说明](https://github.com/danshui-git/shuoming/blob/master/chongxinfork.md)》

@@ -2,6 +2,9 @@
 
 - # 择要
 ---
+- 2021/12/31号更新
+- 修复Mortal_source和Tianling_source编译固件安装好后，luci错误进不了系统的问题，这个是因为源码修改了文件名称，脚本没更新导致的
+---
 - 2021/10/29号更新
 - 《[全新启动编译教程（必须获取密匙后才可以）](https://github.com/danshui-git/shuoming/blob/master/config.md)》
 - 《[全新一键保存配置同步上游仓库说明](https://github.com/danshui-git/shuoming/blob/master/chongxinfork.md)》

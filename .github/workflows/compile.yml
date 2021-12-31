@@ -129,6 +129,7 @@ jobs:
       run: |
         git clone -b "$REPO_BRANCH" --single-branch "$REPO_URL" openwrt
         cd openwrt
+        ./scripts/feeds clean
         ./scripts/feeds update -a > /dev/null 2>&1
         ln -sf /${{matrix.target}}/openwrt $GITHUB_WORKSPACE/openwrt
         echo "Home=${GITHUB_WORKSPACE}/openwrt" >> $GITHUB_ENV

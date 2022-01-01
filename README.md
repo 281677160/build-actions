@@ -2,7 +2,8 @@
 
 - # 择要
 ---
-- ## 最近luci-theme-argon主题有点问题，请大家最近编译的时候选其他主题用，如果要用的话，编译的时候一定要把luci-app-argon-config一起编译上，然后设置壁纸来源为内建，别选Bing壁纸
+- 2021/12/31号更新
+- 修复Mortal_source和Tianling_source编译固件安装好后，luci错误进不了系统的问题，这个是因为源码修改了文件名称，脚本没更新导致的
 ---
 - 2021/10/29号更新
 - 《[全新启动编译教程（必须获取密匙后才可以）](https://github.com/danshui-git/shuoming/blob/master/config.md)》

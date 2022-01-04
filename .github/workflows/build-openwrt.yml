@@ -107,11 +107,11 @@ jobs:
           echo "CODE=Lienol" >> $GITHUB_ENV
           echo "OpenWrt_name=19.07" >> $GITHUB_ENV
         elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
-          echo "ZZZ=package/emortal/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
+          echo "ZZZ=package/emortal/default-settings/files/99-default-settings" >> $GITHUB_ENV
           echo "CODE=Tianling" >> $GITHUB_ENV
           echo "OpenWrt_name=tl-18.06" >> $GITHUB_ENV
         elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
-          echo "ZZZ=package/emortal/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
+          echo "ZZZ=package/emortal/default-settings/files/99-default-settings" >> $GITHUB_ENV
           echo "CODE=Mortal" >> $GITHUB_ENV
           echo "OpenWrt_name=21.02" >> $GITHUB_ENV
         fi
@@ -159,6 +159,9 @@ jobs:
         ./scripts/feeds install -a > /dev/null 2>&1
         ./scripts/feeds install -a
         [[ -e "$PATH1/$CONFIG_FILE" ]] && mv "$PATH1/$CONFIG_FILE" .config
+        if [[ "${REGULAR_UPDATE}" == "true" ]]; then
+          source "${PATH1}/upgrade.sh" && Diy_Part1
+        fi
         
     - name: SSH远程连接（制作.config配置文件）
       if: env.SSH_ACTIONS == 'true' || (github.event.inputs.ssh == 'ssh')

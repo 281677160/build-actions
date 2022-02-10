@@ -27,7 +27,8 @@ EOF
 
 #sed -i '/CYXluq4wUazHjmCDBCqXF/d' $ZZZ                                                             # 设置密码为空
 
-sed -i 's/PATCHVER:=5.10/PATCHVER:=5.4/g' target/linux/x86/Makefile                               # x86机型,默认内核5.10，修改内核为5.4（去掉sed前面的#生效）
+#sed -i 's/PATCHVER:=5.10/PATCHVER:=5.4/g' target/linux/x86/Makefile                               # x86机型,默认内核5.10，修改内核为5.4（去掉sed前面的#生效）
+sed -i 's/KERNEL_PATCHVER:=5.15/KERNEL_PATCHVER:=5.4.162/g' ./target/linux/x86/Makefile
 
 # K3专用，编译K3的时候只会出K3固件（去掉sed前面的#生效）
 #sed -i 's|^TARGET_|# TARGET_|g; s|# TARGET_DEVICES += phicomm_k3|TARGET_DEVICES += phicomm_k3|' target/linux/bcm53xx/image/Makefile

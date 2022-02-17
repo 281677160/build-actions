@@ -197,9 +197,9 @@ jobs:
           source "${PATH1}/common.sh" && Diy_xinxi
         fi
         
-    - name: 启用在线更新固件
+    - name: 启用在线更新
       continue-on-error: true
-      if: env.REGULAR_UPDATE == 'true'
+      if: env.REGULAR_UPDATE == 'true' && env.REPO_TOKEN
       run: |
         cd openwrt
         source "${PATH1}/upgrade.sh" && Diy_Part2 > /dev/null 2>&1

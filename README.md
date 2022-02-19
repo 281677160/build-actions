@@ -1,5 +1,5 @@
--
-> [`coolsnowwolf`](https://github.com/danshui-git/shuoming)
+- 说明
+- [`coolsnowwolf`](https://github.com/danshui-git/shuoming)
 
 - # 鸣谢
 > [`coolsnowwolf`](https://github.com/coolsnowwolf/lede.git)

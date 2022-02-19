@@ -30,8 +30,8 @@ sed -i '/CYXluq4wUazHjmCDBCqXF/d' $ZZZ                                          
 
 # 设置打包固件的机型，内核组合（可用内核是时时变化的,过老的内核就删除的，所以要选择什么内核请看说明）
 cat >$GITHUB_WORKSPACE/amlogic_openwrt <<-EOF
-amlogic_model=s905x3_s905x2_s905x_s905d_s922x_s912
-amlogic_kernel=5.10.70_5.4.150
+amlogic_model=s905x3_s905x2_s905x_s905w_s905d_s922x_s912
+amlogic_kernel=5.10.100_5.4.180 -a true
 rootfs_size=960
 EOF
 

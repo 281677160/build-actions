@@ -229,14 +229,15 @@ jobs:
       with:
         name: filename+ipk_${{ env.CODE }}_${{ env.TARGET_PROFILE }}_${{ env.Compile_Date }}
         path: openwrt/bin
+        
+    - name: 打包N1固件
+      run: |
+        if: steps.compile.outputs.status == 'success' && env.AUTOMATIC_AMLOGIC == 'true'
+        source "${PATH1}/common.sh" && Diy_amlogic
     
     - name: 整理固件文件夹
       id: organizer
       run: |
-        cd ${GITHUB_WORKSPACE}
-        if [ "${AUTOMATIC_AMLOGIC}" == "true" ]; then
-          source "${PATH1}/common.sh" && Diy_amlogic
-        fi
         cd "${Home}"
         cp -Rf bin/targets/*/* "${Home}"/upgrade
         cd bin/targets/*/*

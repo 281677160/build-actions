@@ -240,8 +240,8 @@ jobs:
         cd amlogic
         sudo chmod +x make
         sudo ./make -d -b s905x3_s905x2_s905x_s905w_s905d_s922x_s912 -k 5.10.100_5.4.180 -a true
-        cd $GITHUB_WORKSPACE
         sudo mv -f $GITHUB_WORKSPACE/amlogic/out/* ${Home}/bin/targets/armvirt/64/ && sync
+        sudo rm -rf $GITHUB_WORKSPACE/amlogic
     
     - name: 整理固件文件夹
       id: organizer
@@ -254,7 +254,7 @@ jobs:
         if [[ -e ${GITHUB_WORKSPACE}/Clear ]]; then
           cp -Rf ${GITHUB_WORKSPACE}/Clear ./
           chmod +x Clear && source Clear
-          rm -fr Clear
+          rm -rf Clear
         fi
         rm -rf packages
         rename -v "s/^openwrt/${{ env.date1 }}-${{ env.CODE }}/" *

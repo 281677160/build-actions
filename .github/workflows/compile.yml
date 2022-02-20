@@ -230,17 +230,26 @@ jobs:
         name: filename+ipk_${{ env.CODE }}_${{ env.TARGET_PROFILE }}_${{ env.Compile_Date }}
         path: openwrt/bin
         
-    - name: 打包N1固件
+    - name: 打包N1固件(自动检测最新内核打包)
+      if: steps.compile.outputs.status == 'success' && env.AUTOMATIC_AMLOGIC == 'true'
       run: |
-        if: steps.compile.outputs.status == 'success' && env.AUTOMATIC_AMLOGIC == 'true'
-        source "${PATH1}/common.sh" && Diy_amlogic
+        cd $GITHUB_WORKSPACE
+        git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git amlogic
+        [ -d amlogic/openwrt-armvirt ] || mkdir -p amlogic/openwrt-armvirt
+        cp -f ${Home}/bin/targets/*/*/*.tar.gz amlogic/openwrt-armvirt/ && sync
+        cd amlogic
+        sudo chmod +x make
+        sudo ./make -d -b s905x3_s905x2_s905x_s905w_s905d_s922x_s912 -k 5.10.100_5.4.180 -a true
+        cd $GITHUB_WORKSPACE
+        sudo mv -f $GITHUB_WORKSPACE/amlogic/out/* ${Home}/bin/targets/armvirt/64/ && sync
     
     - name: 整理固件文件夹
       id: organizer
       run: |
-        cd "${Home}"
-        cp -Rf bin/targets/*/* "${Home}"/upgrade
-        cd bin/targets/*/*
+        if [ ! "${Modelfile}" == "openwrt_amlogic" ]; then
+          cp -Rf "${Home}"/bin/targets/*/* "${Home}"/upgrade
+        fi
+        cd "${Home}"/bin/targets/*/*
         rename -v "s/^immortalwrt/openwrt/" *
         if [[ -e ${GITHUB_WORKSPACE}/Clear ]]; then
           cp -Rf ${GITHUB_WORKSPACE}/Clear ./
@@ -251,8 +260,7 @@ jobs:
         rename -v "s/^openwrt/${{ env.date1 }}-${{ env.CODE }}/" *
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "::set-output name=status::success"
-        cd ${GITHUB_WORKSPACE}
-        echo "### $(date +"%Y年%m月%d号-%H点%M分")" > update_log.txt
+        echo "### $(date +"%Y年%m月%d号-%H点%M分")" > ${GITHUB_WORKSPACE}/update_log.txt
         
     - name: 上传固件在 github actions
       if: steps.organizer.outputs.status == 'success' && env.UPLOAD_FIRMWARE == 'true'

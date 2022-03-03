@@ -224,25 +224,13 @@ jobs:
         echo "BEIYONG2=$(grep -A 2 'target:' $GITHUB_WORKSPACE/.github/workflows/${{env.BILDYML}} |grep '\# \[.*\]' | sed -r 's/\# \[(.*)\]/\1/' |sed 's/^[ ]*//g')" >> $GITHUB_ENV
         echo "QDMAME1=$(sed -n '1,50p' shangyouck/.github/workflows/build-openwrt.yml |grep '^name' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')" >> $GITHUB_ENV
         echo "QDMAME2=$(sed -n '1,50p' $GITHUB_WORKSPACE/.github/workflows/${{env.BILDYML}} |grep '^name' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')" >> $GITHUB_ENV
-        if [[ `grep -c "WORKSPACE}/Clear" $GITHUB_WORKSPACE/repo/build/${{matrix.target}}/diy-part.sh` == '0' ]]; then
-        echo '
-        # 整理固件包时候,删除您不想要的固件或者文件,让它不需要上传到Actions空间
-        cat >${GITHUB_WORKSPACE}/Clear <<-EOF
-        rm -rf config.buildinfo
-        rm -rf feeds.buildinfo
-        rm -rf sha256sums
-        rm -rf version.buildinfo
-        EOF
-        ' >> $GITHUB_WORKSPACE/repo/build/${{matrix.target}}/diy-part.sh
-          echo "GONGGAO1=(diy-part.sh更新,注意查看固件包减负说明)编译${{env.TARGET_PROFILE}}固件" >> $GITHUB_ENV
-        else
-          echo "GONGGAO1=编译${{env.CODE}}-${{env.TARGET_PROFILE}}固件" >> $GITHUB_ENV
-        fi
+        echo "GONGGAO1=编译${{env.CODE}}-${{env.TARGET_PROFILE}}固件" >> $GITHUB_ENV
     
     - name: 触发compile.yml启动"${{matrix.target}}"编译
       if: steps.compileop.outputs.status == 'success' && env.REPO_TOKEN
       run: |
         cd $GITHUB_WORKSPACE
+        sed -i "s/BILDYML: build-openwrt.yml/BILDYML: ${{env.BILDYML}}/g" shangyouck/.github/workflows/build-openwrt.yml
         if [[ -n "${{env.QDMAME1}}" ]] && [[ -n "${{env.QDMAME2}}" ]]; then
           sed -i "s/${{env.QDMAME1}}/${{env.QDMAME2}}/g" shangyouck/.github/workflows/build-openwrt.yml
         fi

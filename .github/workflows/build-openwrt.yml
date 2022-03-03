@@ -40,8 +40,11 @@ on:
 
 env:
   # 如果多开build-openwrt.yml文件，请修改如下变量同步您多开文件的名称
+  
   BILDYML: build-openwrt.yml
+  
   # 多开build-openwrt.yml时把上面build-openwrt.yml改成其他的名称同步你的文件名称
+  # 多开build-openwrt.yml时，要把最上面的‘触发compile启动编译’也随便改一下，不重覆就可以了
 
   Github: https://github.com/${{github.repository}}
   Author: ${{github.actor}}

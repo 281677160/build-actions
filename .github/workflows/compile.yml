@@ -81,10 +81,10 @@ jobs:
           echo "ZZZ=package/lean/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
           echo "CODE=Lede" >> $GITHUB_ENV
           echo "OpenWrt_name=18.06" >> $GITHUB_ENV
-        elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
+        elif [[ "${REPO_BRANCH}" == "main" ]]; then
           echo "ZZZ=package/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
           echo "CODE=Lienol" >> $GITHUB_ENV
-          echo "OpenWrt_name=19.07" >> $GITHUB_ENV
+          echo "OpenWrt_name=20.06" >> $GITHUB_ENV
         elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
           echo "ZZZ=package/emortal/default-settings/files/99-default-settings" >> $GITHUB_ENV
           echo "CODE=Tianling" >> $GITHUB_ENV
@@ -145,7 +145,7 @@ jobs:
         cd openwrt
         if [[ "${REPO_BRANCH}" == "master" ]]; then
           source "${PATH1}/common.sh" && Diy_lede
-        elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
+        elif [[ "${REPO_BRANCH}" == "main" ]]; then
           source "${PATH1}/common.sh" && Diy_lienol
         elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
           source "${PATH1}/common.sh" && Diy_Tianling

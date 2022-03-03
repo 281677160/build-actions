@@ -15,6 +15,9 @@
 #
 #
 
+
+# 如果多开build-openwrt.yml文件，请把‘触发compile启动编译’修改成其他名称
+
 name: 触发cole启动编译
 on:
   workflow_dispatch:

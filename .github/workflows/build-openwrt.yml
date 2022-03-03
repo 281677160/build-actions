@@ -39,6 +39,10 @@ on:
 
 
 env:
+  # 如果多开build-openwrt.yml文件，请修改如下变量同步您多开文件的名称
+  BILDYML: build-openwrt.yml
+  # 多开build-openwrt.yml时把上面build-openwrt.yml改成其他的名称同步你的文件名称
+
   Github: https://github.com/${{github.repository}}
   Author: ${{github.actor}}
   Apidz: ${{github.repository}}
@@ -91,7 +95,6 @@ jobs:
         echo
         git clone --depth 1 -b main https://github.com/281677160/common build/common > /dev/null 2>&1
         chmod -R +x "${GITHUB_WORKSPACE}/build/common"
-        echo "BILDYML=$(grep "compileop" -rl ${GITHUB_WORKSPACE}/.github |cut -d "/" -f9)" >> $GITHUB_ENV
         echo "NETIP=package/base-files/files/etc/networkip" >> $GITHUB_ENV
         echo "DELETE=package/base-files/files/etc/deletefile" >> $GITHUB_ENV
         if [[ "${Modelfile}" == "openwrt_amlogic" ]]; then

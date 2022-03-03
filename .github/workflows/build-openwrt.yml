@@ -244,6 +244,7 @@ jobs:
       if: steps.compileop.outputs.status == 'success' && env.REPO_TOKEN
       run: |
         cd $GITHUB_WORKSPACE
+        sed -i "s/build-openwrt.yml/${{env.BILDYML}}/g" shangyouck/.github/workflows/build-openwrt.yml
         if [[ -n "${{env.QDMAME1}}" ]] && [[ -n "${{env.QDMAME2}}" ]]; then
           sed -i "s/${{env.QDMAME1}}/${{env.QDMAME2}}/g" shangyouck/.github/workflows/build-openwrt.yml
         fi

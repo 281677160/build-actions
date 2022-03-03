@@ -15,7 +15,7 @@
 #
 #
 
-name: 触发compile启动编译
+name: 触发cole启动编译
 on:
   workflow_dispatch:
     inputs:
@@ -39,9 +39,9 @@ on:
 
 
 env:
-  # 如果多开build-openwrt.yml文件，请修改如下变量同步您多开文件的名称
-  BILDYML: build-openwrt.yml
-  # 多开build-openwrt.yml时把上面build-openwrt.yml改成其他的名称同步你的文件名称
+  # 如果多开lededd.yml文件，请修改如下变量同步您多开文件的名称
+  BILDYML: lededd.yml
+  # 多开lededd.yml时把上面lededd.yml改成其他的名称同步你的文件名称
 
   Github: https://github.com/${{github.repository}}
   Author: ${{github.actor}}
@@ -61,7 +61,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [Lienol_source]
+        target: [Lede_source]
 
         # [Lede_source,Lienol_source,Mortal_source,Tianling_source,openwrt_amlogic]
 
@@ -203,27 +203,27 @@ jobs:
         name: .config_${{ env.CODE }}_${{ env.TARGET_PROFILE }}_${{ env.Compile_Date }}
         path: config.txt
         
-    - name: 同步上游compile.yml和build-openwrt.yml文件
+    - name: 同步上游compile.yml和lededd.yml文件
       if: steps.compileop.outputs.status == 'success' && env.REPO_TOKEN
       run: |
         cd $GITHUB_WORKSPACE
         git clone -b main https://github.com/281677160/build-actions.git shangyouck
         git clone -b main https://github.com/${{github.repository}}.git repo
         echo "CRON2=$(grep -A 1 'schedule:' $GITHUB_WORKSPACE/.github/workflows/${{env.BILDYML}} |awk 'NR==2' |sed 's/^[ ]*//g' |sed s/^#// |sed 's/^[ ]*//g' |cut -d "#" -f1 |sed 's/\//\\&/g' |sed 's/\*/\\&/g')" >> $GITHUB_ENV
-        echo "CRON1=$(grep -A 1 'schedule:' shangyouck/.github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed s/^#// |sed 's/^[ ]*//g' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')" >> $GITHUB_ENV
+        echo "CRON1=$(grep -A 1 'schedule:' shangyouck/.github/workflows/lededd.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed s/^#// |sed 's/^[ ]*//g' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')" >> $GITHUB_ENV
         if [[ `grep 'cron:' $GITHUB_WORKSPACE/.github/workflows/${{env.BILDYML}} |sed 's/^[ ]*//g' |grep '^-\ cron'` ]]; then
-          sed -i 's/^#\(.*schedule:\)/\1/' shangyouck/.github/workflows/build-openwrt.yml
-          sed -i 's/^#\(.*- cron:\)/\1/' shangyouck/.github/workflows/build-openwrt.yml
+          sed -i 's/^#\(.*schedule:\)/\1/' shangyouck/.github/workflows/lededd.yml
+          sed -i 's/^#\(.*- cron:\)/\1/' shangyouck/.github/workflows/lededd.yml
         fi
-        echo "TARGET1=$(grep 'target: \[' shangyouck/.github/workflows/build-openwrt.yml |sed 's/^[ ]*//g' |grep '^target' |cut -d '#' -f1 |sed 's/\[/\\&/' |sed 's/\]/\\&/')" >> $GITHUB_ENV
+        echo "TARGET1=$(grep 'target: \[' shangyouck/.github/workflows/lededd.yml |sed 's/^[ ]*//g' |grep '^target' |cut -d '#' -f1 |sed 's/\[/\\&/' |sed 's/\]/\\&/')" >> $GITHUB_ENV
         echo "TARGET2=$(grep 'target: \[' $GITHUB_WORKSPACE/.github/workflows/${{env.BILDYML}}  |sed 's/^[ ]*//g' |grep '^target' |cut -d '#' -f1 |sed 's/\[/\\&/' |sed 's/\]/\\&/')" >> $GITHUB_ENV
         echo "QIDONG1=$(grep -A 1 'paths:' shangyouck/.github/workflows/compile.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed 's/\//\\&/g')" >> $GITHUB_ENV
         echo "QIDONG2=- 'build\/${{matrix.target}}\/start-up\/start'" >> $GITHUB_ENV
         echo "TARGE1=$(grep 'target: \[' shangyouck/.github/workflows/compile.yml |sed 's/^[ ]*//g' |grep '^target' |cut -d '#' -f1 |sed 's/\[/\\&/' |sed 's/\]/\\&/')" >> $GITHUB_ENV
         echo "TARGE2=target: \\[${{matrix.target}}\\]" >> $GITHUB_ENV
-        echo "BEIYONG1=$(grep -A 2 'target:' shangyouck/.github/workflows/build-openwrt.yml |grep '\# \[.*\]' | sed -r 's/\# \[(.*)\]/\1/' |sed 's/^[ ]*//g')" >> $GITHUB_ENV
+        echo "BEIYONG1=$(grep -A 2 'target:' shangyouck/.github/workflows/lededd.yml |grep '\# \[.*\]' | sed -r 's/\# \[(.*)\]/\1/' |sed 's/^[ ]*//g')" >> $GITHUB_ENV
         echo "BEIYONG2=$(grep -A 2 'target:' $GITHUB_WORKSPACE/.github/workflows/${{env.BILDYML}} |grep '\# \[.*\]' | sed -r 's/\# \[(.*)\]/\1/' |sed 's/^[ ]*//g')" >> $GITHUB_ENV
-        echo "QDMAME1=$(sed -n '1,50p' shangyouck/.github/workflows/build-openwrt.yml |grep '^name' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')" >> $GITHUB_ENV
+        echo "QDMAME1=$(sed -n '1,50p' shangyouck/.github/workflows/lededd.yml |grep '^name' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')" >> $GITHUB_ENV
         echo "QDMAME2=$(sed -n '1,50p' $GITHUB_WORKSPACE/.github/workflows/${{env.BILDYML}} |grep '^name' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')" >> $GITHUB_ENV
         if [[ `grep -c "WORKSPACE}/Clear" $GITHUB_WORKSPACE/repo/build/${{matrix.target}}/diy-part.sh` == '0' ]]; then
         echo '
@@ -244,18 +244,18 @@ jobs:
       if: steps.compileop.outputs.status == 'success' && env.REPO_TOKEN
       run: |
         cd $GITHUB_WORKSPACE
-        sed -i "s/build-openwrt.yml/${{env.BILDYML}}/g" shangyouck/.github/workflows/build-openwrt.yml
+        sed -i "s/lededd.yml/${{env.BILDYML}}/g" shangyouck/.github/workflows/lededd.yml
         if [[ -n "${{env.QDMAME1}}" ]] && [[ -n "${{env.QDMAME2}}" ]]; then
-          sed -i "s/${{env.QDMAME1}}/${{env.QDMAME2}}/g" shangyouck/.github/workflows/build-openwrt.yml
+          sed -i "s/${{env.QDMAME1}}/${{env.QDMAME2}}/g" shangyouck/.github/workflows/lededd.yml
         fi
         if [[ -n "${{env.BEIYONG1}}" ]] && [[ -n "${{env.BEIYONG2}}" ]]; then
-          sed -i "s/${{env.BEIYONG1}}/${{env.BEIYONG2}}/g" shangyouck/.github/workflows/build-openwrt.yml
+          sed -i "s/${{env.BEIYONG1}}/${{env.BEIYONG2}}/g" shangyouck/.github/workflows/lededd.yml
         fi
         if [[ -n "${{env.CRON1}}" ]] && [[ -n "${{env.CRON2}}" ]]; then
-          sed -i "s/${{env.CRON1}}/${{env.CRON2}}/g" shangyouck/.github/workflows/build-openwrt.yml
+          sed -i "s/${{env.CRON1}}/${{env.CRON2}}/g" shangyouck/.github/workflows/lededd.yml
         fi
         if [[ -n "${{env.TARGET1}}" ]] && [[ -n "${{env.TARGET2}}" ]]; then
-          sed -i "s/${{env.TARGET1}}/${{env.TARGET2}}/g" shangyouck/.github/workflows/build-openwrt.yml
+          sed -i "s/${{env.TARGET1}}/${{env.TARGET2}}/g" shangyouck/.github/workflows/lededd.yml
         fi
         if [[ -n "${{env.TARGE1}}" ]] && [[ -n "${{env.TARGE2}}" ]]; then
           sed -i "s/${{env.TARGE1}}/${{env.TARGE2}}/g" shangyouck/.github/workflows/compile.yml
@@ -280,7 +280,7 @@ jobs:
         fi
         cp -Rf $GITHUB_WORKSPACE/shangyouck/.github/workflows/synchronization.yml .github/workflows/synchronization.yml
         git rm -rf $GITHUB_WORKSPACE/repo/.github/workflows/${{env.BILDYML}}
-        cp -Rf $GITHUB_WORKSPACE/shangyouck/.github/workflows/build-openwrt.yml .github/workflows/build-openwrt.yml
+        cp -Rf $GITHUB_WORKSPACE/shangyouck/.github/workflows/lededd.yml .github/workflows/lededd.yml
         mkdir -p build/${{matrix.target}}/start-up
         echo "${{env.CODE}}于$(date +%Y年%m月%d号%H时%M分%S秒)自动触发编译${{env.TARGET_PROFILE}}固件" > build/${Modelfile}/start-up/start
         git add .

@@ -230,7 +230,7 @@ jobs:
         name: filename+ipk_${{ env.CODE }}_${{ env.TARGET_PROFILE }}_${{ env.Compile_Date }}
         path: openwrt/bin
         
-    - name: 打包N1固件(自动检测最新内核打包)
+    - name: 打包景晨系列固件(自动检测最新内核打包)
       continue-on-error: true
       if: steps.compile.outputs.status == 'success' && env.AUTOMATIC_AMLOGIC == 'true'
       run: |

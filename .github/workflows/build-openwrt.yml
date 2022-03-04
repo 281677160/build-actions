@@ -114,7 +114,7 @@ jobs:
         elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
           echo "ZZZ=package/emortal/default-settings/files/99-default-settings" >> $GITHUB_ENV
           echo "CODE=Tianling" >> $GITHUB_ENV
-          echo "OpenWrt_name=tl-18.06" >> $GITHUB_ENV
+          echo "OpenWrt_name=18.06_tl" >> $GITHUB_ENV
         elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
           echo "ZZZ=package/emortal/default-settings/files/99-default-settings" >> $GITHUB_ENV
           echo "CODE=Mortal" >> $GITHUB_ENV

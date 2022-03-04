@@ -232,6 +232,7 @@ jobs:
         
     - name: 打包N1固件(自动检测最新内核打包)
       if: steps.compile.outputs.status == 'success' && env.AUTOMATIC_AMLOGIC == 'true'
+      continue-on-error: true
       run: |
         cd $GITHUB_WORKSPACE
         git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git amlogic

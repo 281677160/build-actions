@@ -158,12 +158,6 @@ jobs:
         cp -Rf $GITHUB_WORKSPACE/shangyou/* ./
         cp -Rf $GITHUB_WORKSPACE/shangyou/.github/workflows/* .github/workflows
         git add .
-        git commit -m "同步上游281677160/build-actions于$(date +%Y年%m月%d号%H时%M分%S秒)" |tee build.log
-        if [[ `grep -c "Your branch is up to date with" build.log` == '1' ]]; then
-          echo "配置文件无更新,所以无需要覆盖!"
-        else
-          rm -fr build.log
-          echo "正在更新${{github.repository}}!"
-          git push --quiet "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main
-          echo "同步完成，请注意查看[diy-part.sh]和[settings.ini]文件的变化和设置好!"
-        fi
+        git commit -m "同步上游281677160/build-actions于$(date +%Y年%m月%d号%H时%M分%S秒)"
+        git push --quiet "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main
+        echo "同步完成，请注意查看[diy-part.sh]和[settings.ini]文件的变化和设置好!"

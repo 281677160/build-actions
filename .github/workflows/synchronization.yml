@@ -17,6 +17,7 @@ on:
         default: 'fork-actions'
 
 env:
+  BILDYML: synchronization.yml
   REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
   TZ: Asia/Shanghai
 
@@ -43,7 +44,6 @@ jobs:
       if: env.REPO_TOKEN && (github.event.inputs.again-fork == 'fork')
       run: |
         cd $GITHUB_WORKSPACE
-        echo "BILDYML=$(grep "again-fork" -rl ${GITHUB_WORKSPACE}/.github |cut -d "/" -f9)" >> $GITHUB_ENV
         git clone -b main https://github.com/281677160/build-actions.git shangyou
         git clone -b main https://github.com/${{github.repository}}.git repogx
         if [[ -d repogx/build/Lede_source ]];then

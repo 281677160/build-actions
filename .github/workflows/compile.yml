@@ -274,6 +274,7 @@ jobs:
         path: ${{ env.FIRMWARE }}
     
     - name: 上传固件到「奶牛快传」
+      continue-on-error: true
       if: steps.organizer.outputs.status == 'success' && env.UPLOAD_COWTRANSFER == 'true'
       run: |
         curl -fsSL git.io/file-transfer | sh
@@ -283,6 +284,7 @@ jobs:
         echo "::warning file=cowtransfer.com::$(cat cowtransfer.log | grep https)"
 
     - name: 上传固件到「WeTransfer」
+      continue-on-error: true
       if: steps.organizer.outputs.status == 'success' && env.UPLOAD_WETRANSFER == 'true'
       run: |
         curl -fsSL git.io/file-transfer | sh

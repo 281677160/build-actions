@@ -159,7 +159,7 @@ jobs:
         /bin/bash "${PATH1}/$DIY_PART_SH"
         ./scripts/feeds update -a
         ./scripts/feeds install -a > /dev/null 2>&1
-        ./scripts/feeds install -a
+        ./scripts/feeds install -a -f
         mv "$PATH1/$CONFIG_FILE" .config
         if [[ "${REGULAR_UPDATE}" == "true" ]]; then
           source "${PATH1}/upgrade.sh" && Diy_Part1

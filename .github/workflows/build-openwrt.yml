@@ -128,7 +128,8 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        sudo -E apt-get -qq update > /dev/null 2>&1
+        sudo -E apt-get -qq update -y
+        sudo -E apt-get -qq full-upgrade -y
         sudo -E apt-get -qq install -y subversion build-essential libncurses5-dev openssl libssl-dev zlib1g-dev gawk git ccache gettext libssl-dev xsltproc zip git-core wget curl grep > /dev/null 2>&1
         sudo timedatectl set-timezone "$TZ"
         sudo mkdir -p /workdir

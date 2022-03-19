@@ -193,13 +193,13 @@ jobs:
         echo "Compile_Date=$(date +%Y%m%d-%H%M)" >> $GITHUB_ENV
         if [ `grep -c "CONFIG_TARGET_x86_64=y" .config` -eq '1' ]; then
          echo "TARGET_PROFILE=x86-64" >> $GITHUB_ENV
-        elif [ `grep -c "CONFIG_TARGET_x86_generic=y" .config` -eq '1' ]; then
+        elif [[ `grep -c "CONFIG_TARGET_x86=y" .config` == '1' ]] && [[ `grep -c "CONFIG_TARGET_x86_64=y" .config` == '0' ]]; then
          echo "TARGET_PROFILE=x86_32" >> $GITHUB_ENV
         elif [ `grep -c "CONFIG_TARGET.*DEVICE.*=y" .config` -eq '1' ]; then
           grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
           [ -s DEVICE_NAME ] && echo "TARGET_PROFILE=$(cat DEVICE_NAME)" >> $GITHUB_ENV
         else
-          echo "TARGET_PROFILE=armvirt" >> $GITHUB_ENV
+          echo "TARGET_PROFILE=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' .config)" >> $GITHUB_ENV
         fi
         
     - name: 上传.config配置文件在 github actions

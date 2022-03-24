@@ -117,14 +117,13 @@ jobs:
     - name: 公 告
       run: |
         cp -Rf `find ./ -maxdepth 1 -type d ! -path './openwrt' ! -path './'` openwrt
-        source ${GITHUB_WORKSPACE}/build/${matrixtarget}/ceshi777.sh && Diy_variable
-        source ${GITHUB_WORKSPACE}/build/${matrixtarget}/ceshi777.sh && Diy_Notice
+        source ${GITHUB_WORKSPACE}/build/${matrixtarget}/common.sh && Diy_variable
+        source ${GITHUB_WORKSPACE}/build/${matrixtarget}/common.sh && Diy_Notice
  
     - name: 加载源,补丁和自定义设置
       run: |
         cd openwrt
-        source $BUILD_PATH/ceshi777.sh && Diy_menu
-        ./scripts/diffconfig.sh > ${GITHUB_WORKSPACE}/config.txt
+        source $BUILD_PATH/common.sh && Diy_menu
         
     - name: SSH远程连接（制作.config配置文件）
       if: env.SSH_ACTIONS == 'true' || (github.event.inputs.ssh == 'ssh')
@@ -136,13 +135,14 @@ jobs:
     - name: 生成配置文件
       run: |
         cd openwrt
-        source $BUILD_PATH/ceshi777.sh && Diy_menu2
+        source $BUILD_PATH/common.sh && Diy_menu2
+        ./scripts/diffconfig.sh > ${GITHUB_WORKSPACE}/config.txt
         
     - name: 上传.config配置文件在 github actions
       if: env.UPLOAD_CONFIG == 'true'
       uses: actions/upload-artifact@v2
       with:
-        name: .config_${{ env.CODE }}_${{ env.TARGET_PROFILE }}_${{ env.Compile_Date }}
+        name: .config_${{ env.SOURCE }}_${{ env.TARGET_PROFILE }}_${{ env.Firmware_Date }}
         path: config.txt
         
     - name: 同步上游compile.yml和build-openwrt.yml文件
@@ -216,13 +216,11 @@ jobs:
         
     - name: 编译信息
       continue-on-error: true
+      if: env.BY_INFORMATION == 'true'
       run: |
         cd openwrt
-        source "${PATH1}/common.sh" && Diy_chuli > /dev/null 2>&1
-        if [ "${BY_INFORMATION}" == "true" ]; then
-          source "${PATH1}/upgrade.sh" && GET_TARGET_INFO
-          source "${PATH1}/common.sh" && Diy_xinxi
-        fi
+        source $BUILD_PATH/pvehy.sh && GET_TARGET_INFO
+        source $BUILD_PATH/ceshi777.sh && Diy_xinxi
     
     - name: 清理Actions空间
       if: env.REPO_TOKEN

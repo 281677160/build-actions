@@ -219,7 +219,7 @@ jobs:
       if: env.BY_INFORMATION == 'true'
       run: |
         cd openwrt
-        source $BUILD_PATH/pvehy.sh && GET_TARGET_INFO
+        source $BUILD_PATH/upgrade.sh && GET_TARGET_INFO
         source $BUILD_PATH/common.sh && Diy_xinxi
     
     - name: 清理Actions空间

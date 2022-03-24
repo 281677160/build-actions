@@ -220,7 +220,7 @@ jobs:
       run: |
         cd openwrt
         source $BUILD_PATH/pvehy.sh && GET_TARGET_INFO
-        source $BUILD_PATH/ceshi777.sh && Diy_xinxi
+        source $BUILD_PATH/common.sh && Diy_xinxi
     
     - name: 清理Actions空间
       if: env.REPO_TOKEN

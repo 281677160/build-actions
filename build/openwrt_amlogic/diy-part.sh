@@ -25,11 +25,11 @@ EOF
 
 sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/Makefile             # 选择argon为默认主题
 
-sed -i "s/OpenWrt /${Author} compiled in $(TZ=UTC-8 date "+%Y.%m.%d") @ OpenWrt /g" $ZZZ            # 增加个性名字 ${Author} 默认为你的github帐号
+sed -i "s/OpenWrt /${Author} compiled in $(TZ=UTC-8 date "+%Y.%m.%d") @ OpenWrt /g" $ZZZ_PATH       # 增加个性名字 ${Author} 默认为你的github帐号
 
-sed -i '/CYXluq4wUazHjmCDBCqXF/d' $ZZZ                                                              # 设置密码为空
+sed -i '/CYXluq4wUazHjmCDBCqXF/d' $ZZZ_PATH                                                         # 设置密码为空
 
-sed -i '/to-ports 53/d' $ZZZ                                                                        # 删除默认防火墙
+sed -i '/to-ports 53/d' $ZZZ_PATH                                                                   # 删除默认防火墙
 
 
 # 修改插件名字

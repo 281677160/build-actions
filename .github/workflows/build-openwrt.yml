@@ -124,6 +124,7 @@ jobs:
       run: |
         cd openwrt
         source $BUILD_PATH/ceshi777.sh && Diy_menu
+        ./scripts/diffconfig.sh > ${GITHUB_WORKSPACE}/config.txt
         
     - name: SSH远程连接（制作.config配置文件）
       if: env.SSH_ACTIONS == 'true' || (github.event.inputs.ssh == 'ssh')

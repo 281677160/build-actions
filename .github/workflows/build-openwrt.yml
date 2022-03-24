@@ -47,7 +47,7 @@ env:
 
   Github: https://github.com/${{github.repository}}
   Author: ${{github.actor}}
-  Apidz: ${{github.repository}}
+  Warehouse: ${{github.repository}}
   Run_number: ${{github.run_number}}
   Run_workflow: ${{github.workflow}}
   REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
@@ -89,40 +89,8 @@ jobs:
         echo "REGULAR_UPDATE=${REGULAR_UPDATE}" >> $GITHUB_ENV
         echo "USE_CACHEWRTBUILD=${USE_CACHEWRTBUILD}" >> $GITHUB_ENV
         echo "BY_INFORMATION=${BY_INFORMATION}" >> $GITHUB_ENV
-        echo "CangKu=${Apidz##*/}" >> $GITHUB_ENV
-        echo "Modelfile=${{matrix.target}}" >> $GITHUB_ENV 
-    
-    - name: 读取扩展文件
-      run: |
-        echo
-        git clone --depth 1 -b main https://github.com/281677160/common build/common > /dev/null 2>&1
-        chmod -R +x "${GITHUB_WORKSPACE}/build/common"
-        echo "NETIP=package/base-files/files/etc/networkip" >> $GITHUB_ENV
-        echo "DELETE=package/base-files/files/etc/deletefile" >> $GITHUB_ENV
-        if [[ "${Modelfile}" == "openwrt_amlogic" ]]; then
-          echo "ZZZ=package/lean/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
-          echo "CODE=amlogic" >> $GITHUB_ENV
-          echo "OpenWrt_name=18.06" >> $GITHUB_ENV
-        elif [[ "${REPO_BRANCH}" == "master" ]]; then
-          echo "ZZZ=package/lean/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
-          echo "CODE=Lede" >> $GITHUB_ENV
-          echo "OpenWrt_name=18.06" >> $GITHUB_ENV
-        elif [[ "${REPO_BRANCH}" == "main" ]]; then
-          echo "ZZZ=package/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
-          echo "CODE=Lienol" >> $GITHUB_ENV
-          echo "OpenWrt_name=20.06" >> $GITHUB_ENV
-        elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
-          echo "ZZZ=package/emortal/default-settings/files/99-default-settings" >> $GITHUB_ENV
-          echo "CODE=Tianling" >> $GITHUB_ENV
-          echo "OpenWrt_name=18.06_tl" >> $GITHUB_ENV
-        elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
-          echo "ZZZ=package/emortal/default-settings/files/99-default-settings" >> $GITHUB_ENV
-          echo "CODE=Mortal" >> $GITHUB_ENV
-          echo "OpenWrt_name=21.02" >> $GITHUB_ENV
-        else
-          echo "没发现该源码的分支，如果您没更改过的话，应该是上游仓库修改了，请同步上游仓库"
-          exit 1
-        fi
+        echo "Library=${Warehouse##*/}" >> $GITHUB_ENV
+        echo "matrixtarget=${{matrix.target}}" >> $GITHUB_ENV
         
     - name: 部署编译环境
       env:
@@ -140,37 +108,22 @@ jobs:
     - name: 下载"${{matrix.target}}"源码
       working-directory: /workdir
       run: |
-        git clone -b "$REPO_BRANCH" --single-branch "$REPO_URL" openwrt > /dev/null 2>&1
+        git clone --depth 1 -b main https://github.com/281677160/common ${GITHUB_WORKSPACE}/build/common
+        mv -f ${GITHUB_WORKSPACE}/build/common/*.sh ${GITHUB_WORKSPACE}/build/${matrixtarget}/
+        chmod -R +x ${GITHUB_WORKSPACE}/build
+        git clone -b "$REPO_BRANCH" --single-branch "$REPO_URL" openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
-        cd $GITHUB_WORKSPACE/openwrt
-        ./scripts/feeds update -a > /dev/null 2>&1
-        echo "Home=${GITHUB_WORKSPACE}/openwrt" >> $GITHUB_ENV
-        echo "PATH1=${GITHUB_WORKSPACE}/openwrt/build/${{matrix.target}}" >> $GITHUB_ENV
+ 
+    - name: 公 告
+      run: |
+        cp -Rf `find ./ -maxdepth 1 -type d ! -path './openwrt' ! -path './'` openwrt
+        source ${GITHUB_WORKSPACE}/build/${matrixtarget}/ceshi777.sh && Diy_variable
+        source ${GITHUB_WORKSPACE}/build/${matrixtarget}/ceshi777.sh && Diy_Notice
  
     - name: 加载源,补丁和自定义设置
       run: |
-        cp -Rf `find ./ -maxdepth 1 -type d ! -path './openwrt' ! -path './'` openwrt
-        mv -f "${Home}"/build/common/*.sh "${PATH1}"
-        source "${PATH1}/common.sh" && Diy_settings
         cd openwrt
-        if [[ "${REPO_BRANCH}" == "master" ]]; then
-          source "${PATH1}/common.sh" && Diy_lede
-        elif [[ "${REPO_BRANCH}" == "main" ]]; then
-          source "${PATH1}/common.sh" && Diy_lienol
-        elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
-          source "${PATH1}/common.sh" && Diy_Tianling
-        elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
-          source "${PATH1}/common.sh" && Diy_mortal
-        fi
-        source "${PATH1}/common.sh" && Diy_all > /dev/null 2>&1
-        /bin/bash "${PATH1}/$DIY_PART_SH"
-        ./scripts/feeds update -a > /dev/null 2>&1
-        ./scripts/feeds install -a > /dev/null 2>&1
-        ./scripts/feeds install -a -f
-        [[ -e "$PATH1/$CONFIG_FILE" ]] && mv "$PATH1/$CONFIG_FILE" .config
-        if [[ "${REGULAR_UPDATE}" == "true" ]]; then
-          source "${PATH1}/upgrade.sh" && Diy_Part1
-        fi
+        source $BUILD_PATH/ceshi777.sh && Diy_menu
         
     - name: SSH远程连接（制作.config配置文件）
       if: env.SSH_ACTIONS == 'true' || (github.event.inputs.ssh == 'ssh')
@@ -179,28 +132,10 @@ jobs:
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
-    - name: 生成"${{matrix.target}}"配置文件
-      id: compileop
+    - name: 生成配置文件
       run: |
         cd openwrt
-        source "${PATH1}/common.sh" && Diy_chajian > /dev/null 2>&1
-        make defconfig > /dev/null 2>&1
-        ./scripts/diffconfig.sh > ${GITHUB_WORKSPACE}/${CONFIG_FILE}
-        cp -Rf ${GITHUB_WORKSPACE}/${CONFIG_FILE} ${GITHUB_WORKSPACE}/config.txt
-        echo "::set-output name=status::success"
-        echo "TARGET_BOARD=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' .config)" >> $GITHUB_ENV
-        echo "TARGET_SUBTARGET=$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' .config)" >> $GITHUB_ENV
-        echo "Compile_Date=$(date +%Y%m%d-%H%M)" >> $GITHUB_ENV
-        if [ `grep -c "CONFIG_TARGET_x86_64=y" .config` -eq '1' ]; then
-         echo "TARGET_PROFILE=x86-64" >> $GITHUB_ENV
-        elif [[ `grep -c "CONFIG_TARGET_x86=y" .config` == '1' ]] && [[ `grep -c "CONFIG_TARGET_x86_64=y" .config` == '0' ]]; then
-         echo "TARGET_PROFILE=x86_32" >> $GITHUB_ENV
-        elif [ `grep -c "CONFIG_TARGET.*DEVICE.*=y" .config` -eq '1' ]; then
-          grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
-          [ -s DEVICE_NAME ] && echo "TARGET_PROFILE=$(cat DEVICE_NAME)" >> $GITHUB_ENV
-        else
-          echo "TARGET_PROFILE=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' .config)" >> $GITHUB_ENV
-        fi
+        source $BUILD_PATH/ceshi777.sh && Diy_menu2
         
     - name: 上传.config配置文件在 github actions
       if: env.UPLOAD_CONFIG == 'true'

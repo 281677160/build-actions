@@ -138,6 +138,7 @@ jobs:
         cd openwrt
         source $BUILD_PATH/common.sh && Diy_menu2
         ./scripts/diffconfig.sh > ${GITHUB_WORKSPACE}/config.txt
+        echo "::set-output name=status::success"
         
     - name: 上传.config配置文件在 github actions
       if: env.UPLOAD_CONFIG == 'true'

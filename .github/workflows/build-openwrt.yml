@@ -117,8 +117,8 @@ jobs:
     - name: 公 告
       run: |
         cp -Rf `find ./ -maxdepth 1 -type d ! -path './openwrt' ! -path './'` openwrt
-        source ${GITHUB_WORKSPACE}/build/${matrixtarget}/common.sh && Diy_variable
-        source ${GITHUB_WORKSPACE}/build/${matrixtarget}/common.sh && Diy_Notice
+        source $GITHUB_WORKSPACE/build/${{matrix.target}}/common.sh && Diy_variable
+        source $GITHUB_WORKSPACE/build/${{matrix.target}}/common.sh && Diy_Notice
  
     - name: 加载源,补丁和自定义设置
       run: |

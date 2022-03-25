@@ -100,19 +100,19 @@ jobs:
         sudo -E apt-get -qq full-upgrade -y
         sudo -E apt-get -qq install -y subversion build-essential libncurses5-dev openssl libssl-dev zlib1g-dev gawk git ccache gettext libssl-dev xsltproc zip git-core wget curl grep > /dev/null 2>&1
         sudo timedatectl set-timezone "$TZ"
-        sudo mkdir -p /workdir
-        sudo chown $USER:$GROUPS /workdir
+        sudo mkdir -p /${matrixtarget}
+        sudo chown $USER:$GROUPS /${matrixtarget}
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
     
     - name: 下载"${{matrix.target}}"源码
-      working-directory: /workdir
+      working-directory: /${matrixtarget}
       run: |
         git clone --depth 1 -b main https://github.com/281677160/common ${GITHUB_WORKSPACE}/build/common
         mv -f ${GITHUB_WORKSPACE}/build/common/*.sh ${GITHUB_WORKSPACE}/build/${matrixtarget}/
         chmod -R +x ${GITHUB_WORKSPACE}/build
         git clone -b "$REPO_BRANCH" --single-branch "$REPO_URL" openwrt
-        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+        ln -sf /${matrixtarget}/openwrt $GITHUB_WORKSPACE/openwrt
  
     - name: 公 告
       run: |

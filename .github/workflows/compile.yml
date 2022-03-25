@@ -78,9 +78,9 @@ jobs:
         sudo -E apt-get -qq autoremove -y --purge
         sudo -E apt-get -qq clean
         sudo timedatectl set-timezone "$TZ"
-        sudo mkdir -p /${matrixtarget}
-        sudo chown $USER:$GROUPS /${matrixtarget}
-        if [[ "${matrixtarget}" == "openwrt_amlogic" ]]; then
+        sudo mkdir -p /${{matrix.target}}
+        sudo chown $USER:$GROUPS /${{matrix.target}}
+        if [[ "${{matrix.target}}" == "openwrt_amlogic" ]]; then
             docker rmi $(docker images -q)
             sudo -E apt-get remove -y --purge azure-cli ghc zulu* hhvm llvm* firefox google* dotnet* powershell mysql* php* mssql-tools msodbcsql17 android*
             sudo rm -rf /etc/mysql /etc/php /swapfile
@@ -96,13 +96,13 @@ jobs:
         fi
     
     - name: 下载"${{matrix.target}}"源码
-      working-directory: /${matrixtarget}
+      working-directory: /${{matrix.target}}
       run: |
         git clone --depth 1 -b main https://github.com/281677160/common ${GITHUB_WORKSPACE}/build/common
-        mv -f ${GITHUB_WORKSPACE}/build/common/*.sh ${GITHUB_WORKSPACE}/build/${matrixtarget}/
+        mv -f ${GITHUB_WORKSPACE}/build/common/*.sh ${GITHUB_WORKSPACE}/build/${{matrix.target}}/
         chmod -R +x ${GITHUB_WORKSPACE}/build
         git clone -b "$REPO_BRANCH" --single-branch "$REPO_URL" openwrt
-        ln -sf /${matrixtarget}/openwrt $GITHUB_WORKSPACE/openwrt
+        ln -sf /${{matrix.target}}/openwrt $GITHUB_WORKSPACE/openwrt
     
     - name: 公 告
       run: |

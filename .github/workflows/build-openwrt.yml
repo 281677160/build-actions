@@ -137,7 +137,8 @@ jobs:
       run: |
         cd openwrt
         source $BUILD_PATH/common.sh && Diy_menu2
-        ./scripts/diffconfig.sh > ${GITHUB_WORKSPACE}/config.txt
+        ./scripts/diffconfig.sh > ${GITHUB_WORKSPACE}/${CONFIG_FILE}
+        cp -Rf ${GITHUB_WORKSPACE}/${CONFIG_FILE} ${GITHUB_WORKSPACE}/config.txt
         echo "::set-output name=status::success"
         
     - name: 上传.config配置文件在 github actions
@@ -211,7 +212,7 @@ jobs:
         git rm -rf $GITHUB_WORKSPACE/repo/.github/workflows/${{env.BILDYML}}
         cp -Rf $GITHUB_WORKSPACE/shangyouck/.github/workflows/build-openwrt.yml .github/workflows/${{env.BILDYML}}
         mkdir -p build/${{matrix.target}}/start-up
-        echo "${{env.CODE}}于$(date +%Y年%m月%d号%H时%M分%S秒)自动触发编译${{env.TARGET_PROFILE}}固件" > build/${Modelfile}/start-up/start
+        echo "${{env.SOURCE}}于$(date +%Y年%m月%d号%H时%M分%S秒)自动触发编译${{env.TARGET_PROFILE}}固件" > build/${Modelfile}/start-up/start
         git add .
         git commit -m "${{env.GONGGAO1}}"
         git push --force "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main

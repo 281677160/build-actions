@@ -150,6 +150,7 @@ jobs:
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
+        echo "::set-output name=status::success"
     
     - name: 开始编译固件
       id: compile
@@ -157,8 +158,8 @@ jobs:
         cd openwrt
         echo -e "$(nproc) thread compile"
         make -j$(nproc) || make -j1 V=s
-        echo "::set-output name=status::success"
         echo "date=$(date "+%Y%m%d%H%M%S")" >> $GITHUB_ENV
+        echo "::set-output name=status::success"
     
     - name: 上传bin文件夹(固件+ipk)在 github actions
       continue-on-error: true

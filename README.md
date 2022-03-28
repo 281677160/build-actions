@@ -8,8 +8,9 @@
 - Lienol_source源码原本的19.07分支修改成[main](https://github.com/Lienol/openwrt/tree/main)分支源码，内核版本为5.10
 ---
 
-- [`编译教程`](https://github.com/danshui-git/shuoming#readme)
+- # [`编译教程`](https://github.com/danshui-git/shuoming#readme)
 
+---
 - # 鸣谢
 > [`coolsnowwolf`](https://github.com/coolsnowwolf/lede.git)
 > [`Lienol`](https://github.com/Lienol/openwrt.git)

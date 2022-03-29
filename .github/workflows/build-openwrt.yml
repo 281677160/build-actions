@@ -169,7 +169,7 @@ jobs:
         echo "${{ env.SOURCE }}$(date +%Y年%m月%d号%H时%M分%S秒)" > ${{matrix.target}}/build/${{matrix.target}}/start-up/start
         cd ${{matrix.target}}
         git add .
-        git commit -m "触发${{matrix.target}}编译${{env.TARGET_PROFILE}}固件"
+        git commit -m "启动${{matrix.target}}编译${{env.TARGET_PROFILE}}固件"
         git push --force "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main
         
     - name: 编译信息

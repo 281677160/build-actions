@@ -87,7 +87,7 @@ jobs:
         
     - name: 定时启动编译时清理Actions空间和删除releases数值设置
       run: |
-         if [[ -z ${{ github.event.inputs.days }} ]] && [[ -z ${{ github.event.inputs.rele }} ]]; then
+         if [[ -z "${{ github.event.inputs.days }}" ]] && [[ -z "${{ github.event.inputs.rele }}" ]]; then
            echo "retain_days=7" >> $GITHUB_ENV
            echo "keep_latest=10" >> $GITHUB_ENV
          else

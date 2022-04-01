@@ -18,7 +18,6 @@ uci set network.lan.delegate='0'                              # 去掉LAN口使�
 uci set system.@system[0].hostname='OpenWrt-123'              # 修改主机名称为OpenWrt-123
 #uci set dhcp.lan.ignore='1'                                  # 关闭DHCP功能（去掉uci前面的#生效）
 #uci set ttyd.@ttyd[0].command='/bin/login -f root'           # 设置ttyd免帐号登录（去掉uci前面的#生效）
-#uci set luci.main.mediaurlbase='/luci-static/argon'          # 防止其他主题乱串成默认主题（危险操作,你要确定您这里改的主题的名字准确,比如[argon]和肯定编译了该主题,要不然进不了后台）
 EOF
 
 sed -i "s/OpenWrt /${Author} compiled in $(TZ=UTC-8 date "+%Y.%m.%d") @ OpenWrt /g" $ZZZ_PATH       # 增加个性名字 ${Author} 默认为你的github帐号

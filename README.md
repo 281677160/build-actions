@@ -12,6 +12,8 @@
 
 - ## [`编译教程`](https://github.com/danshui-git/shuoming#readme)
 
+- ### [`本地一键Ubuntu编译`](https://github.com/281677160/bendi)
+- ### [`本地一键提取.config然后在云编译脚本使用`](bash <(curl -fsSL git.io/makeconfig.sh))
 ---
 - # 鸣谢
 > [`coolsnowwolf`](https://github.com/coolsnowwolf/lede.git)

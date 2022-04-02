@@ -30,20 +30,30 @@ uci set system.@system[0].hostname='OpenWrt-123'              # 修改主机名�
 EOF
 
 
-#sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/Makefile             # 选择argon必选认主题(可自行修改您要的,主题名称必须对)
+# 设置 argon 为编译必选主题(可自行修改您要的,主题名称必须对,源码内必须有该主题)
+#sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/Makefile
+
 
 # 编译多主题时,设置某主题成默认主题（危险操作,你要确定您这里改的主题的名字准确,比如[argon]和肯定编译了该主题,要不然进不了后台）
 #sed -i "/exit 0/i\uci set luci.main.mediaurlbase='/luci-static/argon' && uci commit luci" "$BASE_PATH/etc/rc.local"
 
-sed -i "s/OpenWrt /${Author} compiled in $(TZ=UTC-8 date "+%Y.%m.%d") @ OpenWrt /g" $ZZZ_PATH       # 增加个性名字 ${Author} 默认为你的github帐号
 
-# K3专用，编译K3的时候只会出K3固件（去掉sed前面的#生效）
+# 增加个性名字 ${Author} 默认为你的github帐号,修改时候把 ${Author} 替换成你要的
+sed -i "s/OpenWrt /${Author} compiled in $(TZ=UTC-8 date "+%Y.%m.%d") @ OpenWrt /g" $ZZZ_PATH
+
+
+# 取消路由器每天跑分任务
+sed -i "/exit 0/i\sed -i '/coremark/d' /etc/crontabs/root" "$BASE_PATH/etc/rc.local"
+
+
+# K3专用，编译K3的时候只会出K3固件（其他机型也适宜,把phicomm-k3替换一下，名字要绝对正确才行）
 #sed -i 's|^TARGET_|# TARGET_|g; s|# TARGET_DEVICES += phicomm_k3|TARGET_DEVICES += phicomm_k3|' target/linux/bcm53xx/image/Makefile
 
 
 # 在线更新时，删除不想保留固件的某个文件，在EOF跟EOF之间加入删除代码，记住这里对应的是固件的文件路径，比如： rm -rf /etc/config/luci
 cat >$DELETE <<-EOF
 EOF
+
 
 # 修改插件名字
 sed -i 's/"aMule设置"/"电驴下载"/g' `grep "aMule设置" -rl ./`
@@ -57,7 +67,7 @@ sed -i 's/"管理权"/"改密码"/g' `grep "管理权" -rl ./`
 sed -i 's/"Argon 主题设置"/"Argon设置"/g' `grep "Argon 主题设置" -rl ./`
 
 
-# 整理固件包时候,删除您不想要的固件或者文件,让它不需要上传到Actions空间
+# 整理固件包时候,删除您不想要的固件或者文件,让它不需要上传到Actions空间（根据编译机型变化,自行调整删除的固件名称）
 cat >${GITHUB_WORKSPACE}/Clear <<-EOF
 rm -rf config.buildinfo
 rm -rf feeds.buildinfo

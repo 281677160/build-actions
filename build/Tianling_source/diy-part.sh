@@ -30,20 +30,26 @@ uci set system.@system[0].hostname='OpenWrt-123'              # 修改主机名�
 #uci set network.ipv6.reqprefix='auto'
 EOF
 
+
 # 设置 argon 为编译必选主题(可自行修改您要的,主题名称必须对,源码内必须有该主题)
 sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/Makefile
+
 
 # 编译多主题时,设置某主题成默认主题（危险操作,你要确定您这里改的主题的名字准确,比如[argon]和肯定编译了该主题,要不然进不了后台）
 #sed -i "/exit 0/i\uci set luci.main.mediaurlbase='/luci-static/argon' && uci commit luci" "$BASE_PATH/etc/rc.local"
 
+
 # 增加个性名字 ${Author} 默认为你的github帐号,修改时候把 ${Author} 替换成你要的
 sed -i "s/OpenWrt /${Author} compiled in $(TZ=UTC-8 date "+%Y.%m.%d") @ OpenWrt /g" $ZZZ_PATH
+
 
 # 设置首次登录后台密码为空（进入openwrt后自行修改密码）
 sed -i '/CYXluq4wUazHjmCDBCqXF/d' $ZZZ_PATH
 
+
 # 取消路由器每天跑分任务
 sed -i "/exit 0/i\sed -i '/coremark/d' /etc/crontabs/root" "$BASE_PATH/etc/rc.local"
+
 
 # x86机型,默认内核4.19，修改内核为4.14（根据源码变化,自行在源码target/linux/x86/Makefile文件查看）
 #sed -i 's/PATCHVER:=4.19/PATCHVER:=4.14/g' target/linux/x86/Makefile
@@ -71,7 +77,7 @@ sed -i 's/"管理权"/"改密码"/g' `grep "管理权" -rl ./`
 sed -i 's/"Argon 主题设置"/"Argon设置"/g' `grep "Argon 主题设置" -rl ./`
 
 
-# 整理固件包时候,删除您不想要的固件或者文件,让它不需要上传到Actions空间
+# 整理固件包时候,删除您不想要的固件或者文件,让它不需要上传到Actions空间（根据机型变化,自行调整需要删除的固件名称）
 cat >${GITHUB_WORKSPACE}/Clear <<-EOF
 rm -rf config.buildinfo
 rm -rf feeds.buildinfo

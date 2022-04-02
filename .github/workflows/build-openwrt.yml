@@ -162,7 +162,7 @@ jobs:
     - name: 触发compile.yml启动"${{matrix.target}}"编译
       id: gitpush
       continue-on-error: true
-      if: steps.compile.outputs.status == 'success' && steps.clone.outputs.status == 'success' && env.REPO_TOKEN
+      if: steps.clone.outcome == 'success' && steps.compile.outcome == 'success' && env.REPO_TOKEN
       run: |
         cd $GITHUB_WORKSPACE
         git clone -b main https://github.com/${{github.repository}}.git ${{matrix.target}}

@@ -16,6 +16,7 @@ uci set network.lan.gateway='192.168.2.1'                     # IPv4 网关
 uci set network.lan.broadcast='192.168.2.255'                 # IPv4 广播
 uci set network.lan.dns='223.5.5.5 114.114.114.114'           # DNS(多个DNS要用空格分开)
 uci set network.lan.delegate='0'                              # 去掉LAN口使用内置的 IPv6 管理
+uci set dhcp.@dnsmasq[0].filter_aaaa='1'                      # 禁止解析 IPv6 DNS记录(过滤掉IPv6(AAAA),只返回IPv4 DNS域名记录)
 uci set system.@system[0].hostname='OpenWrt-123'              # 修改主机名称为OpenWrt-123
 #uci set dhcp.lan.ignore='1'                                  # 关闭DHCP功能（去掉uci前面的#生效）
 #uci set ttyd.@ttyd[0].command='/bin/login -f root'           # 设置ttyd免帐号登录（去掉uci前面的#生效）

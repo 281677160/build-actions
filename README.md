@@ -1,6 +1,6 @@
 - 2022/4/3 最新修改
 - Lienol_source源码原本的main分支，已经给作者修改成[22.03](https://github.com/Lienol/openwrt/tree/22.03)分支源码，内核版本为5.10，因为要同步修改，所以编译脚本都有更改
-- 我顺便也修改了一下脚本，compile.yml文件、diy-part.sh、settings.ini都有点改动，请大家同步仓库使用
+- 我顺便也修改了一下脚本，compile.yml文件、diy-part.sh、settings.ini和build-openwrt.yml都有点改动，请大家同步仓库使用
 
 ---
 - 2022/3/31 最新修改

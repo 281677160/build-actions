@@ -30,21 +30,26 @@ uci set system.@system[0].hostname='OpenWrt-123'              # 修改主机名�
 #uci set network.ipv6.reqprefix='auto'
 EOF
 
-sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/Makefile             # 选择argon必选认主题(可自行修改您要的,主题名称必须对)
+# 设置 argon 为编译必选主题(可自行修改您要的,主题名称必须对,源码内必须有该主题)
+sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/Makefile
 
 # 编译多主题时,设置某主题成默认主题（危险操作,你要确定您这里改的主题的名字准确,比如[argon]和肯定编译了该主题,要不然进不了后台）
 #sed -i "/exit 0/i\uci set luci.main.mediaurlbase='/luci-static/argon' && uci commit luci" "$BASE_PATH/etc/rc.local"
 
-sed -i "s/OpenWrt /${Author} compiled in $(TZ=UTC-8 date "+%Y.%m.%d") @ OpenWrt /g" $ZZZ_PATH       # 增加个性名字 ${Author} 默认为你的github帐号
+# 增加个性名字 ${Author} 默认为你的github帐号,修改时候把 ${Author} 替换成你要的
+sed -i "s/OpenWrt /${Author} compiled in $(TZ=UTC-8 date "+%Y.%m.%d") @ OpenWrt /g" $ZZZ_PATH
 
-sed -i '/CYXluq4wUazHjmCDBCqXF/d' $ZZZ_PATH                                                         # 设置首次登录后台密码为空（进入openwrt后自行修改密码）
+# 设置首次登录后台密码为空（进入openwrt后自行修改密码）
+sed -i '/CYXluq4wUazHjmCDBCqXF/d' $ZZZ_PATH
 
-sed -i "/exit 0/i\sed -i '/coremark/d' /etc/crontabs/root" "$BASE_PATH/etc/rc.local"                # 取消路由器跑分任务
+# 取消路由器每天跑分任务
+sed -i "/exit 0/i\sed -i '/coremark/d' /etc/crontabs/root" "$BASE_PATH/etc/rc.local"
 
-#sed -i 's/PATCHVER:=4.19/PATCHVER:=4.14/g' target/linux/x86/Makefile                               # x86机型,默认内核4.19，修改内核为4.14（去掉sed前面的#生效）
+# x86机型,默认内核4.19，修改内核为4.14（根据源码变化,自行在源码target/linux/x86/Makefile文件查看）
+#sed -i 's/PATCHVER:=4.19/PATCHVER:=4.14/g' target/linux/x86/Makefile
 
 
-# K3专用，编译K3的时候只会出K3固件（去掉sed前面的#生效）
+# K3专用，编译K3的时候只会出K3固件（其他机型也适宜,把phicomm-k3替换一下，名字要绝对正确才行）
 #sed -i 's|^TARGET_|# TARGET_|g; s|# TARGET_DEVICES += phicomm-k3|TARGET_DEVICES += phicomm-k3|' target/linux/bcm53xx/image/Makefile
 
 

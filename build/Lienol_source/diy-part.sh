@@ -27,6 +27,7 @@ uci set system.@system[0].hostname='OpenWrt-123'              # 修改主机名�
 #uci set network.ipv6.ifname='@lan'
 #uci set network.ipv6.reqaddress='try'
 #uci set network.ipv6.reqprefix='auto'
+#uci set firewall.@zone[0].network='lan ipv6'
 EOF
 
 

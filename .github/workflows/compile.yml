@@ -244,6 +244,7 @@ jobs:
         file_glob: true
 
     - name: 电报机器人或pushplus信息通知
+      continue-on-error: true
       if: env.PUSH_PLUS_TOKEN && env.SERVERCHAN_SCKEY == 'PUSH' || env.TELEGRAM_BOT_TOKEN && env.SERVERCHAN_SCKEY == 'TG'
       run: |
         if [[ "${SERVERCHAN_SCKEY}" == "TG" ]]; then

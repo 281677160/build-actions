@@ -213,6 +213,7 @@ jobs:
        source $BUILD_PATH/upgrade.sh && Diy_Part3
         
     - name: 发送[在线更新固件]至云端2
+      id: regular
       continue-on-error: true
       if: steps.compile.outputs.status == 'success' && env.REGULAR_UPDATE == 'true' && env.REPO_TOKEN
       uses: svenstaro/upload-release-action@v2

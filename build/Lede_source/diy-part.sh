@@ -80,7 +80,16 @@ sed -i 's/"USB 打印服务器"/"打印服务"/g' `grep "USB 打印服务器" -r
 sed -i 's/"Web 管理"/"Web"/g' `grep "Web 管理" -rl ./`
 sed -i 's/"管理权"/"改密码"/g' `grep "管理权" -rl ./`
 sed -i 's/"带宽监控"/"监控"/g' `grep "带宽监控" -rl ./`
-
+git clone https://github.com/linkease/istore package/istore
+git clone https://github.com/destan19/OpenAppFilter package/OpenAppFilter
+#git clone https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns package/tencentcloud
+#git clone -b 18.06 https://github.com/kiddin9/OpenWrt_x86-r2s-r4s package/nginx
+#git clone -b 18.06 https://github.com/riverscn/luci-app-omcproxy package/omcproxy
+git clone https://github.com/esirplayground/luci-app-poweroff
+git clone -b 18.06 https://github.com/IrineSistiana/mosdns
+git clone https://github.com/czyufeng/luci-app-ttnode
+git clone https://github.com/kenzok8/openwrt-packages
+git clone https://github.com/kenzok8/small
 
 # 整理固件包时候,删除您不想要的固件或者文件,让它不需要上传到Actions空间（根据编译机型变化,自行调整需要删除的固件名称）
 cat >${GITHUB_WORKSPACE}/Clear <<-EOF

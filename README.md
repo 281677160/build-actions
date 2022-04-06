@@ -31,6 +31,7 @@
 > [`ctcgfw`](https://github.com/project-openwrt/openwrt.git)
 > [`P3TERX`](https://github.com/P3TERX/Actions-OpenWrt)
 > [`Hyy2001X`](https://github.com/Hyy2001X/AutoBuild-Actions)
+> [`dhxh`](https://github.com/dhxh/Openwrt-Build)
 > [`ophub`](https://github.com/ophub/amlogic-s9xxx-openwrt)
 > [`nicholas-opensource`](https://github.com/nicholas-opensource/OpenWrt-Autobuild)
 > [`hx210`](#/README.md)

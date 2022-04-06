@@ -156,7 +156,7 @@ jobs:
         cd $GITHUB_WORKSPACE
         source $BUILD_PATH/common.sh && Package_amlogic
 
-    - name: 整理固件文件夹
+    - name: 整理固件文件夹(需配合diy-part.sh设定使用)
       continue-on-error: true
       id: organizer
       run: |

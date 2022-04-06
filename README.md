@@ -25,7 +25,7 @@
 - #### [`本地Ubuntu一键编译`](https://github.com/281677160/bendi)
 - #### [`本地一键提取.config然后在云编译脚本使用`](https://github.com/danshui-git/shuoming/blob/master/yijianconfig.md)
 ---
-- # 鸣谢
+- # 鸣谢以下各位大佬（排名无分先后）
 > [`coolsnowwolf`](https://github.com/coolsnowwolf/lede.git)
 > [`Lienol`](https://github.com/Lienol/openwrt.git)
 > [`ctcgfw`](https://github.com/project-openwrt/openwrt.git)
@@ -38,3 +38,4 @@
 > [`hyird`](#/README.md)
 > [`World Peace`](#/README.md)
 > [`klever1988`](https://github.com/klever1988/cachewrtbuild)
+> [`svenstaro`](https://github.com/svenstaro/upload-release-action)

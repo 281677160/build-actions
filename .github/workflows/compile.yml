@@ -160,6 +160,7 @@ jobs:
       continue-on-error: true
       id: organizer
       run: |
+        cd openwrt
         source $BUILD_PATH/common.sh && Diy_firmware
         
     - name: 上传固件在 github actions

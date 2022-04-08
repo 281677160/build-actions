@@ -12,14 +12,14 @@
 cat >$NETIP <<-EOF
 uci set network.lan.ipaddr='192.168.2.2'                      # IPv4 地址(openwrt后台地址)
 uci set network.lan.netmask='255.255.255.0'                   # IPv4 子网掩码
-uci set network.lan.gateway='192.168.2.1'                     # IPv4 网关
-uci set network.lan.broadcast='192.168.2.255'                 # IPv4 广播
-uci set network.lan.dns='223.5.5.5 114.114.114.114'           # DNS(多个DNS要用空格分开)
-uci set network.lan.delegate='0'                              # 去掉LAN口使用内置的 IPv6 管理(若用IPV6请注释或者删除这个)
-uci set dhcp.@dnsmasq[0].filter_aaaa='1'                      # 禁止解析 IPv6 DNS记录(若用IPV6请注释或者删除这个)
+#uci set network.lan.gateway='192.168.2.1'                     # IPv4 网关
+#uci set network.lan.broadcast='192.168.2.255'                 # IPv4 广播
+#uci set network.lan.dns='223.5.5.5 114.114.114.114'           # DNS(多个DNS要用空格分开)
+#uci set network.lan.delegate='0'                              # 去掉LAN口使用内置的 IPv6 管理(若用IPV6请注释或者删除这个)
+#uci set dhcp.@dnsmasq[0].filter_aaaa='1'                      # 禁止解析 IPv6 DNS记录(若用IPV6请注释或者删除这个)
 
 #uci set dhcp.lan.ignore='1'                                  # 关闭DHCP功能（去掉uci前面的#生效）
-uci set system.@system[0].hostname='OpenWrt-123'              # 修改主机名称为OpenWrt-123
+uci set system.@system[0].hostname='Er-Gou'              # 修改主机名称为OpenWrt-123
 #uci set ttyd.@ttyd[0].command='/bin/login -f root'           # 设置ttyd免帐号登录（去掉uci前面的#生效）
 
 # 如果有用IPV6的话,可以使用以下命令创建IPV6客户端(LAN口)（去掉全部代码uci前面#号生效）
@@ -41,7 +41,7 @@ sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/M
 
 
 # 增加个性名字 ${Author} 默认为你的github帐号,修改时候把 ${Author} 替换成你要的
-sed -i "s/OpenWrt /${Author} compiled in $(TZ=UTC-8 date "+%Y.%m.%d") @ OpenWrt /g" $ZZZ_PATH
+sed -i "s/OpenWrt /Er-Gou @ OpenWrt /g" $ZZZ_PATH
 
 
 # 设置首次登录后台密码为空（进入openwrt后自行修改密码）
@@ -70,7 +70,13 @@ sed -i 's/"终端"/"命令窗"/g' `grep "终端" -rl ./`
 sed -i 's/"USB 打印服务器"/"打印服务"/g' `grep "USB 打印服务器" -rl ./`
 sed -i 's/"Web 管理"/"Web"/g' `grep "Web 管理" -rl ./`
 sed -i 's/"管理权"/"改密码"/g' `grep "管理权" -rl ./`
-
+git clone https://github.com/linkease/istore package/istore
+git clone https://github.com/destan19/OpenAppFilter package/OpenAppFilter
+git clone https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns package/tencentcloud
+git clone https://github.com/kiddin9/OpenWrt_x86-r2s-r4s package/nginx
+git clone https://github.com/esirplayground/luci-app-poweroff
+git clone https://github.com/IrineSistiana/mosdns
+#git clone https://github.com/riverscn/luci-app-omcproxy package/omcproxy
 
 # 整理固件包时候,删除您不想要的固件或者文件,让它不需要上传到Actions空间(根据编译机型变化,自行调整删除名称)
 cat >${GITHUB_WORKSPACE}/Clear <<-EOF

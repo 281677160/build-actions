@@ -71,6 +71,7 @@ jobs:
     
     - name: 公 告
       run: |
+        echo
         source $GITHUB_WORKSPACE/build/${{matrix.target}}/common.sh && Diy_variable
         source $GITHUB_WORKSPACE/build/${{matrix.target}}/common.sh && Diy_Notice
  

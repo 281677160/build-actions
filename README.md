@@ -1,27 +1,3 @@
-- 2022/4/6 最新修改
-- 删除了上传bin文件夹步骤，这个步骤已经没什么用了，编译完成后所有ipk都会直接抽出来打包在一起，然后在上传固件在actions的步骤一起上传，如果您们不要ipk包，可以整理固件包时候删除了
-- 调整了一下发布定时更新固件到云端的步骤
----
-- 2022/4/3 17点30分
-- 修复编译完成后TG或者pushplus通知，运行步骤报错的问题，请同步仓库使用
----
-
-- 2022/4/3 最新修改
-- Lienol_source源码原本的main分支，已经给作者修改成[22.03](https://github.com/Lienol/openwrt/tree/22.03)分支源码，内核版本为5.10，因为要同步修改，所以编译脚本都有更改
-- 我顺便也修改了一下脚本，compile.yml文件、diy-part.sh、settings.ini和build-openwrt.yml都有点改动，请大家同步仓库使用
-
----
-- 2022/3/31 最新修改
-- 修复使用定时启动编译时，运行至《定时启动编译时清理Actions空间和删除releases数值设置》步骤失败问题
----
-- 2022/3/28 最新修改
-- 取消每次触发启动编译都同步上游仓库build-openwrt.yml和compile.yml文件的操作
-- 请同步最新仓库编译，在线更新也修改过，如果以前有使用的话，请把以前发布的删除，然后重新编译使用
-- 增加固件 openwrt 命令，安装好固件后可以在页面的命令窗或者SSH连接后直接输入命令使用
----
-- 2022/3/3 最新修改
-- Lienol_source源码原本的19.07分支修改成[main](https://github.com/Lienol/openwrt/tree/main)分支源码，内核版本为5.10
----
 
 - ## [`github编译教程`](https://github.com/danshui-git/shuoming#readme)
 

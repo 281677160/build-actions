@@ -41,11 +41,11 @@ sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/M
 
 
 # 增加个性名字 ${Author} 默认为你的github帐号,修改时候把 ${Author} 替换成你要的
-sed -i "s/OpenWrt /${Author} compiled in $(TZ=UTC-8 date "+%Y.%m.%d") @ OpenWrt /g" $ZZZ_PATH
+sed -i "s/OpenWrt /${Author} compiled in $(TZ=UTC-8 date "+%Y.%m.%d") @ OpenWrt /g" "$ZZZ_PATH"
 
 
 # 设置首次登录后台密码为空（进入openwrt后自行修改密码）
-sed -i '/CYXluq4wUazHjmCDBCqXF/d' $ZZZ_PATH
+sed -i '/CYXluq4wUazHjmCDBCqXF/d' "$ZZZ_PATH"
 
 
 # 取消路由器每天跑分任务
@@ -56,7 +56,7 @@ sed -i "/exit 0/i\sed -i '/coremark/d' /etc/crontabs/root" "$FIN_PATH"
 #sed -i 's/PATCHVER:=4.19/PATCHVER:=4.14/g' target/linux/x86/Makefile
 
 
-# K3专用，编译K3的时候只会出K3固件（其他机型也适宜,把phicomm-k3替换一下，名字要绝对正确才行）
+# K3专用，编译K3的时候只会出K3固件（其他机型也适宜,把phicomm-k3和对应的路径替换一下，名字要绝对正确才行）
 #sed -i 's|^TARGET_|# TARGET_|g; s|# TARGET_DEVICES += phicomm-k3|TARGET_DEVICES += phicomm-k3|' target/linux/bcm53xx/image/Makefile
 
 

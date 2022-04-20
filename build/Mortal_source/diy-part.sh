@@ -52,7 +52,7 @@ sed -i '/CYXluq4wUazHjmCDBCqXF/d' "$ZZZ_PATH"
 sed -i "/exit 0/i\sed -i '/coremark/d' /etc/crontabs/root" "$FIN_PATH"
 
 
-# K3专用，编译K3的时候只会出K3固件（其他机型也适宜,把phicomm-k3替换一下和对应路径，名字要绝对正确才行）
+# K3专用，编译K3的时候只会出K3固件（其他机型也适宜,把phicomm_k3替换一下和对应路径，名字要绝对正确才行）
 #sed -i 's|^TARGET_|# TARGET_|g; s|# TARGET_DEVICES += phicomm_k3|TARGET_DEVICES += phicomm_k3|' target/linux/bcm53xx/image/Makefile
 
 

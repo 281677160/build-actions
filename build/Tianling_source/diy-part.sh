@@ -49,7 +49,7 @@ sed -i '/CYXluq4wUazHjmCDBCqXF/d' $ZZZ_PATH
 
 
 # 取消路由器每天跑分任务
-sed -i "/exit 0/i\sed -i '/coremark/d' /etc/crontabs/root" "$BASE_PATH/etc/rc.local"
+sed -i "/exit 0/i\sed -i '/coremark/d' /etc/crontabs/root" "$FIN_PATH"
 
 
 # x86机型,默认内核4.19，修改内核为4.14（根据源码变化,自行在源码target/linux/x86/Makefile文件查看）

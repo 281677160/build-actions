@@ -53,7 +53,7 @@ sed -i '/to-ports 53/d' $ZZZ_PATH
 
 
 # 取消路由器每天跑分任务
-sed -i "/exit 0/i\sed -i '/coremark/d' /etc/crontabs/root" "$BASE_PATH/etc/rc.local"
+sed -i "/exit 0/i\sed -i '/coremark/d' /etc/crontabs/root" "$FIN_PATH"
 
 
 # x86机型,默认内核5.15，修改内核为5.10（源码时时变,自行根据target/linux/x86/Makefile文件修改）

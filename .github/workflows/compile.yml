@@ -16,7 +16,7 @@ on:
     branches:
       - main
     paths:
-      - 'Config'
+      - 'build/Lienol_source/start-up/start'
 
 env:
   Github: https://github.com/${{github.repository}}

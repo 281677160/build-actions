@@ -69,8 +69,6 @@ jobs:
           echo "TARGE2=$(grep 'target: \[' repogx/.github/workflows/compile.yml |sed 's/^[ ]*//g' |grep '^target' |cut -d '#' -f1 |sed 's/\[/\\&/' |sed 's/\]/\\&/')" >> $GITHUB_ENV
           echo "BEIYONG1=$(grep -A 2 'target:' shangyou/.github/workflows/build-openwrt.yml |grep '\# \[.*\]' | sed -r 's/\# \[(.*)\]/\1/' |sed 's/^[ ]*//g')" >> $GITHUB_ENV
           echo "BEIYONG2=$(grep -A 2 'target:' repogx/.github/workflows/build-openwrt.yml |grep '\# \[.*\]' | sed -r 's/\# \[(.*)\]/\1/' |sed 's/^[ ]*//g')" >> $GITHUB_ENV
-          echo "QDMAME1=$(sed -n '1,50p' shangyou/.github/workflows/build-openwrt.yml |grep '^name' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')" >> $GITHUB_ENV
-          echo "QDMAME2=$(sed -n '1,50p' repogx/.github/workflows/build-openwrt.yml |grep '^name' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')" >> $GITHUB_ENV
         fi
         
     - name: 同步上游仓库
@@ -78,9 +76,6 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE
         if [[ -n "$(ls -A "$GITHUB_WORKSPACE/repogx/.github/workflows/build-openwrt.yml" 2>/dev/null)" ]]; then
-          if [[ -n "${{env.QDMAME1}}" ]] && [[ -n "${{env.QDMAME2}}" ]]; then
-            sed -i "s/${{env.QDMAME1}}/${{env.QDMAME2}}/g" shangyou/.github/workflows/build-openwrt.yml
-          fi
           if [[ -n "${{env.BEIYONG1}}" ]] && [[ -n "${{env.BEIYONG2}}" ]]; then
             sed -i "s/${{env.BEIYONG1}}/${{env.BEIYONG2}}/g" shangyou/.github/workflows/build-openwrt.yml
           fi

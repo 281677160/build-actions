@@ -17,7 +17,6 @@ on:
         default: 'fork'
 
 env:
-  BILDYML: synchronization.yml
   REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
   TZ: Asia/Shanghai
 
@@ -46,21 +45,15 @@ jobs:
         cd $GITHUB_WORKSPACE
         git clone -b main https://github.com/281677160/build-actions.git shangyou
         git clone -b main https://github.com/${{github.repository}}.git repogx
-        if [[ -d repogx/build/Lede_source ]];then
-          rm -rf shangyou/build/Lede_source/.config
-        fi
-        if [[ -d repogx/build/Lienol_source ]];then
-          rm -fr shangyou/build/Lienol_source/.config
-        fi
-        if [[ -d repogx/build/Mortal_source ]];then
-          rm -fr shangyou/build/Mortal_source/.config
-        fi
-        if [[ -d repogx/build/Tianling_source ]];then
-          rm -fr shangyou/build/Tianling_source/.config
-        fi
-        if [[ -d repogx/build/openwrt_amlogic ]];then
-          rm -fr shangyou/build/openwrt_amlogic/.config
-        fi
+        
+        rm -rf ${GITHUB_WORKSPACE}/shangyou/build/*/.config
+        for X in $(find ${GITHUB_WORKSPACE}/repogx/build -name "diy-part.sh" |sed 's/\/diy-part.sh//g'); do mv "${X}"/diy-part.sh "${X}"/diy-part.sh.bak; done
+        for X in $(find ${GITHUB_WORKSPACE}/repogx/build -name "settings.ini" |sed 's/\/settings.ini//g'); do mv "${X}"/settings.ini "${X}"/settings.ini.bak; done
+        for X in $(grep "\"LEDE\"" -rl "${GITHUB_WORKSPACE}/repogx/build" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Lede_source/* "${X}"; done
+        for X in $(grep "\"LIENOL\"" -rl "${GITHUB_WORKSPACE}/repogx/build" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Lienol_source/* "${X}"; done
+        for X in $(grep "\"IMMORTAL\"" -rl "${GITHUB_WORKSPACE}/repogx/build" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Mortal_source/* "${X}"; done
+        for X in $(grep "\"TIANLING\"" -rl "${GITHUB_WORKSPACE}/repogx/build" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Tianling_source/* "${X}"; done
+
         if [[ -n "$(ls -A "$GITHUB_WORKSPACE/repogx/.github/workflows/build-openwrt.yml" 2>/dev/null)" ]]; then
           echo "CRON2=$(grep -A 1 'schedule:' repogx/.github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed s/^#// |sed 's/^[ ]*//g' |cut -d "#" -f1 |sed 's/\//\\&/g' |sed 's/\*/\\&/g')" >> $GITHUB_ENV
           echo "CRON1=$(grep -A 1 'schedule:' shangyou/.github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed s/^#// |sed 's/^[ ]*//g' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')" >> $GITHUB_ENV
@@ -114,48 +107,11 @@ jobs:
           git rm -rf $GITHUB_WORKSPACE/repogx/.github/workflows/build-openwrt.yml
         fi
         cp -Rf $GITHUB_WORKSPACE/shangyou/.github/workflows/build-openwrt.yml .github/workflows/build-openwrt.yml
-        git rm -rf $GITHUB_WORKSPACE/repogx/.github/workflows/${{env.BILDYML}}
+        if [[ -n "$(ls -A "$GITHUB_WORKSPACE/repogx/.github/workflows/synchronization.yml" 2>/dev/null)" ]]; then
+          git rm -rf $GITHUB_WORKSPACE/repogx/.github/workflows/synchronization.yml
+        fi
         cp -Rf $GITHUB_WORKSPACE/shangyou/.github/workflows/synchronization.yml .github/workflows/synchronization.yml
-        if [[ -f build/Lede_source/diy-part.sh ]];then
-          cp -Rf build/Lede_source/diy-part.sh build/Lede_source/diy-part.sh.bak
-          git rm -rf build/Lede_source/diy-part.sh
-        fi
-        if [[ -f build/Lienol_source/diy-part.sh ]];then
-          cp -Rf build/Lienol_source/diy-part.sh build/Lienol_source/diy-part.sh.bak
-          git rm -rf build/Lienol_source/diy-part.sh
-        fi
-        if [[ -f build/Mortal_source/diy-part.sh ]];then
-          cp -Rf build/Mortal_source/diy-part.sh build/Mortal_source/diy-part.sh.bak
-          git rm -rf build/Mortal_source/diy-part.sh
-        fi
-        if [[ -f build/Tianling_source/diy-part.sh ]];then
-          cp -Rf build/Tianling_source/diy-part.sh build/Tianling_source/diy-part.sh.bak
-          git rm -rf build/Tianling_source/diy-part.sh
-        fi
-        if [[ -f build/openwrt_amlogic/diy-part.sh ]];then
-          cp -Rf build/openwrt_amlogic/diy-part.sh build/openwrt_amlogic/diy-part.sh.bak
-          git rm -rf build/openwrt_amlogic/diy-part.sh
-        fi
-        if [[ -f build/Lede_source/settings.ini ]];then
-          cp -Rf build/Lede_source/settings.ini build/Lede_source/settings.ini.bak
-          git rm -rf build/Lede_source/settings.ini
-        fi
-        if [[ -f build/Lienol_source/settings.ini ]];then
-          cp -Rf build/Lienol_source/settings.ini build/Lienol_source/settings.ini.bak
-          git rm -rf build/Lienol_source/settings.ini
-        fi
-        if [[ -f build/Mortal_source/settings.ini ]];then
-          cp -Rf build/Mortal_source/settings.ini build/Mortal_source/settings.ini.bak
-          git rm -rf build/Mortal_source/settings.ini
-        fi
-        if [[ -f build/Tianling_source/settings.ini ]];then
-          cp -Rf build/Tianling_source/settings.ini build/Tianling_source/settings.ini.bak
-          git rm -rf build/Tianling_source/settings.ini
-        fi
-        if [[ -f build/openwrt_amlogic/settings.ini ]];then
-          cp -Rf build/openwrt_amlogic/settings.ini build/openwrt_amlogic/settings.ini.bak
-          git rm -rf build/openwrt_amlogic/settings.ini
-        fi
+
         cp -Rf $GITHUB_WORKSPACE/shangyou/* ./
         cp -Rf $GITHUB_WORKSPACE/shangyou/.github/workflows/* .github/workflows
         git add .

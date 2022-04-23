@@ -66,15 +66,16 @@ EOF
 
 
 # 修改插件名字
-sed -i 's/"aMule设置"/"电驴下载"/g' `grep "aMule设置" -rl ./`
-sed -i 's/"网络存储"/"NAS"/g' `grep "网络存储" -rl ./`
-sed -i 's/"Turbo ACC 网络加速"/"网络加速"/g' `grep "Turbo ACC 网络加速" -rl ./`
-sed -i 's/"实时流量监测"/"流量"/g' `grep "实时流量监测" -rl ./`
-sed -i 's/"KMS 服务器"/"KMS激活"/g' `grep "KMS 服务器" -rl ./`
-sed -i 's/"TTYD 终端"/"命令窗"/g' `grep "TTYD 终端" -rl ./`
-sed -i 's/"USB 打印服务器"/"打印服务"/g' `grep "USB 打印服务器" -rl ./`
-sed -i 's/"Web 管理"/"Web"/g' `grep "Web 管理" -rl ./`
-sed -i 's/"管理权"/"改密码"/g' `grep "管理权" -rl ./`
+sed -i 's/"aMule设置"/"电驴下载"/g' `egrep "aMule设置" -rl ./`
+sed -i 's/"网络存储"/"NAS"/g' `egrep "网络存储" -rl ./`
+sed -i 's/"Turbo ACC 网络加速"/"网络加速"/g' `egrep "Turbo ACC 网络加速" -rl ./`
+sed -i 's/"实时流量监测"/"流量"/g' `egrep "实时流量监测" -rl ./`
+sed -i 's/"KMS 服务器"/"KMS激活"/g' `egrep "KMS 服务器" -rl ./`
+sed -i 's/"TTYD 终端"/"命令窗"/g' `egrep "TTYD 终端" -rl ./`
+sed -i 's/"USB 打印服务器"/"打印服务"/g' `egrep "USB 打印服务器" -rl ./`
+sed -i 's/"Web 管理"/"Web管理"/g' `egrep "Web 管理" -rl ./`
+sed -i 's/"管理权"/"改密码"/g' `egrep "管理权" -rl ./`
+sed -i 's/"带宽监控"/"监控"/g' `egrep "带宽监控" -rl ./`
 
 
 # 整理固件包时候,删除您不想要的固件或者文件,让它不需要上传到Actions空间（根据机型变化,自行调整需要删除的固件名称）

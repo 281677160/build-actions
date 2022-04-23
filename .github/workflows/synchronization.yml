@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
     inputs:
       again-fork:
-        description: '按[Run workflow]按钮启动,开启同步上游仓库'
+        description: '按[Run workflow]绿色按钮启动,开启同步上游仓库'
         required: false
         default: 'fork'
 

@@ -56,7 +56,6 @@ jobs:
         for X in $(grep "\"IMMORTAL\"" -rl "${GITHUB_WORKSPACE}/repogx/build" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Mortal_source/* "${X}"; done
         for X in $(grep "\"TIANLING\"" -rl "${GITHUB_WORKSPACE}/repogx/build" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Tianling_source/* "${X}"; done
         [[ -d ${GITHUB_WORKSPACE}/repogx/build/openwrt_amlogic ]] && cp -Rf ${GITHUB_WORKSPACE}/shangyou/build/openwrt_amlogic/* ${GITHUB_WORKSPACE}/repogx/build/openwrt_amlogic/
-        cp -Rf $GITHUB_WORKSPACE/shangyou/.github/workflows/* $GITHUB_WORKSPACE/repogx/.github/workflows
 
         if [[ -n "$(ls -A "$GITHUB_WORKSPACE/repogx/.github/workflows/build-openwrt.yml" 2>/dev/null)" ]]; then
           echo "CRON2=$(grep -A 1 'schedule:' repogx/.github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed s/^#// |sed 's/^[ ]*//g' |cut -d "#" -f1 |sed 's/\//\\&/g' |sed 's/\*/\\&/g')" >> $GITHUB_ENV
@@ -96,6 +95,7 @@ jobs:
             sed -i "s/${{env.QIDONG1}}/${{env.QIDONG2}}/g" shangyou/.github/workflows/compile.yml
           fi
         fi
+        cp -Rf $GITHUB_WORKSPACE/shangyou/.github/workflows/* $GITHUB_WORKSPACE/repogx/.github/workflows
         cd repogx
         git add .
         git commit -m "同步上游281677160/build-actions于$(date +%Y年%m月%d号%H时%M分%S秒)"

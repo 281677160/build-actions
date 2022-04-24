@@ -47,6 +47,8 @@ jobs:
         git clone -b main https://github.com/${{github.repository}}.git repogx
         
         rm -rf ${GITHUB_WORKSPACE}/shangyou/build/*/.config
+        cp -Rf $GITHUB_WORKSPACE/shangyou/README.md $GITHUB_WORKSPACE/repogx/README.md
+        cp -Rf $GITHUB_WORKSPACE/shangyou/LICENSE $GITHUB_WORKSPACE/repogx/LICENSE
         for X in $(find ${GITHUB_WORKSPACE}/repogx/build -name "diy-part.sh" |sed 's/\/diy-part.sh//g'); do mv "${X}"/diy-part.sh "${X}"/diy-part.sh.bak; done
         for X in $(find ${GITHUB_WORKSPACE}/repogx/build -name "settings.ini" |sed 's/\/settings.ini//g'); do mv "${X}"/settings.ini "${X}"/settings.ini.bak; done
         for X in $(grep "\"LEDE\"" -rl "${GITHUB_WORKSPACE}/repogx/build" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Lede_source/* "${X}"; done
@@ -93,7 +95,6 @@ jobs:
             sed -i "s/${{env.QIDONG1}}/${{env.QIDONG2}}/g" shangyou/.github/workflows/compile.yml
           fi
         fi
-        cp -Rf $GITHUB_WORKSPACE/shangyou/README.md $GITHUB_WORKSPACE/repogx/README.md
         cd repogx
         if [[ -n "$(ls -A "$GITHUB_WORKSPACE/repogx/.github/workflows/compile.yml" 2>/dev/null)" ]]; then
           git rm -rf $GITHUB_WORKSPACE/repogx/.github/workflows/compile.yml

@@ -59,8 +59,8 @@ sed -i "/exit 0/i\sed -i '/coremark/d' /etc/crontabs/root" "$FIN_PATH"
 # 设置打包固件的机型，内核组合（可用内核是时时变化的,过老的内核就删除的，所以要选择什么内核请看说明）
 # 当前可用机型 s922x s922x-n2 s922x-reva a311d s905x3 s905x2 s905x2-km3 s905l3a s912 s912-m8s s905d s905d-ki s905x s905w s905
 
-cat >$GITHUB_WORKSPACE/amlogic_openwrt <<-EOF
-amlogic_model=s905x3_s905x2_s905x_s905w_s905d_s922x_s912
+cat >"$AMLOGIC_SH_PATH" <<-EOF
+amlogic_model=all
 amlogic_kernel=5.15.25_5.10.100 -a true
 rootfs_size=960
 EOF
@@ -80,10 +80,10 @@ sed -i 's/"带宽监控"/"监控"/g' `egrep "带宽监控" -rl ./`
 
 
 # 整理固件包时候,删除您不想要的固件或者文件,让它不需要上传到Actions空间
-cat >${GITHUB_WORKSPACE}/Clear <<-EOF
-rm -rf packages
-rm -rf config.buildinfo
-rm -rf feeds.buildinfo
-rm -rf sha256sums
-rm -rf version.buildinfo
+cat >"$CLEAR_PATH" <<-EOF
+packages
+config.buildinfo
+feeds.buildinfo
+sha256sums
+version.buildinfo
 EOF

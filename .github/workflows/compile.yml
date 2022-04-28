@@ -16,7 +16,7 @@ on:
     branches:
       - main
     paths:
-      - 'config'
+      - '-config-'
 
 env:
   Github: https://github.com/${{github.repository}}

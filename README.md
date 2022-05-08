@@ -31,8 +31,8 @@
 ---
  # 鸣谢！
  感谢以下各位大佬（排名无分先后）
-> [`coolsnowwolf`](https://github.com/coolsnowwolf/lede.git)
-> [`Lienol`](https://github.com/Lienol/openwrt.git)
+<br /> [`coolsnowwolf`](https://github.com/coolsnowwolf/lede.git)
+<br /> [`Lienol`](https://github.com/Lienol/openwrt.git)
 > [`ctcgfw`](https://github.com/project-openwrt/openwrt.git)
 > [`P3TERX`](https://github.com/P3TERX/Actions-OpenWrt)
 > [`Hyy2001X`](https://github.com/Hyy2001X/AutoBuild-Actions)

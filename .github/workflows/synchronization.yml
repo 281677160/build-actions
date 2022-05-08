@@ -98,6 +98,6 @@ jobs:
         cp -Rf $GITHUB_WORKSPACE/shangyou/.github/workflows/* $GITHUB_WORKSPACE/repogx/.github/workflows
         cd repogx
         git add .
-        git commit -m "同步上游281677160/build-actions于$(date +%Y年%m月%d号%H时%M分%S秒)"
+        git commit -m "Update $(date +%Y%m%d%H%M%S)"
         git push --quiet "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main
         echo "同步完成，请注意查看[diy-part.sh]和[settings.ini]文件的变化和设置好!"

@@ -1,11 +1,9 @@
-<details>
-<summary>✖️ 更新说明</summary> 
+ 
 - 2022年4月27号修改
 - 把 build/openwrt_amlogic/diy-part.sh 里面的晶晨打包组合的路径修改过了，请及时更新
 
 - 把编译的时候不想要的固件或者文件的删除方法修改过了，注意diy-part.sh的代码路径也修改过了，要及时更新，新删除方法请到《[`删除不想要的固件或者文件`](https://github.com/danshui-git/shuoming/blob/master/%E5%9B%BA%E4%BB%B6%E6%96%87%E4%BB%B6%E5%A4%B9%E6%95%B4%E7%90%86.md)》查看说明
 
-</details>
 #
 ---
 - ## [`github编译教程`](https://github.com/danshui-git/shuoming#readme)

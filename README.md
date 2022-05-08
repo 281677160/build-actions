@@ -29,7 +29,7 @@
 
 
 ---
- ## 鸣谢！
+ ### 鸣谢！
  感谢以下各位大佬（排名无分先后）<br />
  
  [`coolsnowwolf`](https://github.com/coolsnowwolf/lede.git)

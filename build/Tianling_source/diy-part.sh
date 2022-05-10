@@ -51,7 +51,7 @@ sed -i '/CYXluq4wUazHjmCDBCqXF/d' "$ZZZ_PATH"
 sed -i "/exit 0/i\sed -i '/coremark/d' /etc/crontabs/root" "$FIN_PATH"
 
 
-# x86机型,默认内核4.19，修改内核为4.14（根据源码变化,自行在源码target/linux/x86/Makefile文件查看）
+# 修改默认内核（所有机型都适用，只要您编译的机型源码附带了其他内核，请至编译说明的第12条查看）
 #sed -i 's/PATCHVER:=4.19/PATCHVER:=4.14/g' target/linux/x86/Makefile
 
 

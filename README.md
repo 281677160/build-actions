@@ -15,7 +15,7 @@
 
 ---
 <details>
-🆘点击查看编译教程
+<summary>🆘点击查看编译教程</summary>
 <br>
 
 ## [`github编译教程`](https://github.com/danshui-git/shuoming#readme)

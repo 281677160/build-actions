@@ -3,6 +3,9 @@
 <summary>🆙点击查看更新说明</summary>
 <br>
 
+2022年10月9号，因为上游Lienol大佬删除了22.03源码，我这里也就把22.03改成他的21.02源码了，编译脚本的ubuntu也从20.04改成22.04
+
+
 2022年7月28号，编译时候在diy-part.sh文件里面可以对OpenClash代码进行分支选择，可选master或者dev分支，选错或者不选就默认使用master分支
 
 
@@ -39,7 +42,7 @@
  感谢以下各位大佬（排名无分先后）<br />
  
  [`coolsnowwolf`](https://github.com/coolsnowwolf/lede/tree/master)
- [`Lienol`](https://github.com/Lienol/openwrt/tree/22.03)
+ [`Lienol`](https://github.com/Lienol/openwrt/tree/21.02)
  [`immortalwrt`](https://github.com/immortalwrt/immortalwrt)
  [`P3TERX`](https://github.com/P3TERX/Actions-OpenWrt)
  [`Hyy2001X`](https://github.com/Hyy2001X/AutoBuild-Actions)

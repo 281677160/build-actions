@@ -34,13 +34,13 @@ env:
 jobs:
   build:
     runs-on: ubuntu-22.04
-    if: github.event.repository.owner.id == github.event.sender.id || ! github.event.sender.id
+    if: ${{ github.event.repository.owner.id }} == ${{ github.event.sender.id }}
 
     name: 编译 "${{matrix.target}}"
     strategy:
       fail-fast: false
       matrix:
-        target: [Lienol_source]
+        target: [Lede_source]
         
         # [Lede_source,Lienol_source,Mortal_source,Tianling_source,openwrt_amlogic]
 
@@ -54,31 +54,31 @@ jobs:
         git clone --depth 1 -b main https://github.com/281677160/common ${GITHUB_WORKSPACE}/build/common
         mv -f ${GITHUB_WORKSPACE}/build/common/*.sh ${GITHUB_WORKSPACE}/build/${{matrix.target}}/
         chmod -R +x ${GITHUB_WORKSPACE}/build
-        source $GITHUB_WORKSPACE/build/${{matrix.target}}/common.sh && Diy_repo_url
-        source $GITHUB_WORKSPACE/build/${{matrix.target}}/common.sh && Diy_settings
+        source ${GITHUB_WORKSPACE}/build/${{matrix.target}}/common.sh && Diy_repo_url
+        source ${GITHUB_WORKSPACE}/build/${{matrix.target}}/common.sh && Diy_settings
     
     - name: 部署编译环境
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        source $GITHUB_WORKSPACE/build/${{matrix.target}}/common.sh && Diy_update
+        source ${GITHUB_WORKSPACE}/build/${{matrix.target}}/common.sh && Diy_update
     
     - name: 下载"${{matrix.target}}"源码
       working-directory: /${{matrix.target}}
       run: |
-        git clone -b "$REPO_BRANCH" --single-branch "$REPO_URL" openwrt
-        ln -sf /${{matrix.target}}/openwrt $GITHUB_WORKSPACE/openwrt
+        git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
+        ln -sf /${{matrix.target}}/openwrt ${GITHUB_WORKSPACE}/openwrt
     
     - name: 公 告
       run: |
         echo
-        source $GITHUB_WORKSPACE/build/${{matrix.target}}/common.sh && Diy_variable
-        source $GITHUB_WORKSPACE/build/${{matrix.target}}/common.sh && Diy_Notice
+        source ${GITHUB_WORKSPACE}/build/${{matrix.target}}/common.sh && Diy_variable
+        source ${GITHUB_WORKSPACE}/build/${{matrix.target}}/common.sh && Diy_Notice
  
     - name: 加载源,补丁和自定义设置
       run: |
         cd openwrt
-        source $BUILD_PATH/common.sh && Diy_menu
+        source ${BUILD_PATH}/common.sh && Diy_menu
     
     - name: 缓存加速(7天内对应源码相同机型二次编译有效，每次只保留一个源码的缓存)
       if: env.USE_CACHEWRTBUILD == 'true'
@@ -90,23 +90,23 @@ jobs:
     - name: 生成配置文件
       run: |
         cd openwrt
-        source $BUILD_PATH/common.sh && Diy_menu2
+        source ${BUILD_PATH}/common.sh && Diy_menu2
         
     - name: 启用在线更新
       continue-on-error: true
       if: env.REGULAR_UPDATE == 'true' && env.REPO_TOKEN
       run: |
         cd openwrt
-        source $BUILD_PATH/upgrade.sh && Diy_Part2
-        cat $BASE_PATH/bin/openwrt_info
+        source ${BUILD_PATH}/upgrade.sh && Diy_Part2
+        cat ${BASE_PATH}/bin/openwrt_info
         
     - name: 编译信息
       continue-on-error: true
       if: env.BY_INFORMATION == 'true'
       run: |
         cd openwrt
-        source $BUILD_PATH/upgrade.sh && GET_TARGET_INFO
-        source $BUILD_PATH/common.sh && Diy_xinxi
+        source ${BUILD_PATH}/upgrade.sh && GET_TARGET_INFO
+        source ${BUILD_PATH}/common.sh && Diy_xinxi
         
     - name: 下载软件包
       id: package
@@ -122,21 +122,21 @@ jobs:
         cd openwrt
         echo -e "$(nproc) thread compile"
         make -j$(($(nproc) + 1)) || make -j1 V=s
-        echo "date=$(date "+%Y%m%d%H%M%S")" >> $GITHUB_ENV
+        echo "date=$(date "+%Y%m%d%H%M%S")" >> ${GITHUB_ENV}
         
     - name: 打包晶晨系列固件
       continue-on-error: true
       if: steps.compile.outcome == 'success' && env.AUTOMATIC_AMLOGIC == 'true'
       run: |
-        cd $GITHUB_WORKSPACE
-        source $BUILD_PATH/common.sh && Package_amlogic
+        cd ${GITHUB_WORKSPACE}
+        source ${BUILD_PATH}/common.sh && Package_amlogic
 
     - name: 整理固件文件夹(需配合diy-part.sh设定使用)
       continue-on-error: true
       id: organizer
       run: |
         cd openwrt
-        source $BUILD_PATH/common.sh && Diy_firmware
+        source ${BUILD_PATH}/common.sh && Diy_firmware
         
     - name: 上传固件在 github actions
       continue-on-error: true

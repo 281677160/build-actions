@@ -35,7 +35,7 @@ on:
 
 # 定时触发开启开始编译(把下面两个#去掉开启,时间设置请看定时开启编译说明)
 #  schedule:
-#   - cron: 0 9 * * *
+#   - cron: 30 8 * * *
 
 env:
   Github: https://github.com/${{github.repository}}
@@ -53,13 +53,13 @@ env:
 jobs:
   build:
     runs-on: ubuntu-22.04
-    if: github.event.repository.owner.id == github.event.sender.id || ! github.event.sender.id
+    if: ${{ github.event.repository.owner.id }} == ${{ github.event.sender.id }}
 
     name: 启动${{matrix.target}}编译
     strategy:
       fail-fast: false
       matrix:
-        target: [Lienol_source]
+        target: [Lede_source]
 
         # [Lede_source,Lienol_source,Mortal_source,Tianling_source,openwrt_amlogic]
 
@@ -74,17 +74,17 @@ jobs:
         git clone --depth 1 -b main https://github.com/281677160/common ${GITHUB_WORKSPACE}/build/common
         mv -f ${GITHUB_WORKSPACE}/build/common/*.sh ${GITHUB_WORKSPACE}/build/${{matrix.target}}/
         chmod -R +x ${GITHUB_WORKSPACE}/build
-        source $GITHUB_WORKSPACE/build/${{matrix.target}}/common.sh && Diy_repo_url
-        source $GITHUB_WORKSPACE/build/${{matrix.target}}/common.sh && Diy_settings
+        source ${GITHUB_WORKSPACE}/build/${{matrix.target}}/common.sh && Diy_repo_url
+        source ${GITHUB_WORKSPACE}/build/${{matrix.target}}/common.sh && Diy_settings
         
     - name: 定时启动编译时清理Actions空间和删除releases数值设置
       run: |
          if [[ -z "${{ github.event.inputs.days }}" ]] && [[ -z "${{ github.event.inputs.rele }}" ]]; then
-           echo "retain_days=7" >> $GITHUB_ENV
-           echo "keep_latest=10" >> $GITHUB_ENV
+           echo "retain_days=7" >> ${GITHUB_ENV}
+           echo "keep_latest=10" >> ${GITHUB_ENV}
          else
-           echo "retain_days=${{ github.event.inputs.days }}" >> $GITHUB_ENV
-           echo "keep_latest=${{ github.event.inputs.rele }}" >> $GITHUB_ENV
+           echo "retain_days=${{ github.event.inputs.days }}" >> ${GITHUB_ENV}
+           echo "keep_latest=${{ github.event.inputs.rele }}" >> ${GITHUB_ENV}
          fi
         
     - name: 部署编译环境
@@ -105,22 +105,22 @@ jobs:
       continue-on-error: true
       working-directory: /${{matrix.target}}
       run: |
-        git clone -b "$REPO_BRANCH" --single-branch "$REPO_URL" openwrt
-        ln -sf /${{matrix.target}}/openwrt $GITHUB_WORKSPACE/openwrt
+        git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
+        ln -sf /${{matrix.target}}/openwrt ${GITHUB_WORKSPACE}/openwrt
  
     - name: 公 告
       continue-on-error: true
       run: |
         echo
-        source $GITHUB_WORKSPACE/build/${{matrix.target}}/common.sh && Diy_variable
-        source $GITHUB_WORKSPACE/build/${{matrix.target}}/common.sh && Diy_Notice
+        source ${GITHUB_WORKSPACE}/build/${{matrix.target}}/common.sh && Diy_variable
+        source ${GITHUB_WORKSPACE}/build/${{matrix.target}}/common.sh && Diy_Notice
  
     - name: 加载源,补丁和自定义设置
       id: compile
       continue-on-error: true
       run: |
         cd openwrt
-        source $BUILD_PATH/common.sh && Diy_menu
+        source ${BUILD_PATH}/common.sh && Diy_menu
         
     - name: SSH远程连接（制作.config配置文件）
       if: env.SSH_ACTIONS == 'true' || (github.event.inputs.ssh == 'ssh')
@@ -133,7 +133,7 @@ jobs:
       continue-on-error: true
       run: |
         cd openwrt
-        source $BUILD_PATH/common.sh && Diy_menu2
+        source ${BUILD_PATH}/common.sh && Diy_menu2
         ./scripts/diffconfig.sh > ${GITHUB_WORKSPACE}/${CONFIG_FILE}
         cp -Rf ${GITHUB_WORKSPACE}/${CONFIG_FILE} ${GITHUB_WORKSPACE}/config.txt
         
@@ -150,7 +150,7 @@ jobs:
       continue-on-error: true
       if: steps.clone.outcome == 'success' && steps.compile.outcome == 'success' && env.REPO_TOKEN
       run: |
-        cd $GITHUB_WORKSPACE
+        cd ${GITHUB_WORKSPACE}
         git clone -b main https://github.com/${{github.repository}}.git ${{matrix.target}}
         export TARGE1="$(grep 'target: \[' ${{matrix.target}}/.github/workflows/compile.yml |sed 's/^[ ]*//g' |grep '^target' |cut -d '#' -f1 |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
         export TARGE2="target: \\[${{matrix.target}}\\]"
@@ -160,7 +160,7 @@ jobs:
           sed -i "s/${QIDONG1}/${QIDONG2}/g" ${{matrix.target}}/.github/workflows/compile.yml
           sed -i "s/${TARGE1}/${TARGE2}/g" ${{matrix.target}}/.github/workflows/compile.yml
         fi
-        cp -Rf $GITHUB_WORKSPACE/${CONFIG_FILE} ${{matrix.target}}/build/${{matrix.target}}/${{env.CONFIG_FILE}}
+        cp -Rf ${GITHUB_WORKSPACE}/${CONFIG_FILE} ${{matrix.target}}/build/${{matrix.target}}/${{env.CONFIG_FILE}}
         mkdir -p ${{matrix.target}}/build/${{matrix.target}}/start-up
         echo "${{ env.SOURCE }}$(date +%Y年%m月%d号%H时%M分%S秒)" > ${{matrix.target}}/build/${{matrix.target}}/start-up/start
         cd ${{matrix.target}}
@@ -193,8 +193,8 @@ jobs:
       if: env.BY_INFORMATION == 'true'
       run: |
         cd openwrt
-        source $BUILD_PATH/upgrade.sh && GET_TARGET_INFO
-        source $BUILD_PATH/common.sh && Diy_xinxi
+        source ${BUILD_PATH}/upgrade.sh && GET_TARGET_INFO
+        source ${BUILD_PATH}/common.sh && Diy_xinxi
     
     - name: 清理Actions空间
       if: env.REPO_TOKEN

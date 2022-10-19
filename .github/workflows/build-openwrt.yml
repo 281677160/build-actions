@@ -171,7 +171,7 @@ jobs:
     - name: 电报机器人或pushplus信息通知
       if: env.PUSH_PLUS_TOKEN && env.SERVERCHAN_SCKEY == 'PUSH' || env.TELEGRAM_BOT_TOKEN && env.SERVERCHAN_SCKEY == 'TG'
       run: |
-        if [[ "${SERVERCHAN_SCKEY}" == "TG" ]]; then
+        if [[ "${{ env.SERVERCHAN_SCKEY }}" == "TG" ]]; then
           if [[ "${{steps.clone.outcome}}" == 'success' ]] && [[ "${{steps.gitpush.outcome}}" == 'success' ]] && [[ "${{steps.compile.outcome}}" == 'success' ]]; then
             curl -k --data chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" --data "text=🎉 主人💕：您的编译脚本成功触发【${{matrix.target}}】文件夹编译【${{env.TARGET_PROFILE}}】固件中,请耐心等待...... 😋(${{env.Tongzhi_Date}})" "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage"
           else
@@ -179,7 +179,7 @@ jobs:
             exit 1
           fi
         fi
-        if [[ "${SERVERCHAN_SCKEY}" == "PUSH" ]]; then
+        if [[ "${{ env.SERVERCHAN_SCKEY }}" == "PUSH" ]]; then
           if [[ "${{steps.clone.outcome}}" == 'success' ]] && [[ "${{steps.gitpush.outcome}}" == 'success' ]] && [[ "${{steps.compile.outcome}}" == 'success' ]]; then
             curl -k --data token="${{ secrets.PUSH_PLUS_TOKEN }}" --data title="开始编译【${{matrix.target}}】" --data "content=🎉 主人💕：您的编译脚本成功触发【${{matrix.target}}】文件夹编译【${{env.TARGET_PROFILE}}】固件中,请耐心等待...... 😋(${{env.Tongzhi_Date}})" "http://www.pushplus.plus/send"
           else

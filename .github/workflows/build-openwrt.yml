@@ -198,7 +198,7 @@ jobs:
     
     - name: 清理Actions空间
       if: env.REPO_TOKEN
-      uses: Mattraks/delete-workflow-runs@main
+      uses: Mattraks/delete-workflow-runs@v2
       with:
           token: ${{ secrets.REPO_TOKEN }}
           repository: ${{ github.repository }}
@@ -207,7 +207,7 @@ jobs:
     
     - name: 删除releases
       if: env.REPO_TOKEN
-      uses: dev-drprasad/delete-older-releases@master
+      uses: dev-drprasad/delete-older-releases@v0.2.0
       with:
         repo: ${{ github.repository }}
         keep_latest: ${{ env.keep_latest }}

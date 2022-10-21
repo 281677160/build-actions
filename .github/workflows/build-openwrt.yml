@@ -124,7 +124,7 @@ jobs:
         
     - name: SSH远程连接（制作.config配置文件）
       if: env.SSH_ACTIONS == 'true' || (github.event.inputs.ssh == 'ssh')
-      uses: danshui-git/debugger-action@master
+      uses: danshui-git/debugger-action@main
       env:
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
@@ -207,7 +207,7 @@ jobs:
     
     - name: 删除releases
       if: env.REPO_TOKEN
-      uses: dev-drprasad/delete-older-releases@v0.2.0
+      uses: danshui-git/delete-older-releases@main
       with:
         repo: ${{ github.repository }}
         keep_latest: ${{ env.keep_latest }}

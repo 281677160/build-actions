@@ -202,8 +202,8 @@ jobs:
       with:
           token: ${{ secrets.REPO_TOKEN }}
           repository: ${{ github.repository }}
-          keep_minimum_runs: 0
           retain_days: ${{ env.retain_days }}
+          keep_minimum_runs: 6
     
     - name: 删除releases
       if: env.REPO_TOKEN

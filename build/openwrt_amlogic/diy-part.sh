@@ -56,7 +56,10 @@ export OpenClash_branch='master'
 
 
 # 设置打包固件的机型，内核组合（可用内核是时时变化的,过老的内核就删除的，所以要选择什么内核请看说明）
-# 当前可用机型 s922x s922x-n2 s922x-reva a311d s905x3 s905x2 s905x2-km3 s905l3a s912 s912-m8s s905d s905d-ki s905x s905w s905
+# 当前可用机型
+# s905x3 s905d s912 a311d s922x s922x-n2 s922x-reva s905x3 s905x3-b s905x2
+# s912-m8s s905d s905d-ki s905x s905w s905 s905l3a s905x2-km3 s912
+# 可选内核 （5.4） （5.10） （5.15） （5.19） （6.0）
 
 cat >"$AMLOGIC_SH_PATH" <<-EOF
 amlogic_model=s905x3_s905x2_s905x_s905w_s905d_s922x_s912

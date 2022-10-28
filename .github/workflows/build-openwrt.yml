@@ -52,10 +52,12 @@ env:
 
 jobs:
   build:
+    name: 编译 "${{matrix.target}}"
     runs-on: ubuntu-22.04
     if: ${{ github.event.repository.owner.id }} == ${{ github.event.sender.id }}
-
-    name: 启动${{matrix.target}}编译
+    
+    env:
+      matrixtarget: ${{ matrix.target }}
     strategy:
       fail-fast: false
       matrix:
@@ -70,7 +72,6 @@ jobs:
 
     - name: 读取脚本设置
       run: |
-        export matrixtarget="${{ matrix.target }}"
         git clone --depth 1 -b main https://github.com/281677160/common ${GITHUB_WORKSPACE}/build/common
         mv -f ${GITHUB_WORKSPACE}/build/common/*.sh ${GITHUB_WORKSPACE}/build/${{matrix.target}}/
         chmod -R +x ${GITHUB_WORKSPACE}/build

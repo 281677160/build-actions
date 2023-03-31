@@ -5,7 +5,6 @@
 
 name: 编译主程序
 on:
-  workflow_dispatch:
   push:
     branches:
       - main

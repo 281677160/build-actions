@@ -1,0 +1,7 @@
+CONFIG_TARGET_bcm53xx=y
+CONFIG_TARGET_bcm53xx_generic=y
+CONFIG_TARGET_bcm53xx_generic_DEVICE_phicomm_k3=y
+# CONFIG_PACKAGE_dnsmasq_full_conntrack is not set
+CONFIG_PACKAGE_kmod-nf-conntrack-netlink=y
+CONFIG_PACKAGE_libnetfilter-conntrack=y
+CONFIG_PACKAGE_libnfnetlink=y

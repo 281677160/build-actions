@@ -1,34 +1,27 @@
 #
-#
-# 此文件为编译文件,一般情况下不使用这个来启动,运行build-openwrt.yml会自动触发编译
-#
-# 如果自动触发挂了的情况下，可以在这里选择好机型，选择 compile 启动编译
-#
-# REPO_TOKEN密匙制作教程：https://git.io/jm.md
-#
+# 编译主程序,请勿修改文件名称（compile.yml）
 #
 
 
-name: compile
+name: 编译主程序
 on:
   workflow_dispatch:
   push:
     branches:
       - main
     paths:
-      - '-config-'
+      - 'build/Xwrt/relevance/start'
 
 env:
-  Github: https://github.com/${{github.repository}}
-  Author: ${{github.actor}}
-  Warehouse: ${{github.repository}}
-  Run_number: ${{github.run_number}}
-  Run_workflow: ${{github.workflow}}
+  GITHUB_LINK: https://github.com/${{github.repository}}
+  GIT_ACTOR: ${{github.actor}}
+  GIT_REPOSITORY: ${{github.repository}}
+  RUN_NUMBER: ${{github.run_number}}
+  RUN_WORKFLOW: ${{github.workflow}}
   REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
-  SCKEY: ${{ secrets.SCKEY }}
   PUSH_PLUS_TOKEN: ${{ secrets.PUSH_PLUS_TOKEN }}
-  TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
   TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+  TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
   TZ: Asia/Shanghai
 
 jobs:
@@ -38,84 +31,106 @@ jobs:
     if: ${{ github.event.repository.owner.id }} == ${{ github.event.sender.id }}
     
     env:
-      matrixtarget: ${{ matrix.target }}
+      FOLDER_NAME: ${{ matrix.target }}
     strategy:
       fail-fast: false
       matrix:
-        target: [openwrt_amlogic]
-        
-        # [Lede_source,Lienol_source,Mortal_source,Tianling_source,openwrt_amlogic]
+        target: [Xwrt]
 
-    steps:
+    steps:    
     - name: 准备结束
       uses: actions/checkout@v3
 
     - name: 读取脚本设置
       run: |
-        git clone --depth 1 -b main https://github.com/281677160/common ${GITHUB_WORKSPACE}/build/common
-        mv -f ${GITHUB_WORKSPACE}/build/common/*.sh ${GITHUB_WORKSPACE}/build/${{matrix.target}}/
-        chmod -R +x ${GITHUB_WORKSPACE}/build
-        source ${GITHUB_WORKSPACE}/build/${{matrix.target}}/common.sh && Diy_repo_url
-        source ${GITHUB_WORKSPACE}/build/${{matrix.target}}/common.sh && Diy_settings
-    
+        cd ${GITHUB_WORKSPACE}
+        git clone https://github.com/281677160/common build/common
+        mv -f build/common/*.sh build/${{matrix.target}}/
+        sudo chmod -R +x build
+        if [[ -n "${{ github.event.workflow }}" ]]; then
+          export Manually_Run="1"
+          source build/${{matrix.target}}/common.sh && Diy_menu1
+        else
+          source build/${{matrix.target}}/common.sh && Diy_menu1
+        fi
+
+    - name: CPU检测
+      run: |
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
+        if [[ -n "${{ github.event.workflow }}" ]]; then
+          export CPU_SELECTIOY="$(source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini" && echo "${CPU_SELECTION}")"
+        else
+          export CPU_PASSWORD="1680146126"
+          export CPU_OPTIMIZATION="E5"
+        fi
+        source build/${FOLDER_NAME}/common.sh && CPU_Priority
+        
     - name: 部署编译环境
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
         source ${GITHUB_WORKSPACE}/build/${{matrix.target}}/common.sh && Diy_update
-    
+        sudo timedatectl set-timezone "$TZ"
+        sudo mkdir -p /${{ env.DIY_WORK }}
+        sudo chown ${USER}:${GROUPS} /${{ env.DIY_WORK }}
+
     - name: 下载"${{matrix.target}}"源码
-      working-directory: /${{matrix.target}}
+      working-directory: /${{ env.DIY_WORK }}
       run: |
         git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
-        ln -sf /${{matrix.target}}/openwrt ${GITHUB_WORKSPACE}/openwrt
+        ln -sf /${{ env.DIY_WORK }}/openwrt ${GITHUB_WORKSPACE}/openwrt
+        source ${GITHUB_WORKSPACE}/build/${{matrix.target}}/common.sh && Diy_checkout
     
     - name: 公 告
       run: |
-        echo
-        source ${GITHUB_WORKSPACE}/build/${{matrix.target}}/common.sh && Diy_variable
-        source ${GITHUB_WORKSPACE}/build/${{matrix.target}}/common.sh && Diy_Notice
- 
-    - name: 加载源,补丁和自定义设置
-      run: |
-        cd openwrt
-        source ${BUILD_PATH}/common.sh && Diy_menu
-    
-    - name: 缓存加速(7天内对应源码相同机型二次编译有效，每次只保留一个源码的缓存)
-      if: env.USE_CACHEWRTBUILD == 'true'
-      uses: klever1988/cachewrtbuild@main
-      with:
-        ccache: 'true'
-        prefix: ${{ github.workspace }}/openwrt
-
-    - name: 生成配置文件
-      run: |
+        cd ${GITHUB_WORKSPACE}
+        cp -Rf `find ./ -maxdepth 1 -type d ! -path './openwrt' ! -path './'` openwrt
         cd openwrt
         source ${BUILD_PATH}/common.sh && Diy_menu2
-        
-    - name: 启用在线更新
-      continue-on-error: true
-      if: env.REGULAR_UPDATE == 'true' && env.REPO_TOKEN
+ 
+    - name: 增加插件源
       run: |
         cd openwrt
-        source ${BUILD_PATH}/upgrade.sh && Diy_Part2
-        cat ${BASE_PATH}/bin/openwrt_info
+        source ${BUILD_PATH}/common.sh && Diy_menu3
+ 
+    - name: 加载diy-part.sh文件
+      run: |
+        cd openwrt
+        source ${BUILD_PATH}/common.sh && Diy_zdypartsh
+        source ${BUILD_PATH}/common.sh && Diy_Publicarea
+        
+    - name: 加载源、补丁和files文件夹
+      run: |
+        cd openwrt
+        source ${BUILD_PATH}/common.sh && Diy_menu4
+
+    - name: 生成"${{matrix.target}}"配置文件
+      run: |
+        cd openwrt
+        source ${BUILD_PATH}/common.sh && Diy_menu5
         
     - name: 编译信息
       continue-on-error: true
-      if: env.BY_INFORMATION == 'true'
+      if: env.COMPILATION_INFORMATION == 'true'
       run: |
         cd openwrt
-        source ${BUILD_PATH}/upgrade.sh && GET_TARGET_INFO
         source ${BUILD_PATH}/common.sh && Diy_xinxi
+        
+    - name: 缓存加速
+      if: env.CACHEWRTBUILD_SWITCH == 'true'
+      uses: stupidloud/cachewrtbuild@main
+      with:
+        ccache: 'true'
+        mixkey: "${{ env.TARGET_PROFILE }}"
+        prefix: ${{ github.workspace }}/openwrt
         
     - name: 下载软件包
       id: package
       run: |
         cd openwrt
+        make defconfig
         make download -j8
-        find dl -size -1024c -exec ls -l {} \;
-        find dl -size -1024c -exec rm -f {} \;
     
     - name: 开始编译固件
       id: compile
@@ -124,107 +139,97 @@ jobs:
         echo -e "$(nproc) thread compile"
         make -j$(($(nproc) + 1)) || make -j1 V=s
         echo "date=$(date "+%Y%m%d%H%M%S")" >> ${GITHUB_ENV}
+        source ${BUILD_PATH}/common.sh && firmware_jiance
         
     - name: 打包晶晨系列固件
-      continue-on-error: true
-      if: steps.compile.outcome == 'success' && env.AUTOMATIC_AMLOGIC == 'true'
-      run: |
-        cd ${GITHUB_WORKSPACE}
-        source ${BUILD_PATH}/common.sh && Package_amlogic
+      if: steps.compile.outcome == 'success' && env.PACKAGING_FIRMWARE == 'true'
+      uses: ncipollo/release-action@main
+      with:
+        name: rootfs.tar.gz
+        tag: targz
+        token: ${{ secrets.REPO_TOKEN }}
+        allowUpdates: true
+        replacesArtifacts: true
+        artifacts: openwrt/targz/*rootfs.tar.gz
 
     - name: 整理固件文件夹(需配合diy-part.sh设定使用)
       continue-on-error: true
+      if: steps.compile.outcome == 'success'
       id: organizer
       run: |
         cd openwrt
         source ${BUILD_PATH}/common.sh && Diy_firmware
         
-    - name: 上传固件在 github actions
-      continue-on-error: true
+    - name: 上传固件在 github Artifacts
       if: steps.compile.outcome == 'success' && env.UPLOAD_FIRMWARE == 'true'
-      uses: actions/upload-artifact@main
+      uses: actions/upload-artifact@v3
       with:
-        name: ${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}-firmware-${{ env.Firmware_Date }}
-        path: ${{ env.FIRMWARE }}
+        name: ${{ env.SOURCE }}-${{ env.LUCI_EDITION }}-${{ env.TARGET_PROFILE }}-firmware-${{ env.Firmware_Date }}
+        path: ${{ env.FIRMWARE_PATH }}
 
     - name: 上传固件到「WeTransfer」
-      continue-on-error: true
       if: steps.compile.outcome == 'success' && env.UPLOAD_WETRANSFER == 'true'
       run: |
         curl -fsSL git.io/file-transfer | sh
-        ./transfer wet -s -p 16 --no-progress ${FIRMWARE} 2>&1 | tee wetransfer.log
+        ./transfer wet -s -p 16 --no-progress ${{ env.FIRMWARE_PATH }} 2>&1 | tee wetransfer.log
         echo "##### WETRANSFER：$(cat wetransfer.log | grep https | cut -f3 -d" ")" >> update_log.txt
         sed -i "s/Download Link/WETRANSFER/g" wetransfer.log
         echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
     
     - name: 发布固件
-      continue-on-error: true
-      if: steps.compile.outcome == 'success' && env.UPLOAD_RELEASE == 'true' && env.REPO_TOKEN
+      if: steps.compile.outcome == 'success' && env.UPLOAD_RELEASE == 'true' && env.ING_FIRMWAR == 'true' && env.REPO_TOKEN
       uses: ncipollo/release-action@main
       with:
-        name: ${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}
-        tag: ${{ env.date }}
+        name: ${{ env.SOURCE }}-${{ env.PROMPT_TING }}
+        tag: a${{ env.date }}
         token: ${{ secrets.REPO_TOKEN }}
         allowUpdates: true
-        bodyFile: "update_log.txt"
-        artifacts: "${{ env.FIRMWARE }}/*"
+        body: ${{ env.Tongzhi_Date }}
+        artifacts: "${{ env.FIRMWARE_PATH }}/*"
         
     - name: 发送[在线更新固件]至云端1
-      id: regular
-      continue-on-error: true
-      if: steps.compile.outcome == 'success' && env.REGULAR_UPDATE == 'true' && env.REPO_TOKEN
+      id: autoup
+      if: steps.compile.outcome == 'success' && env.UPDATE_FIRMWARE_ONLINE == 'true' && env.REPO_TOKEN
       uses: ncipollo/release-action@main
       with:
         name: AutoUpdate
-        tag: AutoUpdate
+        tag: ${{ env.TARGET_BOARD }}
         token: ${{ secrets.REPO_TOKEN }}
         allowUpdates: true
-        bodyFile: "AutoUpdate_log.txt"
-        artifacts: "openwrt/bin/Firmware/*"
+        body: ${{ env.Tongzhi_Date }}
+        artifacts: "${{ env.BIN_PATH }}/*"
         
     - name: 发送[在线更新固件]至云端2
-      continue-on-error: true
-      if: steps.regular.outcome == 'success' && env.REGULAR_UPDATE == 'true' && env.REPO_TOKEN
+      if: steps.autoup.outcome == 'success' && env.UPDATE_FIRMWARE_ONLINE == 'true' && env.REPO_TOKEN
       run: |
-        mkdir -p Github_Tags
-        cd Github_Tags
-        wget -q --no-cookie --no-check-certificate https://api.github.com/repos/${{github.repository}}/releases/tags/AutoUpdate -O Github_Tags
+        mkdir -p Github_Api
+        cd Github_Api
+        curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/${{github.repository}}/releases/tags/${{ env.TARGET_BOARD }} -o zzz_api
+        if [[ $? -ne 0 ]]; then
+          curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/${{github.repository}}/releases/tags/${TARGET_BOARD} > zzz_api
+        fi
         
     - name: 发送[在线更新固件]至云端3
-      continue-on-error: true
-      if: steps.regular.outcome == 'success' && env.REGULAR_UPDATE == 'true' && env.REPO_TOKEN
+      if: steps.autoup.outcome == 'success' && env.UPDATE_FIRMWARE_ONLINE == 'true' && env.REPO_TOKEN
       uses: ncipollo/release-action@main
       with:
-        name: AutoUpdate
-        tag: AutoUpdate
+        name: AutoUpdate-${{ env.TARGET_BOARD }}
+        tag: ${{ env.TARGET_BOARD }}
         token: ${{ secrets.REPO_TOKEN }}
+        artifacts: "Github_Api/*"
         allowUpdates: true
-        bodyFile: "AutoUpdate_log.txt"
-        artifacts: "Github_Tags/*"
+        body: ${{ env.Tongzhi_Date }}
 
     - name: 电报机器人或pushplus信息通知
-      continue-on-error: true
-      if: env.PUSH_PLUS_TOKEN && env.SERVERCHAN_SCKEY == 'PUSH' || env.TELEGRAM_BOT_TOKEN && env.SERVERCHAN_SCKEY == 'TG'
+      if: env.PUSH_PLUS_TOKEN && env.INFORMATION_NOTICE == 'PUSH' || env.TELEGRAM_BOT_TOKEN && env.INFORMATION_NOTICE == 'TG'
       run: |
-        if [[ "${{ env.SERVERCHAN_SCKEY }}" == "TG" ]]; then
-          if [[ "${{steps.compile.outcome}}" == 'failure' ]]; then
-            curl -k --data chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" --data "text=我亲爱的❌主人❌：您使用【${{matrix.target}}】文件夹编译的[${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}]固件(${{env.Library}}仓库的#${{env.Run_number}}号)编译失败😴！(${{env.Tongzhi_Date}})" "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage"
-          elif [[ "${{steps.compile.outcome}}" == 'success' ]] && [[ "${{steps.regular.outcome}}" == 'success' ]]; then
-            curl -k --data chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" --data "text=我亲爱的✨主人✈️：您使用【${{matrix.target}}】文件夹编译的[${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}]固件(${{env.Library}}仓库的#${{env.Run_number}}号)顺利编译成功,发布云端在线更新使用的固件成功!🎈(${{env.Tongzhi_Date}})" "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage"
-          elif [[ "${{steps.compile.outcome}}" == 'success' ]] && [[ "${{steps.regular.outcome}}" == 'skipped' ]]; then
-            curl -k --data chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" --data "text=我亲爱的✨主人✨：您使用【${{matrix.target}}】文件夹编译的[${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}]固件💐(${{env.Library}}仓库的#${{env.Run_number}}号)顺利编译完成了✌️💯！(${{env.Tongzhi_Date}})" "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage"
-          elif [[ "${{steps.compile.outcome}}" == 'success' ]] && [[ "${{steps.regular.outcome}}" == 'failure' ]]; then  
-            curl -k --data chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" --data "text=我亲爱的✨主人❌：您使用【${{matrix.target}}】文件夹编译的[${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}]固件(${{env.Library}}仓库的#${{env.Run_number}}号)顺利编译成功✌️,💥但是发布云端在线更新使用的固件失败了💥！(${{env.Tongzhi_Date}})" "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage"
+        if [[ "${{ env.INFORMATION_NOTICE }}" == "TG" ]]; then
+          if [[ "${{steps.compile.outcome}}" == 'success' ]]; then
+            curl -k --data chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" --data "text=我亲爱的✨主人✨：您使用【${{matrix.target}}】文件夹编译【${REPO_BRANCH}分支的${{env.TARGET_PROFILE}}】固件顺利编译完成了✌️💯💐(${{env.WAREHOUSE_MAN}}仓库的#${{env.RUN_NUMBER}}号)！($(date +%Y年%m月%d号%H时%M分))" "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage"
           fi
         fi
-        if [[ "${{ env.SERVERCHAN_SCKEY }}" == "PUSH" ]]; then
-          if [[ "${{steps.compile.outcome}}" == 'failure' ]]; then
-            curl -k --data token="${{ secrets.PUSH_PLUS_TOKEN }}" --data title="[${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}]编译失败" --data "content=我亲爱的❌主人❌：您使用【${{matrix.target}}】文件夹编译的[${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}]固件(${{env.Library}}仓库的#${{env.Run_number}}号)编译失败😴！(${{env.Tongzhi_Date}})" "http://www.pushplus.plus/send"
-          elif [[ "${{steps.compile.outcome}}" == 'success' ]] && [[ "${{steps.regular.outcome}}" == 'success' ]]; then
-            curl -k --data token="${{ secrets.PUSH_PLUS_TOKEN }}" --data title="[${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}]编译成功,发布成功" --data "content=我亲爱的✨主人✈️：您使用【${{matrix.target}}】文件夹编译的[${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}]固件(${{env.Library}}仓库的#${{env.Run_number}}号)顺利编译成功,发布云端在线更新使用的固件成功！🎈(${{env.Tongzhi_Date}})" "http://www.pushplus.plus/send"
-          elif [[ "${{steps.compile.outcome}}" == 'success' ]] && [[ "${{steps.regular.outcome}}" == 'skipped' ]]; then
-            curl -k --data token="${{ secrets.PUSH_PLUS_TOKEN }}" --data title="[${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}]编译成功" --data "content=我亲爱的✨主人✨：您使用【${{matrix.target}}】文件夹编译的[${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}]固件💐(${{env.Library}}仓库的#${{env.Run_number}}号)顺利编译完成了✌️💯！(${{env.Tongzhi_Date}})" "http://www.pushplus.plus/send"
-          elif [[ "${{steps.compile.outcome}}" == 'success' ]] && [[ "${{steps.regular.outcome}}" == 'failure' ]]; then 
-            curl -k --data token="${{ secrets.PUSH_PLUS_TOKEN }}" --data title="[${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}]编译成功,发布失败" --data "content=我亲爱的✨主人❌：您使用【${{matrix.target}}】文件夹编译的[${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}]固件(${{env.Library}}仓库的#${{env.Run_number}}号)顺利编译成功✌️,💥但是发布云端在线更新使用的固件失败了💥！(${{env.Tongzhi_Date}})" "http://www.pushplus.plus/send"
+        if [[ "${{ env.INFORMATION_NOTICE }}" == "PUSH" ]]; then
+          if [[ "${{steps.compile.outcome}}" == 'success' ]]; then
+            curl -k --data token="${{ secrets.PUSH_PLUS_TOKEN }}" --data title="[${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}]编译成功" --data "content=我亲爱的✨主人✨：您使用【${{matrix.target}}】文件夹编译【${REPO_BRANCH}分支的${{env.TARGET_PROFILE}}】固件顺利编译完成了✌️💯💐(${{env.WAREHOUSE_MAN}}仓库的#${{env.RUN_NUMBER}}号)！($(date +%Y年%m月%d号%H时%M分))" "http://www.pushplus.plus/send"
           fi
         fi

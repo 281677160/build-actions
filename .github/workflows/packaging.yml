@@ -58,7 +58,7 @@ on:
     branches:
       - main
     paths:
-      - 'build/Lede/relevance/Ledestart'
+      - 'bconfig'
 
 env:
   GITHUB_LINK: https://github.com/${{github.repository}}

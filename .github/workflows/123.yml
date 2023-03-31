@@ -44,7 +44,7 @@ jobs:
       if: env.REPO_TOKEN && (github.event.inputs.again-fork == 'fork')
       run: |
         cd $GITHUB_WORKSPACE
-        git clone -b argonv3 https://github.com/${{github.repository}}.git repogx
+        git clone https://github.com/${{github.repository}}.git repogx
         rm -rf repogx/build
         
     - name: 同步上游仓库

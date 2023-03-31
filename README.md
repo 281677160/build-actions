@@ -2,7 +2,7 @@
 [[Telegram聊天吹水群](https://t.me/heiheiheio)]
 
 
-2023年4月1号，把autobuild仓库合拼到了这里了，以前拉autobuild仓库的应该都不可以用了，请重新拉取这个仓库吧
+2023年4月1号，把autobuild仓库合拼到了这里了，以前拉autobuild仓库的应该都不可以用了，请重新拉取这个仓库吧，以前老的build-actions仓库也要重新拉取新的build-actions仓库使用
 
 ---
 

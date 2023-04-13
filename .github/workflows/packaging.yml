@@ -15,9 +15,9 @@ on:
         options:
           - 'Lede'
           - 'Immortalwrt'
+          - 'Lienol'
           - 'Official'
           - 'Xwrt'
-          - 'Lede'
       amlogic_model:
         description: '输入机型,比如：s905d 或 s905d_s905x2'
         required: true

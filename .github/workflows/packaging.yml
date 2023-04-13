@@ -26,14 +26,14 @@ on:
         description: '输入内核,比如：5.10.172 或 5.15.97_6.1.16'
         required: true
         default: ''
+      kernel_usage:
+        description: "内核仓库地址：stable(稳定版)、dev(测试版)、flippy(unifreq版)、rk3588(Rock-5B和HinLink-H88K专用版)"
+        required: false
+        default: 'stable' 
       rootfs_size:
         description: '设置rootfs大小(单位：MiB),比如：960'
         required: true
         default: '1024'
-      kernel_repo:
-        description: "内核仓库地址"
-        required: false
-        default: 'https://github.com/ophub/kernel/tree/kernel_stable/pub'
       auto_kernel:
         description: '是否自动检测最新内核'
         required: false
@@ -89,7 +89,8 @@ jobs:
           echo "amlogic_kernel=${{ github.event.inputs.amlogic_kernel }}" >> ${GITHUB_ENV}
           echo "rootfs_size=${{ github.event.inputs.rootfs_size }}" >> ${GITHUB_ENV}
           echo "auto_kernel=${{ github.event.inputs.auto_kernel }}" >> ${GITHUB_ENV}
-          echo "kernel_repo=${{ github.event.inputs.kernel_repo }}" >> ${GITHUB_ENV}
+          echo "kernel_repo=ophub/kernel" >> ${GITHUB_ENV}
+          echo "kernel_usage=${{ github.event.inputs.kernel_usage }}" >> ${GITHUB_ENV}
           echo "UPLOAD_FIRMWARE=${{ github.event.inputs.UPLOAD_FIRMWARE }}" >> ${GITHUB_ENV}
           echo "UPLOAD_RELEASE=${{ github.event.inputs.UPLOAD_RELEASE }}" >> ${GITHUB_ENV}
           echo "UPLOAD_WETRANSFER=${{ github.event.inputs.UPLOAD_WETRANSFER }}" >> ${GITHUB_ENV}
@@ -100,7 +101,8 @@ jobs:
           echo "amlogic_kernel=${amlogic_kernel}" >> ${GITHUB_ENV}
           echo "rootfs_size=${rootfs_size}" >> ${GITHUB_ENV}
           echo "auto_kernel=${auto_kernel}" >> ${GITHUB_ENV}
-          echo "kernel_repo=${kernel_repo}" >> ${GITHUB_ENV}
+          echo "kernel_repo=ophub/kernel" >> ${GITHUB_ENV}
+          echo "kernel_usage=${kernel_usage}" >> ${GITHUB_ENV}
           echo "UPLOAD_FIRMWARE=${UPLOAD_FIRMWARE}" >> ${GITHUB_ENV}
           echo "UPLOAD_RELEASE=${UPLOAD_RELEASE}" >> ${GITHUB_ENV}
           echo "UPLOAD_WETRANSFER=${UPLOAD_WETRANSFER}" >> ${GITHUB_ENV}

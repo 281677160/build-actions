@@ -58,7 +58,7 @@ export amlogic_model="s905d"
 export amlogic_kernel="5.10.01_6.1.01"
 export auto_kernel="true"
 export rootfs_size="960"
-export kernel_repo="https://github.com/ophub/kernel/tree/kernel_stable/pub"
+export kernel_usage="stable"
 
 
 # 修改插件名字

@@ -59,7 +59,7 @@ export Replace_mac80211="0"                  # 大雕源码编译mac80211会错�
 export amlogic_model="s905d"
 export amlogic_kernel="5.10.01_6.1.01"
 export auto_kernel="true"
-export rootfs_size="960"
+export rootfs_size="2560"
 export kernel_usage="stable"
 
 

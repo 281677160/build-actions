@@ -29,7 +29,13 @@ on:
       kernel_usage:
         description: "内核仓库：stable、dev、flippy、rk3588"
         required: true
-        default: 'stable' 
+        default: 'stable'
+        type: choice
+        options:
+          - 'stable'
+          - 'dev'
+          - 'flippy'
+          - 'rk3588'
       rootfs_size:
         description: '设置rootfs大小(单位：MiB),比如：960'
         required: true

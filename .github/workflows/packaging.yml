@@ -168,6 +168,7 @@ jobs:
           发布日期：${{ env.date_tg }}
           固件源码：${{ env.source_codename }}
           内核仓库：${{ env.kernel_usage }}
+          写入EMMC：Login to OpenWrt → System → Amlogic Service → Install OpenWrt
           
     - name: 上传固件到「WeTransfer」
       if: steps.compile.outcome == 'success' && env.UPLOAD_WETRANSFER == 'true'

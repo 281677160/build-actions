@@ -37,9 +37,15 @@ on:
           - 'flippy'
           - 'rk3588'
       rootfs_size:
-        description: '设置rootfs大小(单位：MiB),比如：960'
+        description: '设置rootfs大小(单位：MiB)'
         required: true
-        default: '1024'
+        default: '2560'
+        type: choice
+        options:
+          - '2560'
+          - '3840'
+          - '5120'
+          - '6400'
       auto_kernel:
         description: '是否自动检测最新内核'
         required: true

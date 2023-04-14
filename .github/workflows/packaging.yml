@@ -139,7 +139,7 @@ jobs:
       if: steps.compile.outcome == 'success' && env.UPLOAD_FIRMWARE == 'true'
       uses: actions/upload-artifact@v3
       with:
-        name: OpenWrt-${{ env.source_codename }}-${{ env.date }}-firmware
+        name: OpenWrt-${{ env.source_codename }}-${{ env.kernel_usage }}-${{ env.date }}-firmware
         path: ${{ env.FIRMWARE_PATH }}
         
     - name: 发布固件到 Github Releases
@@ -149,6 +149,7 @@ jobs:
         name: ${{ env.amlogic_model }}-${{ env.date_tg }}(${{ env.source_codename }})
         tag: ${{ env.date }}
         token: ${{ secrets.REPO_TOKEN }}
+        body: ${{ env.kernel_usage }}
         allowUpdates: true
         artifacts: "${{ env.FIRMWARE_PATH }}/*"
           

@@ -9,7 +9,7 @@ on:
     branches:
       - main
     paths:
-      - 'build/Lede/relevance/start'
+      - 'start'
 
 env:
   GITHUB_LINK: https://github.com/${{github.repository}}

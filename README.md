@@ -45,13 +45,11 @@
  
 7、大雕源码，有些机型编译增加mac80211驱动的时候会编译错误的，如果出现这个情况，自己带上日志找源码作者处理(2023年4月15号)
  
-8、官方源码的【master】、【openwrt-21.02】、【openwrt-22.03】分支都增加了luci-app-passwall、luci-app-ssr-plus和luci-app-OpenClash插件，【openwrt-19.07】分支没有增加luci-app-passwall、luci-app-ssr-plus，因为缺依赖，没搞懂缺啥，有懂增加的说说怎么操作
+8、我编译仓库里，增加大雕源码【gl-ax1800】分支选择，不是他 https://github.com/coolsnowwolf/lede 源码的分支，是他另外一个仓库 https://github.com/coolsnowwolf/openwrt-gl-ax1800 的源码，看他意思是专门给gl-ax1800路由器准备的，我看了下，也测试了一下，其实就是一个4.14内核的源码，有需要这个内核的朋友，也可以使用这个分支编译
  
-9、我编译仓库里，增加大雕源码【gl-ax1800】分支选择，不是他 https://github.com/coolsnowwolf/lede 源码的分支，是他另外一个仓库 https://github.com/coolsnowwolf/openwrt-gl-ax1800 的源码，看他意思是专门给gl-ax1800路由器准备的，我看了下，也测试了一下，其实就是一个4.14内核的源码，有需要这个内核的朋友，也可以使用这个分支编译
+9、更新了amlogic和rockchip固件打包设置教程(2023年4月15号)
  
-10、更新了amlogic和rockchip固件打包设置教程(2023年4月15号)
- 
-11、每次安装固件完毕，都会在安装完毕30秒左右重启一次系统的，请大家发现这个问题的时候莫慌
+10、每次安装固件完毕，都会在安装完毕30秒左右重启一次系统的，请大家发现这个问题的时候莫慌
 
 <br />
 </details>

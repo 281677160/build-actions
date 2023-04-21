@@ -1,5 +1,5 @@
 
-[Telegram聊天吹水群](https://t.me/heiheiheio)
+
 
 ---
 
@@ -19,8 +19,6 @@
 
 《[在线更新固件插件说明](https://github.com/danshui-git/shuoming/blob/master/%E5%AE%9A%E6%97%B6%E6%9B%B4%E6%96%B0%E6%8F%92%E4%BB%B6.md)》
 
-《[Telegram中文设置方法](https://github.com/danshui-git/shuoming/blob/master/tele.md)》
-
 <br />
 </details>
 
@@ -31,6 +29,7 @@
 <br>
 <br />
 <br>
+
 
 1、把autobuild仓库合拼到了这里了，以前拉autobuild仓库的应该都不可以用了，请重新拉取这个仓库吧，以前老的build-actions仓库也要重新拉取新的build-actions仓库使用（请不要继续拉取autobuild仓库使用，这个是我个人使用仓库）
  
@@ -53,6 +52,22 @@
 10、更新了amlogic和rockchip固件打包设置教程(2023年4月15号)
  
 11、每次安装固件完毕，都会在安装完毕30秒左右重启一次系统的，请大家发现这个问题的时候莫慌
+
+<br />
+</details>
+
+
+---
+
+<details>
+<summary>🏠Telegram群</summary>
+<br>
+<br />
+<br>
+
+《[Telegram聊天吹水群](https://t.me/heiheiheio)》
+
+《[Telegram中文设置方法](https://github.com/danshui-git/shuoming/blob/master/tele.md)》
 
 <br />
 </details>

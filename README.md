@@ -62,7 +62,7 @@
 <br />
 <br>
 
-《[本地Ubuntu一键编译](https://github.com/281677160/bendi)》
+《[本地Ubuntu一键编译OpenWrt固件](https://github.com/281677160/bendi)》
 
 《[本地一键提取.config然后在云编译脚本使用](https://github.com/281677160/bendi)》
 

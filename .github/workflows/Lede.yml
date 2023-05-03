@@ -82,7 +82,7 @@ on:
         default: 'true'
         type: boolean
       UPDATE_FIRMWARE_ONLINE:
-        description: '增加在线更新功能/N1和晶晨系列固件打包'
+        description: '增加在线更新功能/打包Amlogic、Rockchip系列固件'
         required: false
         default: 'true'
         type: boolean

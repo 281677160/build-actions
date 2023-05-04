@@ -18,7 +18,7 @@ on:
   workflow_dispatch:
     inputs:
       REPO_BRANCH:
-        description: 'x-wrt源码-请选择分支'
+        description: '（Xwrt源码）请选择源码分支'
         required: true
         default: 'master'
         type: choice

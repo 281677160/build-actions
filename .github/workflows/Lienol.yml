@@ -18,7 +18,7 @@ on:
   workflow_dispatch:
     inputs:
       REPO_BRANCH:
-        description: 'Lienol源码-请选择分支'
+        description: '（Lienol源码）请选择源码分支'
         required: true
         default: '19.07'
         type: choice

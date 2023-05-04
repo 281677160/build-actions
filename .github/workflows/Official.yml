@@ -18,7 +18,7 @@ on:
   workflow_dispatch:
     inputs:
       REPO_BRANCH:
-        description: '官方源码-请选择分支'
+        description: '（官方源码）请选择源码分支'
         required: true
         default: 'openwrt-22.03'
         type: choice

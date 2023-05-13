@@ -48,6 +48,9 @@ export AdGuardHome_Core="0"                  # 编译固件增加AdGuardHome时,
 # 禁用ssrplus和passwall的NaiveProxy
 export Disable_NaiveProxy="1"                # 因个别源码的分支不支持编译NaiveProxy,不小心选择了就编译错误了,为减少错误,打开这个选项后,就算选择了NaiveProxy也会把NaiveProxy干掉不进行编译的
 
+# 开启NTFS格式盘挂载
+export Automatic_Mount_Settings="0"          # 编译时加入开启NTFS格式盘挂载的所需依赖
+
 # 其他
 export Ttyd_account_free_login="0"           # 设置ttyd免密登录(1为启用命令,填0为不作修改)
 export Delete_unnecessary_items="0"          # 个别机型内一堆其他机型固件,删除其他机型的,只保留当前主机型固件(1为启用命令,填0为不作修改)

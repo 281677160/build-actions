@@ -34,9 +34,6 @@
  3、把所有源码的主题插件都整理了一遍，因为有些主题太老了，支持不了好多现在新的插件，那些新插件名称在主题错位的还没啥，反正还能看到，能设置，很多主题直接是不显示该插件的存在，或者好多主题名字不一样，其实都是大同小异的主题，所以我主题干掉了那些主题。（18.06LUCI的主题比较好用的有 luci-theme-argon，luci-theme-design，luci-theme-opentopd，luci-theme-kucat，19.07之后的主题基本没几个可以选了，感谢这些主题作者的辛苦付出）
  
  4、不管源码里面有没有luci-theme-argon,我都替换成jerrykuku大佬的luci-theme-argon主题了
- 
-<br />
-</details>
 
 ---
 

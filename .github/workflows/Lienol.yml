@@ -23,9 +23,9 @@ on:
         default: '19.07'
         type: choice
         options:
-          - '19.07'
-          - '21.02'
           - '22.03'
+          - '21.02'
+          - '19.07'
           - 'master'
           - '19.07-test'
       CONFIG_FILE:

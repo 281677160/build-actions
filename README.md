@@ -108,3 +108,4 @@
  [`klever1988`](https://github.com/klever1988/cachewrtbuild)
  [`actions`](https://github.com/actions/upload-artifact)
  [`svenstaro`](https://github.com/svenstaro/upload-release-action)
+ [`jerrykuku`](https://github.com/jerrykuku/luci-theme-argon)

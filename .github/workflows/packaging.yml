@@ -2,7 +2,7 @@
 # 打包晶晨固件,请勿修改文件名称（packaging.yml）
 #
 
-name: 打包Amlogic、Rockchip固件
+name: 打包Amlogic/Rockchip固件
 on:
   repository_dispatch:
   workflow_dispatch:

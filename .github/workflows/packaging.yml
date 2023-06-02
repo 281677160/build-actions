@@ -1,5 +1,5 @@
 #
-# 打包晶晨固件,请勿修改文件名称（packaging.yml）
+# 打包Amlogic/Rockchip固件,请勿修改文件名称（packaging.yml）
 #
 
 name: 打包Amlogic/Rockchip固件

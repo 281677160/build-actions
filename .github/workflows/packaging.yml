@@ -64,11 +64,7 @@ on:
         required: false
         default: 'true'
         type: boolean
-      UPLOAD_WETRANSFER:
-        description: '上传固件到 WETRANSFER'
-        required: false
-        default: 'false'
-        type: boolean
+
   push:
     branches:
       - main
@@ -107,7 +103,6 @@ jobs:
           echo "kernel_usage=${{ github.event.inputs.kernel_usage }}" >> ${GITHUB_ENV}
           echo "UPLOAD_FIRMWARE=${{ github.event.inputs.UPLOAD_FIRMWARE }}" >> ${GITHUB_ENV}
           echo "UPLOAD_RELEASE=${{ github.event.inputs.UPLOAD_RELEASE }}" >> ${GITHUB_ENV}
-          echo "UPLOAD_WETRANSFER=${{ github.event.inputs.UPLOAD_WETRANSFER }}" >> ${GITHUB_ENV}
         else
           source build/${FOLDER_NAME}/relevance/${SOURCE}.ini
           echo "SOURCE=${SOURCE}" >> ${GITHUB_ENV}
@@ -118,7 +113,6 @@ jobs:
           echo "kernel_usage=${kernel_usage}" >> ${GITHUB_ENV}
           echo "UPLOAD_FIRMWARE=${UPLOAD_FIRMWARE}" >> ${GITHUB_ENV}
           echo "UPLOAD_RELEASE=${UPLOAD_RELEASE}" >> ${GITHUB_ENV}
-          echo "UPLOAD_WETRANSFER=${UPLOAD_WETRANSFER}" >> ${GITHUB_ENV}
         fi
       
     - name: 部署编译环境
@@ -169,11 +163,3 @@ jobs:
           固件源码：${{ env.source_codename }}
           内核仓库：${{ env.kernel_usage }}
           写入EMMC：Login to OpenWrt → System → Amlogic Service → Install OpenWrt
-          
-    - name: 上传固件到「WeTransfer」
-      if: steps.compile.outcome == 'success' && env.UPLOAD_WETRANSFER == 'true'
-      run: |
-        curl -fsSL git.io/file-transfer | sh
-        ./transfer wet -s -p 16 --no-progress ${{ env.FIRMWARE_PATH }} 2>&1 | tee wetransfer.log
-        sed -i "s/Download Link/WETRANSFER/g" wetransfer.log
-        echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"

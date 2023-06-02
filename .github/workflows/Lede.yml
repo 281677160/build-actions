@@ -3,10 +3,6 @@
 #
 # 因为SSH连接配置固件直接编译，会给github停止编译的,所以要另外触发启动编译程序
 #
-# 新注册的帐号，SSH连接服务器的时间最好不要太长，10分钟左右就退出，没设置完就再来一次或者多次应该比较好
-#
-# 运行此程序不是直接编译，是修改配置文件和触发编译，正确运行完毕后，在Actions刷新网页看看你的编译程序运行了没有
-#
 # 一般情况下都能触发启动编译的，除非没设置好密匙，或者密匙过期了，或者密匙错误之类的
 #
 # REPO_TOKEN密匙制作教程：https://git.io/jm.md
@@ -45,13 +41,13 @@ on:
       CPU_SELECTION:
         description: 'CPU优选,增加编译速度'
         required: true
-        default: '弃用E5系列'
+        default: '默认'
         type: choice
         options:
-          - '弃用E5系列'
-          - '选择8370C'
-          - '选择8272CL'
-          - '选择8171M'
+          - '默认'
+          - '8370C'
+          - '8272CL'
+          - '8171M'
       INFORMATION_NOTICE:
         description: 'Telegram或pushplus信息通知'
         required: true
@@ -76,18 +72,18 @@ on:
         required: false
         default: 'false'
         type: boolean
+      UPLOAD_WETRANSFER:
+        description: '上传固件到 WeTransfer'
+        required: false
+        default: 'false'
+        type: boolean
       CACHEWRTBUILD_SWITCH:
         description: '缓存加速编译'
         required: false
         default: 'true'
         type: boolean
       UPDATE_FIRMWARE_ONLINE:
-        description: '增加在线更新功能/打包Amlogic、Rockchip系列固件'
-        required: false
-        default: 'true'
-        type: boolean
-      COLLECTED_PACKAGES:
-        description: '是否加入作者收集的插件包'
+        description: '增加在线更新固件功能/自动打包Amlogic_Rockchip系列固件'
         required: false
         default: 'true'
         type: boolean
@@ -95,7 +91,7 @@ on:
 
 # 定时触发开启开始编译(把下面两个#去掉开启,时间设置请看定时开启编译说明)
 #  schedule:
-#   - cron: 35 4 * * *
+#   - cron: 35 18 * * *
 
 env:
   GITHUB_LINK: https://github.com/${{github.repository}}
@@ -135,29 +131,26 @@ jobs:
         fi
     
     - name: 准备结束
-      uses: actions/checkout@v3  
+      uses: actions/checkout@v3
 
-    - name: 读取脚本设置
+    - name: 检测文件和对比上游版本
       run: |
         cd ${GITHUB_WORKSPACE}
-        git clone https://github.com/281677160/common build/common
-        mv -f build/common/*.sh build/${{ env.FOLDER_NAME }}/
-        chmod -R +x build
-        export SOURCE_CODE="$(source "build/${{ matrix.target }}/settings.ini" && echo ${SOURCE_CODE})"
-        export INPUTS_INFORMATION_NOTICE="${{ github.event.inputs.INFORMATION_NOTICE }}"
+        bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/custom/first.sh)
+        source ${GITHUB_WORKSPACE}/build/${{ env.FOLDER_NAME }}/settings.ini
         export INPUTS_REPO_BRANCH="${{ github.event.inputs.REPO_BRANCH }}"
         export INPUTS_CONFIG_FILE="${{ github.event.inputs.CONFIG_FILE }}"
+        export INPUTS_CPU_SELECTION="${{ github.event.inputs.CPU_SELECTION }}"
+        export INPUTS_INFORMATION_NOTICE="${{ github.event.inputs.INFORMATION_NOTICE }}"
+        export INPUTS_SSH_ACTION="${{ github.event.inputs.SSH_ACTION }}"
         export INPUTS_UPLOAD_FIRMWARE="${{ github.event.inputs.UPLOAD_FIRMWARE }}"
         export INPUTS_UPLOAD_RELEASE="${{ github.event.inputs.UPLOAD_RELEASE }}"
+        export INPUTS_UPLOAD_WETRANSFER="${{ github.event.inputs.UPLOAD_RELEASE }}"
         export INPUTS_CACHEWRTBUILD_SWITCH="${{ github.event.inputs.CACHEWRTBUILD_SWITCH }}"
         export INPUTS_UPDATE_FIRMWARE_ONLINE="${{ github.event.inputs.UPDATE_FIRMWARE_ONLINE }}"
         export INPUTS_PACKAGING_FIRMWARE="${{ github.event.inputs.PACKAGING_FIRMWARE }}"
-        export INPUTS_COLLECTED_PACKAGES="${{ github.event.inputs.COLLECTED_PACKAGES }}"
-        export INPUTS_CPU_SELECTION="${{ github.event.inputs.CPU_SELECTION }}"
-        source build/${{ env.FOLDER_NAME }}/common.sh && settings_variable
         source build/${{ env.FOLDER_NAME }}/common.sh && Diy_menu1
-        echo "${{ github.event.schedule }}"
-        
+
     - name: 部署编译环境
       env:
         DEBIAN_FRONTEND: noninteractive
@@ -167,45 +160,42 @@ jobs:
         sudo timedatectl set-timezone "$TZ"
         sudo mkdir -p /${{ env.DIY_WORK }}
         sudo chown $USER:$GROUPS /${{ env.DIY_WORK }}
-        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git config --global user.name "github-actions[bot]"
     
-    - name: 下载"${{ matrix.target }}"源码
+    - name: 下载"${{ matrix.target }}-${{ github.event.inputs.REPO_BRANCH }}"源码
       working-directory: /${{ env.DIY_WORK }}
       run: |
         git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
         ln -sf /${{ env.DIY_WORK }}/openwrt ${GITHUB_WORKSPACE}/openwrt
-        source ${GITHUB_WORKSPACE}/build/${{ env.FOLDER_NAME }}/common.sh && Diy_checkout
+        cp -Rf ${GITHUB_WORKSPACE}/build ${GITHUB_WORKSPACE}/openwrt/build
+        chmod -R +x ${GITHUB_WORKSPACE}/openwrt/build
     
     - name: 公 告
       if: env.REPO_TOKEN
       run: |
         cd ${GITHUB_WORKSPACE}
-        cp -Rf `find ./ -maxdepth 1 -type d ! -path './openwrt' ! -path './'` openwrt
         cd openwrt
         source ${BUILD_PATH}/common.sh && Diy_menu2
  
-    - name: 增加插件源
+    - name: 更新插件源
       if: env.REPO_TOKEN
       run: |
         cd openwrt
         source ${BUILD_PATH}/common.sh && Diy_menu3
  
-    - name: 加载diy-part.sh文件
-      if: env.REPO_TOKEN
-      run: |
-        cd openwrt
-        source ${BUILD_PATH}/common.sh && Diy_zdypartsh
-        source ${BUILD_PATH}/common.sh && Diy_Publicarea
-        
-    - name: 加载源、补丁和files文件夹
+    - name: 加载自定义设置
       if: env.REPO_TOKEN
       run: |
         cd openwrt
         source ${BUILD_PATH}/common.sh && Diy_menu4
+        
+    - name: 安装插件源
+      if: env.REPO_TOKEN
+      run: |
+        cd openwrt
+        source ${BUILD_PATH}/common.sh && Diy_menu5
     
-    - name: SSH远程连接（制作.config配置文件）
-      if: github.event.inputs.SSH_ACTION == 'true'
+    - name: SSH远程连接（make menuconfig）
+      if: env.SSH_ACTION == 'true'
       uses: danshui-git/debugger-action@main
 
     - name: 生成"${{ matrix.target }}"配置文件
@@ -213,9 +203,9 @@ jobs:
       id: compile
       run: |
         cd openwrt
-        source ${BUILD_PATH}/common.sh && Diy_menu5
+        source ${BUILD_PATH}/common.sh && Diy_menu6
         
-    - name: 上传.config配置文件在 github actions
+    - name: 上传"${{ matrix.target }}"配置文件在 Github Artifacts
       if: steps.compile.outcome == 'success'
       uses: actions/upload-artifact@main
       with:
@@ -239,7 +229,7 @@ jobs:
         retain_days: ${{ env.RETAIN_DAYS }}
         keep_minimum_runs: 1
     
-    - name: 删除releases
+    - name: 清理releases
       continue-on-error: true
       if: env.REPO_TOKEN
       uses: danshui-git/delete-older-releases@main
@@ -250,14 +240,14 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
         
-    - name: 触发compile.yml启动"${{ matrix.target }}"编译
+    - name: 触发启动"${{ matrix.target }}"开始编译
       id: gitpush
       if: steps.compile.outcome == 'success' && env.REPO_TOKEN
       run: |
         cd ${GITHUB_WORKSPACE}
         source ${BUILD_PATH}/common.sh && build_openwrt
         
-    - name: 电报机器人或pushplus信息通知
+    - name: Telegram或pushplus信息通知
       if: env.PUSH_PLUS_TOKEN && env.INFORMATION_NOTICE == 'PUSH' || env.TELEGRAM_BOT_TOKEN && env.INFORMATION_NOTICE == 'TG'
       run: |
         if [[ "${{ env.INFORMATION_NOTICE }}" == "TG" ]]; then
@@ -270,4 +260,3 @@ jobs:
             curl -k --data token="${{ secrets.PUSH_PLUS_TOKEN }}" --data title="开始编译【${{matrix.target}}】" --data "content=🎉 主人💕：您的编译脚本成功触发【${{matrix.target}}】文件夹编译【${REPO_BRANCH}分支的${{env.TARGET_PROFILE}}】固件中,请耐心等待...... 😋(${{env.WAREHOUSE_MAN}}仓库的#${{env.RUN_NUMBER}}号)！($(date +%Y年%m月%d号%H时%M分))💐" "http://www.pushplus.plus/send"
           fi
         fi
-

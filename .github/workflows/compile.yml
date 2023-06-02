@@ -34,35 +34,25 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [Lede]
+        target: [Immortalwrt]
 
     steps:    
     - name: 准备结束
       uses: actions/checkout@v3
 
-    - name: 读取脚本设置
+    - name: 检测文件和对比上游版本
       run: |
         cd ${GITHUB_WORKSPACE}
-        git clone https://github.com/281677160/common build/common
-        mv -f build/common/*.sh build/${{matrix.target}}/
-        sudo chmod -R +x build
-        if [[ -n "${{ github.event.workflow }}" ]]; then
-          export Manually_Run="1"
-          source build/${{matrix.target}}/common.sh && Diy_menu1
+        bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/custom/first.sh)
+        if [[ -n "${{ github.event.workflow }}" ]] || [[ -n "${{ github.event.schedule }}" ]]; then
+          source ${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini
         else
-          source build/${{matrix.target}}/common.sh && Diy_menu1
+          source ${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/settings.ini
         fi
+        source ${GITHUB_WORKSPACE}/build/${{ env.FOLDER_NAME }}/common.sh && Diy_menu1
 
     - name: CPU检测
       run: |
-        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git config --global user.name "github-actions[bot]"
-        if [[ -n "${{ github.event.workflow }}" ]]; then
-          export CPU_SELECTIOY="$(source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini" && echo "${CPU_SELECTION}")"
-        else
-          export CPU_PASSWORD="1681640888"
-          export CPU_OPTIMIZATION="E5"
-        fi
         source build/${FOLDER_NAME}/common.sh && CPU_Priority
         
     - name: 部署编译环境
@@ -79,35 +69,33 @@ jobs:
       run: |
         git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
         ln -sf /${{ env.DIY_WORK }}/openwrt ${GITHUB_WORKSPACE}/openwrt
-        source ${GITHUB_WORKSPACE}/build/${{matrix.target}}/common.sh && Diy_checkout
+        cp -Rf ${GITHUB_WORKSPACE}/build ${GITHUB_WORKSPACE}/openwrt/build
+        chmod -R +x ${GITHUB_WORKSPACE}/openwrt/build
     
     - name: 公 告
       run: |
-        cd ${GITHUB_WORKSPACE}
-        cp -Rf `find ./ -maxdepth 1 -type d ! -path './openwrt' ! -path './'` openwrt
         cd openwrt
         source ${BUILD_PATH}/common.sh && Diy_menu2
  
-    - name: 增加插件源
+    - name: 更新插件源
       run: |
         cd openwrt
         source ${BUILD_PATH}/common.sh && Diy_menu3
  
-    - name: 加载diy-part.sh文件
-      run: |
-        cd openwrt
-        source ${BUILD_PATH}/common.sh && Diy_zdypartsh
-        source ${BUILD_PATH}/common.sh && Diy_Publicarea
-        
-    - name: 加载源、补丁和files文件夹
+    - name: 加载自定义设置
       run: |
         cd openwrt
         source ${BUILD_PATH}/common.sh && Diy_menu4
+        
+    - name: 安装插件源
+      run: |
+        cd openwrt
+        source ${BUILD_PATH}/common.sh && Diy_menu5
 
     - name: 生成"${{matrix.target}}"配置文件
       run: |
         cd openwrt
-        source ${BUILD_PATH}/common.sh && Diy_menu5
+        source ${BUILD_PATH}/common.sh && Diy_menu6
         
     - name: 编译信息
       continue-on-error: true
@@ -129,7 +117,7 @@ jobs:
       run: |
         cd openwrt
         make defconfig
-        make download -j8
+        make download -j16
     
     - name: 开始编译固件
       id: compile
@@ -140,7 +128,7 @@ jobs:
         echo "date=$(date "+%Y%m%d%H%M%S")" >> ${GITHUB_ENV}
         source ${BUILD_PATH}/common.sh && firmware_jiance
         
-    - name: 打包Amlogic、Rockchip系列固件
+    - name: 自动打包Amlogic_Rockchip系列固件
       if: steps.compile.outcome == 'success' && env.PACKAGING_FIRMWARE == 'true'
       uses: ncipollo/release-action@main
       with:
@@ -219,7 +207,7 @@ jobs:
         allowUpdates: true
         body: ${{ env.Tongzhi_Date }}
 
-    - name: 电报机器人或pushplus信息通知
+    - name: Telegram或pushplus信息通知
       if: env.PUSH_PLUS_TOKEN && env.INFORMATION_NOTICE == 'PUSH' || env.TELEGRAM_BOT_TOKEN && env.INFORMATION_NOTICE == 'TG'
       run: |
         if [[ "${{ env.INFORMATION_NOTICE }}" == "TG" ]]; then

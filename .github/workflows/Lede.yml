@@ -72,11 +72,6 @@ on:
         required: false
         default: 'false'
         type: boolean
-      UPLOAD_WETRANSFER:
-        description: '上传固件到 WeTransfer'
-        required: false
-        default: 'false'
-        type: boolean
       CACHEWRTBUILD_SWITCH:
         description: '缓存加速编译'
         required: false
@@ -145,7 +140,6 @@ jobs:
         export INPUTS_SSH_ACTION="${{ github.event.inputs.SSH_ACTION }}"
         export INPUTS_UPLOAD_FIRMWARE="${{ github.event.inputs.UPLOAD_FIRMWARE }}"
         export INPUTS_UPLOAD_RELEASE="${{ github.event.inputs.UPLOAD_RELEASE }}"
-        export INPUTS_UPLOAD_WETRANSFER="${{ github.event.inputs.UPLOAD_RELEASE }}"
         export INPUTS_CACHEWRTBUILD_SWITCH="${{ github.event.inputs.CACHEWRTBUILD_SWITCH }}"
         export INPUTS_UPDATE_FIRMWARE_ONLINE="${{ github.event.inputs.UPDATE_FIRMWARE_ONLINE }}"
         export INPUTS_PACKAGING_FIRMWARE="${{ github.event.inputs.PACKAGING_FIRMWARE }}"

@@ -222,23 +222,24 @@ jobs:
     - name: 清理Actions空间
       continue-on-error: true
       if: env.REPO_TOKEN
-      uses: Mattraks/delete-workflow-runs@v2
+      uses: small-5/delete-workflow-runs@main
       with:
         token: ${{ secrets.REPO_TOKEN }}
         repository: ${{ github.repository }}
-        retain_days: ${{ env.RETAIN_DAYS }}
-        keep_minimum_runs: 1
+        retain_min: ${{ env.RETAIN_MINUTE }}
     
     - name: 清理releases
       continue-on-error: true
       if: env.REPO_TOKEN
-      uses: danshui-git/delete-older-releases@main
+      uses: ophub/delete-releases-workflows@main
       with:
-        repo: ${{ github.repository }}
-        keep_latest: ${{ env.KEEP_LATEST }}
+        delete_releases: true
+        releases_keep_keyword: targz
+        releases_keep_latest: ${{ env.KEEP_LATEST }}
         delete_tags: true
-      env:
-        GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
+        delete_workflows: false
+        workflows_keep_day: 90
+        gh_token: ${{ secrets.REPO_TOKEN }}
         
     - name: 触发启动"${{ matrix.target }}"开始编译
       id: gitpush

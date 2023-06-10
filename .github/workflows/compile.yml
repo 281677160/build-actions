@@ -53,10 +53,12 @@ jobs:
 
     - name: 清理因转换CPU而停止的工作流程
       run: |
+        cd ${GITHUB_WORKSPACE}
         source build/${FOLDER_NAME}/common.sh && Diy_delruns
 
     - name: CPU检测
       run: |
+        cd ${GITHUB_WORKSPACE}
         source build/${FOLDER_NAME}/common.sh && CPU_Priority
         
     - name: 部署编译环境

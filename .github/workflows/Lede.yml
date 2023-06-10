@@ -234,7 +234,7 @@ jobs:
       uses: ophub/delete-releases-workflows@main
       with:
         delete_releases: true
-        releases_keep_keyword: targz
+        releases_keep_keyword: targz/Update
         releases_keep_latest: ${{ env.KEEP_LATEST }}
         delete_tags: true
         delete_workflows: false

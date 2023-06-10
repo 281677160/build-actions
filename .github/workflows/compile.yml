@@ -51,6 +51,10 @@ jobs:
         fi
         source ${GITHUB_WORKSPACE}/build/${{ env.FOLDER_NAME }}/common.sh && Diy_menu1
 
+    - name: 清理因转换CPU而停止的工作流程
+      run: |
+        source build/${FOLDER_NAME}/common.sh && Diy_delruns
+
     - name: CPU检测
       run: |
         source build/${FOLDER_NAME}/common.sh && CPU_Priority

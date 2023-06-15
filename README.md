@@ -21,9 +21,31 @@
 ---
 
 <details>
-<summary>🆙更新说明（2023年6月11号）</summary>
+<summary>🆙更新说明（2023年6月16号）</summary>
 
 <br>
+ 
+  2023年6月16号
+ 
+ 1、修复个别源码不能编译N1固件的问题
+ 
+ 有些源码的【armvirt】文件夹已经改成了【armsr】，机型文件也跟着改变的
+ 
+ 以前的机型文件一般为：
+ ````
+CONFIG_TARGET_armvirt=y
+CONFIG_TARGET_armvirt_64=y
+CONFIG_TARGET_armvirt_64_Default=y
+ ````
+ 
+ 现在的机型文件有些改为：
+ ````
+CONFIG_TARGET_armvirt=y
+CONFIG_TARGET_armvirt_64=y
+CONFIG_TARGET_armvirt_64_DEVICE_generic=y
+ ````
+ 
+ ---
  
  2023年6月11号
  

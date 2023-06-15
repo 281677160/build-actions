@@ -27,9 +27,10 @@
  
   2023年6月16号
  
- 1、修复个别源码不能编译N1固件的问题
+ 修复个别源码不能编译N1固件的问题
  
  有些源码的【armvirt】文件夹已经改成了【armsr】，机型文件也跟着改变的
+ 查看源码文件夹在对应源码分支的[target/linux]里面查看，要么有【armvirt】，要么就是【armsr】
  
  以前的机型文件一般为：
  ````
@@ -45,6 +46,14 @@ CONFIG_TARGET_armvirt_64=y
 CONFIG_TARGET_armvirt_64_DEVICE_generic=y
  ````
  
+ 如果源码文件为【armsr】的，机型文件一般为：
+ ````
+CONFIG_TARGET_armsr=y
+CONFIG_TARGET_armsr_armv8=y
+CONFIG_TARGET_armsr_armv8_DEVICE_generic=y
+ ````
+ 
+ 以上机型文件仅供参考，自己在对应源码SSH连接多看吧
  ---
  
  2023年6月11号

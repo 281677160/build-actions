@@ -21,7 +21,7 @@
 ---
 
 <details>
-<summary>🆙更新说明（2023年6月16号）</summary>
+<summary>🆙更新说明（2023年9月2号）</summary>
 
 <br>
 

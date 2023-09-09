@@ -144,19 +144,6 @@ CONFIG_TARGET_armsr_armv8_DEVICE_generic=y
 
 ---
 
-<details>
-<summary>🏠Telegram群</summary>
-<br>
-<br />
- 
-《[Telegram聊天吹水群](https://t.me/heiheiheio)》
-
-《[Telegram中文设置方法](https://github.com/danshui-git/shuoming/blob/master/tele.md)》
-
-</details>
-
----
-
  ### 鸣谢！
  感谢以下各位大佬（排名无分先后）<br />
  

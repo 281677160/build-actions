@@ -5,15 +5,46 @@ CONFIG_GRUB_IMAGES=y
 CONFIG_PACKAGE_6in4=y
 CONFIG_PACKAGE_6rd=y
 CONFIG_PACKAGE_6to4=y
+CONFIG_PACKAGE_TAR_BZIP2=y
+CONFIG_PACKAGE_TAR_GZIP=y
+CONFIG_PACKAGE_TAR_XZ=y
+CONFIG_PACKAGE_TAR_ZSTD=y
 # CONFIG_PACKAGE_attr is not set
 # CONFIG_PACKAGE_autosamba is not set
 # CONFIG_PACKAGE_avahi-dbus-daemon is not set
+CONFIG_PACKAGE_bash=y
+# CONFIG_PACKAGE_blkid is not set
+CONFIG_PACKAGE_boost=y
+CONFIG_PACKAGE_boost-date_time=y
+CONFIG_PACKAGE_boost-program_options=y
+CONFIG_PACKAGE_boost-system=y
+CONFIG_PACKAGE_bzip2=y
+CONFIG_PACKAGE_coreutils-nohup=y
+CONFIG_PACKAGE_coreutils-stat=y
+CONFIG_PACKAGE_coreutils-stty=y
 # CONFIG_PACKAGE_dbus is not set
+CONFIG_PACKAGE_hysteria=y
 CONFIG_PACKAGE_ip6tables=y
+CONFIG_PACKAGE_ipt2socks=y
+# CONFIG_PACKAGE_iptables-mod-ipsec is not set
 CONFIG_PACKAGE_ipv6helper=y
+# CONFIG_PACKAGE_kmod-crypto-cbc is not set
+# CONFIG_PACKAGE_kmod-crypto-deflate is not set
+# CONFIG_PACKAGE_kmod-crypto-des is not set
+# CONFIG_PACKAGE_kmod-crypto-echainiv is not set
+# CONFIG_PACKAGE_kmod-crypto-hmac is not set
+# CONFIG_PACKAGE_kmod-crypto-md5 is not set
+CONFIG_PACKAGE_kmod-inet-diag=y
 CONFIG_PACKAGE_kmod-ip6tables=y
+# CONFIG_PACKAGE_kmod-ipsec is not set
+# CONFIG_PACKAGE_kmod-ipt-ipsec is not set
 CONFIG_PACKAGE_kmod-ipt-nat6=y
 CONFIG_PACKAGE_kmod-iptunnel=y
+# CONFIG_PACKAGE_kmod-iptunnel6 is not set
+CONFIG_PACKAGE_kmod-md-mod=y
+CONFIG_PACKAGE_kmod-md-raid0=y
+CONFIG_PACKAGE_kmod-md-raid1=y
+CONFIG_PACKAGE_kmod-md-raid10=y
 CONFIG_PACKAGE_kmod-nf-ipt6=y
 CONFIG_PACKAGE_kmod-nf-log6=y
 CONFIG_PACKAGE_kmod-nf-nat6=y
@@ -22,31 +53,121 @@ CONFIG_PACKAGE_kmod-sit=y
 # CONFIG_PACKAGE_libattr is not set
 # CONFIG_PACKAGE_libavahi-client is not set
 # CONFIG_PACKAGE_libavahi-dbus-support is not set
+CONFIG_PACKAGE_libbz2=y
+CONFIG_PACKAGE_libcap-bin=y
+CONFIG_PACKAGE_libcap-bin-capsh-shell="/bin/sh"
 # CONFIG_PACKAGE_libdaemon is not set
 # CONFIG_PACKAGE_libdbus is not set
 # CONFIG_PACKAGE_libexpat is not set
 # CONFIG_PACKAGE_libgnutls is not set
+CONFIG_PACKAGE_liblzma=y
+CONFIG_PACKAGE_libmaxminddb=y
 CONFIG_PACKAGE_libnetsnmp=y
 # CONFIG_PACKAGE_libnettle is not set
 # CONFIG_PACKAGE_libpopt is not set
+CONFIG_PACKAGE_libruby=y
 # CONFIG_PACKAGE_libtasn1 is not set
 # CONFIG_PACKAGE_libtirpc is not set
 # CONFIG_PACKAGE_liburing is not set
+CONFIG_PACKAGE_libyaml=y
+CONFIG_PACKAGE_libzstd=y
+CONFIG_PACKAGE_lsblk=y
+CONFIG_PACKAGE_lua-cjson=y
+CONFIG_PACKAGE_lua-maxminddb=y
+CONFIG_PACKAGE_luasocket=y
 CONFIG_PACKAGE_luci-app-adguardhome=y
 CONFIG_PACKAGE_luci-app-argon-config=y
+# CONFIG_PACKAGE_luci-app-diskman is not set
+# CONFIG_PACKAGE_luci-app-ipsec-vpnd is not set
+CONFIG_PACKAGE_luci-app-istorex=y
+CONFIG_PACKAGE_luci-app-openclash=y
+CONFIG_PACKAGE_luci-app-quickstart=y
 # CONFIG_PACKAGE_luci-app-samba4 is not set
+CONFIG_PACKAGE_luci-app-store=y
+CONFIG_PACKAGE_luci-app-vssr=y
 CONFIG_PACKAGE_luci-compat=y
 CONFIG_PACKAGE_luci-i18n-argon-config-zh-cn=y
+CONFIG_PACKAGE_luci-i18n-quickstart-zh-cn=y
+CONFIG_PACKAGE_luci-i18n-vssr-zh-cn=y
+CONFIG_PACKAGE_luci-lib-taskd=y
+CONFIG_PACKAGE_luci-lib-xterm=y
 CONFIG_PACKAGE_luci-proto-ipv6=y
+CONFIG_PACKAGE_mdadm=y
 CONFIG_PACKAGE_odhcp6c=y
 CONFIG_PACKAGE_odhcp6c_ext_cer_id=0
 CONFIG_PACKAGE_odhcpd-ipv6only=y
 CONFIG_PACKAGE_odhcpd_ipv6only_ext_cer_id=0
 CONFIG_PACKAGE_openssh-sftp-server=y
+CONFIG_PACKAGE_quickstart=y
+CONFIG_PACKAGE_ruby=y
+CONFIG_PACKAGE_ruby-bigdecimal=y
+CONFIG_PACKAGE_ruby-date=y
+CONFIG_PACKAGE_ruby-digest=y
+CONFIG_PACKAGE_ruby-enc=y
+CONFIG_PACKAGE_ruby-forwardable=y
+CONFIG_PACKAGE_ruby-pstore=y
+CONFIG_PACKAGE_ruby-psych=y
+CONFIG_PACKAGE_ruby-stringio=y
+CONFIG_PACKAGE_ruby-strscan=y
+CONFIG_PACKAGE_ruby-yaml=y
 # CONFIG_PACKAGE_samba4-libs is not set
 # CONFIG_PACKAGE_samba4-server is not set
+CONFIG_PACKAGE_script-utils=y
+CONFIG_PACKAGE_shadow=y
+CONFIG_PACKAGE_shadow-chage=y
+CONFIG_PACKAGE_shadow-chfn=y
+CONFIG_PACKAGE_shadow-chgpasswd=y
+CONFIG_PACKAGE_shadow-chpasswd=y
+CONFIG_PACKAGE_shadow-chsh=y
+CONFIG_PACKAGE_shadow-common=y
+CONFIG_PACKAGE_shadow-expiry=y
+CONFIG_PACKAGE_shadow-faillog=y
+CONFIG_PACKAGE_shadow-gpasswd=y
+CONFIG_PACKAGE_shadow-groupadd=y
+CONFIG_PACKAGE_shadow-groupdel=y
+CONFIG_PACKAGE_shadow-groupmems=y
+CONFIG_PACKAGE_shadow-groupmod=y
+CONFIG_PACKAGE_shadow-groups=y
+CONFIG_PACKAGE_shadow-grpck=y
+CONFIG_PACKAGE_shadow-grpconv=y
+CONFIG_PACKAGE_shadow-grpunconv=y
+CONFIG_PACKAGE_shadow-lastlog=y
+CONFIG_PACKAGE_shadow-login=y
+CONFIG_PACKAGE_shadow-logoutd=y
+CONFIG_PACKAGE_shadow-newgidmap=y
+CONFIG_PACKAGE_shadow-newgrp=y
+CONFIG_PACKAGE_shadow-newuidmap=y
+CONFIG_PACKAGE_shadow-newusers=y
+CONFIG_PACKAGE_shadow-nologin=y
+CONFIG_PACKAGE_shadow-passwd=y
+CONFIG_PACKAGE_shadow-pwck=y
+CONFIG_PACKAGE_shadow-pwconv=y
+CONFIG_PACKAGE_shadow-pwunconv=y
+CONFIG_PACKAGE_shadow-su=y
+CONFIG_PACKAGE_shadow-useradd=y
+CONFIG_PACKAGE_shadow-userdel=y
+CONFIG_PACKAGE_shadow-usermod=y
+CONFIG_PACKAGE_shadow-utils=y
+CONFIG_PACKAGE_shadow-vipw=y
+CONFIG_PACKAGE_shadowsocks-libev-ss-local=y
+CONFIG_PACKAGE_shadowsocks-libev-ss-redir=y
+CONFIG_PACKAGE_smartd=y
 CONFIG_PACKAGE_snmpd=y
+# CONFIG_PACKAGE_strongswan is not set
+CONFIG_PACKAGE_tar=y
+CONFIG_PACKAGE_taskd=y
+CONFIG_PACKAGE_trojan=y
+CONFIG_PACKAGE_unzip=y
 # CONFIG_PACKAGE_wsdd2 is not set
+CONFIG_PACKAGE_xray-plugin=y
+CONFIG_PACKAGE_xz=y
+CONFIG_PACKAGE_xz-utils=y
+CONFIG_ZSTD_OPTIMIZE_O3=y
+CONFIG_boost-compile-visibility-hidden=y
+CONFIG_boost-runtime-shared=y
+CONFIG_boost-static-and-shared-libs=y
+CONFIG_boost-variant-release=y
+CONFIG_shadow-all=y
 
 CONFIG_PACKAGE_luci-app-alist=y
 

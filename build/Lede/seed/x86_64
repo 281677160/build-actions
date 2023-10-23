@@ -10,6 +10,7 @@ CONFIG_PACKAGE_TAR_GZIP=y
 CONFIG_PACKAGE_TAR_XZ=y
 CONFIG_PACKAGE_TAR_ZSTD=y
 # CONFIG_PACKAGE_UnblockNeteaseMusic-Go is not set
+# CONFIG_PACKAGE_adbyby is not set
 CONFIG_PACKAGE_alist=y
 # CONFIG_PACKAGE_attr is not set
 # CONFIG_PACKAGE_autosamba is not set
@@ -25,6 +26,8 @@ CONFIG_PACKAGE_coreutils-nohup=y
 CONFIG_PACKAGE_coreutils-stat=y
 CONFIG_PACKAGE_coreutils-stty=y
 # CONFIG_PACKAGE_dbus is not set
+CONFIG_PACKAGE_dnsforwarder=y
+CONFIG_PACKAGE_dnsproxy=y
 CONFIG_PACKAGE_haproxy=y
 CONFIG_PACKAGE_hysteria=y
 CONFIG_PACKAGE_ip6tables=y
@@ -33,8 +36,9 @@ CONFIG_PACKAGE_iptables-mod-conntrack-extra=y
 CONFIG_PACKAGE_iptables-mod-iprange=y
 # CONFIG_PACKAGE_iptables-mod-ipsec is not set
 CONFIG_PACKAGE_iptables-mod-socket=y
-CONFIG_PACKAGE_iptvhelper=y
+CONFIG_PACKAGE_iputils-arping=y
 CONFIG_PACKAGE_ipv6helper=y
+CONFIG_PACKAGE_jq=y
 # CONFIG_PACKAGE_kmod-crypto-cbc is not set
 # CONFIG_PACKAGE_kmod-crypto-deflate is not set
 # CONFIG_PACKAGE_kmod-crypto-des is not set
@@ -71,6 +75,7 @@ CONFIG_PACKAGE_libcap-bin=y
 CONFIG_PACKAGE_libcap-bin-capsh-shell="/bin/sh"
 # CONFIG_PACKAGE_libdaemon is not set
 # CONFIG_PACKAGE_libdbus is not set
+# CONFIG_PACKAGE_libeudev is not set
 # CONFIG_PACKAGE_libexpat is not set
 # CONFIG_PACKAGE_libgnutls is not set
 CONFIG_PACKAGE_libltdl=y
@@ -81,18 +86,22 @@ CONFIG_PACKAGE_libmaxminddb=y
 # CONFIG_PACKAGE_libnatpmp is not set
 CONFIG_PACKAGE_libnetsnmp=y
 # CONFIG_PACKAGE_libnettle is not set
+# CONFIG_PACKAGE_libparted is not set
 # CONFIG_PACKAGE_libpopt is not set
 CONFIG_PACKAGE_libruby=y
 # CONFIG_PACKAGE_libtasn1 is not set
 # CONFIG_PACKAGE_libtirpc is not set
 # CONFIG_PACKAGE_liburing is not set
+# CONFIG_PACKAGE_libusb-1.0 is not set
 CONFIG_PACKAGE_libyaml=y
 CONFIG_PACKAGE_libzstd=y
 CONFIG_PACKAGE_lsblk=y
 CONFIG_PACKAGE_lua-cjson=y
 CONFIG_PACKAGE_lua-maxminddb=y
+# CONFIG_PACKAGE_lua-neturl is not set
 CONFIG_PACKAGE_luasocket=y
 # CONFIG_PACKAGE_luci-app-accesscontrol is not set
+# CONFIG_PACKAGE_luci-app-adbyby-plus is not set
 CONFIG_PACKAGE_luci-app-adguardhome=y
 CONFIG_PACKAGE_luci-app-alist=y
 CONFIG_PACKAGE_luci-app-argon-config=y
@@ -100,31 +109,42 @@ CONFIG_PACKAGE_luci-app-argon-config=y
 # CONFIG_PACKAGE_luci-app-diskman is not set
 # CONFIG_PACKAGE_luci-app-filetransfer is not set
 # CONFIG_PACKAGE_luci-app-ipsec-vpnd is not set
-CONFIG_PACKAGE_luci-app-iptvhelper=y
-CONFIG_PACKAGE_luci-app-istorex=y
 CONFIG_PACKAGE_luci-app-openclash=y
 CONFIG_PACKAGE_luci-app-passwall=y
-CONFIG_PACKAGE_luci-app-passwall2=y
-CONFIG_PACKAGE_luci-app-passwall2_Iptables_Transparent_Proxy=y
+# CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_Haproxy is not set
+# CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_ShadowsocksR_Libev_Client is not set
+# CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_Shadowsocks_Libev_Client is not set
+# CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_Simple_Obfs is not set
+# CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_SingBox is not set
+# CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_V2ray_Plugin is not set
 CONFIG_PACKAGE_luci-app-passwall_Iptables_Transparent_Proxy=y
-CONFIG_PACKAGE_luci-app-quickstart=y
+CONFIG_PACKAGE_luci-app-pushbot=y
 # CONFIG_PACKAGE_luci-app-samba4 is not set
-CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_IPT2Socks=y
-CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Trojan=y
+# CONFIG_PACKAGE_luci-app-ssr-plus is not set
+# CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ChinaDNS_NG is not set
+# CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Libev_Client is not set
+# CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Libev_Server is not set
+# CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks_Simple_Obfs is not set
 CONFIG_PACKAGE_luci-app-store=y
+CONFIG_PACKAGE_luci-app-turboacc_INCLUDE_DNSFORWARDER=y
+CONFIG_PACKAGE_luci-app-turboacc_INCLUDE_DNSPROXY=y
+CONFIG_PACKAGE_luci-app-udpxy=y
 # CONFIG_PACKAGE_luci-app-unblockmusic is not set
 # CONFIG_PACKAGE_luci-app-unblockmusic_INCLUDE_UnblockNeteaseMusic_Go is not set
 # CONFIG_PACKAGE_luci-app-vlmcsd is not set
 # CONFIG_PACKAGE_luci-app-vsftpd is not set
+# CONFIG_PACKAGE_luci-app-vssr_INCLUDE_Hysteria is not set
+# CONFIG_PACKAGE_luci-app-vssr_INCLUDE_ShadowsocksR_Libev_Server is not set
+# CONFIG_PACKAGE_luci-app-vssr_INCLUDE_Trojan is not set
+# CONFIG_PACKAGE_luci-app-vssr_INCLUDE_Xray is not set
+# CONFIG_PACKAGE_luci-app-vssr_INCLUDE_Xray_plugin is not set
 # CONFIG_PACKAGE_luci-app-xlnetacc is not set
 # CONFIG_PACKAGE_luci-app-zerotier is not set
 CONFIG_PACKAGE_luci-compat=y
 CONFIG_PACKAGE_luci-i18n-alist-zh-cn=y
 CONFIG_PACKAGE_luci-i18n-argon-config-zh-cn=y
-CONFIG_PACKAGE_luci-i18n-iptvhelper-zh-cn=y
 CONFIG_PACKAGE_luci-i18n-passwall-zh-cn=y
-CONFIG_PACKAGE_luci-i18n-passwall2-zh-cn=y
-CONFIG_PACKAGE_luci-i18n-quickstart-zh-cn=y
+CONFIG_PACKAGE_luci-i18n-udpxy-zh-cn=y
 # CONFIG_PACKAGE_luci-lib-fs is not set
 CONFIG_PACKAGE_luci-lib-taskd=y
 CONFIG_PACKAGE_luci-lib-xterm=y
@@ -135,7 +155,7 @@ CONFIG_PACKAGE_odhcp6c_ext_cer_id=0
 CONFIG_PACKAGE_odhcpd-ipv6only=y
 CONFIG_PACKAGE_odhcpd_ipv6only_ext_cer_id=0
 CONFIG_PACKAGE_openssh-sftp-server=y
-CONFIG_PACKAGE_quickstart=y
+# CONFIG_PACKAGE_parted is not set
 CONFIG_PACKAGE_ruby=y
 CONFIG_PACKAGE_ruby-bigdecimal=y
 CONFIG_PACKAGE_ruby-date=y
@@ -188,18 +208,25 @@ CONFIG_PACKAGE_shadow-utils=y
 CONFIG_PACKAGE_shadow-vipw=y
 CONFIG_PACKAGE_shadowsocks-libev-ss-local=y
 CONFIG_PACKAGE_shadowsocks-libev-ss-redir=y
+# CONFIG_PACKAGE_shadowsocks-rust-sslocal is not set
+# CONFIG_PACKAGE_shadowsocksr-libev-ssr-check is not set
+# CONFIG_PACKAGE_shadowsocksr-libev-ssr-server is not set
 CONFIG_PACKAGE_sing-box=y
 CONFIG_PACKAGE_smartd=y
+# CONFIG_PACKAGE_smartmontools is not set
 CONFIG_PACKAGE_snmpd=y
 # CONFIG_PACKAGE_strongswan is not set
 CONFIG_PACKAGE_tar=y
 CONFIG_PACKAGE_taskd=y
 CONFIG_PACKAGE_trojan=y
 CONFIG_PACKAGE_trojan-plus=y
+CONFIG_PACKAGE_udpxy=y
 CONFIG_PACKAGE_unzip=y
+# CONFIG_PACKAGE_usbutils is not set
 CONFIG_PACKAGE_v2ray-geoip=y
 CONFIG_PACKAGE_v2ray-geosite=y
 CONFIG_PACKAGE_v2ray-plugin=y
+# CONFIG_PACKAGE_vlmcsd is not set
 # CONFIG_PACKAGE_vsftpd-alt is not set
 # CONFIG_PACKAGE_wsdd2 is not set
 CONFIG_PACKAGE_xray-plugin=y
@@ -218,4 +245,3 @@ CONFIG_boost-runtime-shared=y
 CONFIG_boost-static-and-shared-libs=y
 CONFIG_boost-variant-release=y
 CONFIG_shadow-all=y
-CONFIG_PACKAGE_vlmcsd=y

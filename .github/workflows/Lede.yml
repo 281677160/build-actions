@@ -14,13 +14,12 @@ on:
   workflow_dispatch:
     inputs:
       REPO_BRANCH:
-        description: '（大雕源码）请选择源码分支'
+        description: '大雕源码'
         required: true
         default: 'master'
         type: choice
         options:
           - 'master'
-          - 'gl-ax1800'
       CONFIG_FILE:
         description: '请选择配置文件'
         required: true

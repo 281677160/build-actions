@@ -92,7 +92,7 @@ jobs:
     - name: 读取脚本设置
       run: |
         cd ${GITHUB_WORKSPACE}
-        git clone https://github.com/281677160/common build/common
+        git clone https://github.com/linai081795/common build/common
         chmod -R +x build
         if [[ -n "${{ github.event.inputs.amlogic_model }}" ]]; then
           echo "SOURCE=${{ inputs.source_branch }}" >> ${GITHUB_ENV}

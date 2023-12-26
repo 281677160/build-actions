@@ -1,5 +1,5 @@
 #
-# 请大家记住拉取的是我的 281677160/build-actions 仓库，拉取的是其他仓库有问题，别问我，我也不清楚什么问题
+# 请大家记住拉取的是我的 linai081795/build-actions 仓库，拉取的是其他仓库有问题，别问我，我也不清楚什么问题
 #
 # 因为SSH连接配置固件直接编译，会给github停止编译的,所以要另外触发启动编译程序
 #
@@ -132,7 +132,7 @@ jobs:
     - name: 检测文件和对比上游版本
       run: |
         cd ${GITHUB_WORKSPACE}
-        bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/custom/first.sh)
+        bash <(curl -fsSL https://raw.githubusercontent.com/linai081795/common/main/custom/first.sh)
         source ${GITHUB_WORKSPACE}/build/${{ env.FOLDER_NAME }}/settings.ini
         export INPUTS_REPO_BRANCH="${{ github.event.inputs.REPO_BRANCH }}"
         export INPUTS_CONFIG_FILE="${{ github.event.inputs.CONFIG_FILE }}"

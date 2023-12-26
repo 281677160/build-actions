@@ -62,7 +62,7 @@ jobs:
       if: env.REPO_TOKEN
       run: |
         cd $GITHUB_WORKSPACE
-        git clone -b main https://github.com/281677160/build-actions shangyou
+        git clone -b main https://github.com/linai081795/build-actions shangyou
         git clone -b main https://github.com/${{github.repository}} repogx
         if [[ -d "repogx/build/${{ inputs.establish_name }}" ]]; then
           echo "${{ inputs.establish_name }}已存在，无法继续创建"

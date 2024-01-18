@@ -1,0 +1,165 @@
+#
+# 打包Amlogic/Rockchip固件,请勿修改文件名称（packaging.yml）
+#
+
+name: 打包Amlogic/Rockchip固件
+on:
+  repository_dispatch:
+  workflow_dispatch:
+    inputs:
+      source_branch:
+        description: '选择源码(先确认您已经编译了有)'
+        required: true
+        default: 'Lede'
+        type: choice
+        options:
+          - 'Lede'
+          - 'Immortalwrt'
+          - 'Lienol'
+          - 'Official'
+          - 'Xwrt'
+      amlogic_model:
+        description: '输入机型,比如：s905d 或 s905d_s905x2'
+        required: true
+        default: ''
+      amlogic_kernel:
+        description: '输入内核,比如：5.10.172 或 5.15.97_6.1.16'
+        required: true
+        default: ''
+      kernel_usage:
+        description: "内核仓库：stable、dev、flippy、rk3588"
+        required: true
+        default: 'stable'
+        type: choice
+        options:
+          - 'stable'
+          - 'dev'
+          - 'flippy'
+          - 'rk3588'
+      rootfs_size:
+        description: '设置rootfs大小(单位：MiB)'
+        required: true
+        default: '2560'
+        type: choice
+        options:
+          - '2560'
+          - '3840'
+          - '5120'
+          - '6400'
+      auto_kernel:
+        description: '是否自动检测最新内核'
+        required: true
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+      UPLOAD_FIRMWARE:
+        description: '上传固件到 Github Artifacts'
+        required: false
+        default: 'false'
+        type: boolean
+      UPLOAD_RELEASE:
+        description: '发布固件到 Github Releases'
+        required: false
+        default: 'true'
+        type: boolean
+
+  push:
+    branches:
+      - main
+    paths:
+      - 'bconfig'
+
+env:
+  GITHUB_LINK: https://github.com/${{github.repository}}
+  GIT_REPOSITORY: ${{github.repository}}
+  REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
+  TZ: Asia/Shanghai
+  FOLDER_NAME: Lede
+  SOURCE: Lede
+
+jobs:
+  build:
+    name: 打包Amlogic、Rockchip固件
+    runs-on: ubuntu-22.04
+    if: ${{ github.event.repository.owner.id }} == ${{ github.event.sender.id }}
+
+    steps:    
+    - name: 准备结束
+      uses: actions/checkout@v3
+
+    - name: 读取脚本设置
+      run: |
+        cd ${GITHUB_WORKSPACE}
+        git clone https://github.com/281677160/common build/common
+        chmod -R +x build
+        if [[ -n "${{ github.event.inputs.amlogic_model }}" ]]; then
+          echo "SOURCE=${{ inputs.source_branch }}" >> ${GITHUB_ENV}
+          echo "amlogic_model=${{ github.event.inputs.amlogic_model }}" >> ${GITHUB_ENV}
+          echo "amlogic_kernel=${{ github.event.inputs.amlogic_kernel }}" >> ${GITHUB_ENV}
+          echo "rootfs_size=${{ github.event.inputs.rootfs_size }}" >> ${GITHUB_ENV}
+          echo "auto_kernel=${{ github.event.inputs.auto_kernel }}" >> ${GITHUB_ENV}
+          echo "kernel_usage=${{ github.event.inputs.kernel_usage }}" >> ${GITHUB_ENV}
+          echo "UPLOAD_FIRMWARE=${{ github.event.inputs.UPLOAD_FIRMWARE }}" >> ${GITHUB_ENV}
+          echo "UPLOAD_RELEASE=${{ github.event.inputs.UPLOAD_RELEASE }}" >> ${GITHUB_ENV}
+        else
+          source build/${FOLDER_NAME}/relevance/${SOURCE}.ini
+          echo "SOURCE=${SOURCE}" >> ${GITHUB_ENV}
+          echo "amlogic_model=${amlogic_model}" >> ${GITHUB_ENV}
+          echo "amlogic_kernel=${amlogic_kernel}" >> ${GITHUB_ENV}
+          echo "rootfs_size=${rootfs_size}" >> ${GITHUB_ENV}
+          echo "auto_kernel=${auto_kernel}" >> ${GITHUB_ENV}
+          echo "kernel_usage=${kernel_usage}" >> ${GITHUB_ENV}
+          echo "UPLOAD_FIRMWARE=${UPLOAD_FIRMWARE}" >> ${GITHUB_ENV}
+          echo "UPLOAD_RELEASE=${UPLOAD_RELEASE}" >> ${GITHUB_ENV}
+        fi
+      
+    - name: 部署编译环境
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        source ${GITHUB_WORKSPACE}/build/common/common.sh && Diy_update
+        sudo timedatectl set-timezone "$TZ"
+        sudo mkdir -p /workdir
+        sudo chown $USER:$GROUPS /workdir
+    
+    - name: 建立打包文件夹
+      working-directory: /workdir
+      run: |
+        df -hT $PWD
+        mkdir -p openwrt
+        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+        echo "HOME_PATH=${GITHUB_WORKSPACE}/openwrt" >> ${GITHUB_ENV}
+    
+    - name: 打包固件
+      id: compile
+      run: |
+        cd ${GITHUB_WORKSPACE}
+        cp -Rf `find ./ -maxdepth 1 -type d ! -path './openwrt' ! -path './'` openwrt
+        cd openwrt
+        source build/common/common.sh && Package_amlogic
+        echo "date=$(date "+%Y%m%d%H%M%S")" >> ${GITHUB_ENV}
+        echo "date_tg=$(date +"%Y.%m%d.%H%M")" >> ${GITHUB_ENV}
+         
+    - name: 上传固件在 github Artifacts
+      if: steps.compile.outcome == 'success' && env.UPLOAD_FIRMWARE == 'true'
+      uses: actions/upload-artifact@v3
+      with:
+        name: OpenWrt-${{ env.source_codename }}-${{ env.kernel_usage }}-${{ env.date }}-firmware
+        path: ${{ env.FIRMWARE_PATH }}
+        
+    - name: 发布固件到 Github Releases
+      if: steps.compile.outcome == 'success' && env.UPLOAD_RELEASE == 'true' && env.REPO_TOKEN
+      uses: ncipollo/release-action@main
+      with:
+        name: ${{ env.amlogic_model }}
+        tag: ${{ env.date }}
+        token: ${{ secrets.REPO_TOKEN }}
+        allowUpdates: true
+        artifacts: "${{ env.FIRMWARE_PATH }}/*"
+        body: |
+          发布日期：${{ env.date_tg }}
+          固件源码：${{ env.source_codename }}
+          内核仓库：${{ env.kernel_usage }}
+          写入EMMC：Login to OpenWrt → System → Amlogic Service → Install OpenWrt

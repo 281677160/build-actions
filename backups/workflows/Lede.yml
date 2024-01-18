@@ -1,0 +1,263 @@
+#
+# 请大家记住拉取的是我的 281677160/build-actions 仓库，拉取的是其他仓库有问题，别问我，我也不清楚什么问题
+#
+# 因为SSH连接配置固件直接编译，会给github停止编译的,所以要另外触发启动编译程序
+#
+# 一般情况下都能触发启动编译的，除非没设置好密匙，或者密匙过期了，或者密匙错误之类的
+#
+# REPO_TOKEN密匙制作教程：https://git.io/jm.md
+#
+#
+
+name: Lede-大雕
+on:
+  workflow_dispatch:
+    inputs:
+      REPO_BRANCH:
+        description: '（大雕源码）请选择源码分支'
+        required: true
+        default: 'master'
+        type: choice
+        options:
+          - 'master'
+          - 'gl-ax1800'
+      CONFIG_FILE:
+        description: '请选择配置文件'
+        required: true
+        default: 'x86_64'
+        type: choice
+        options:
+          - 'aarch64'
+          - 'asus_rt-acrh17'
+          - 'd-team_newifi-d2'
+          - 'p2w_r619ac-128m'
+          - 'phicomm_k2p'
+          - 'x86_32'
+          - 'x86_64'
+          - 'xiaomi_mi-router-4a-gigabit'
+          - 'xiaomi_redmi-router-ac2100'
+          - 'xiaomi_redmi-router-ax6s'
+          - 'xiaoyu_xy-c5'
+      CPU_SELECTION:
+        description: 'CPU优选,增加编译速度'
+        required: true
+        default: '默认'
+        type: choice
+        options:
+          - '默认'
+          - '8370C'
+          - '8272CL'
+          - '8171M'
+      INFORMATION_NOTICE:
+        description: 'Telegram或pushplus信息通知'
+        required: true
+        default: '关闭'
+        type: choice
+        options:
+          - '关闭'
+          - 'Telegram'
+          - 'Pushplus'
+      SSH_ACTION:
+        description: 'SSH远程配置固件'
+        required: false
+        default: 'false'
+        type: boolean
+      UPLOAD_FIRMWARE:
+        description: '上传固件到 Github Artifacts'
+        required: false
+        default: 'true'
+        type: boolean
+      UPLOAD_RELEASE:
+        description: '发布固件到 Github Releases'
+        required: false
+        default: 'false'
+        type: boolean
+      CACHEWRTBUILD_SWITCH:
+        description: '缓存加速编译'
+        required: false
+        default: 'true'
+        type: boolean
+      UPDATE_FIRMWARE_ONLINE:
+        description: '增加在线更新固件功能/自动打包Amlogic_Rockchip系列固件'
+        required: false
+        default: 'true'
+        type: boolean
+      COMPILATION_INFORMATION:
+        description: '是否显示编译信息'
+        required: false
+        default: 'true'
+        type: boolean
+
+
+# 定时触发开启开始编译(把下面两个#去掉开启,时间设置请看定时开启编译说明)
+#  schedule:
+#   - cron: 35 18 * * *
+
+env:
+  GITHUB_LINK: https://github.com/${{github.repository}}
+  GIT_ACTOR: ${{github.actor}}
+  GIT_REPOSITORY: ${{github.repository}}
+  RUN_NUMBER: ${{github.run_number}}
+  RUN_WORKFLOW: ${{github.workflow}}
+  REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
+  PUSH_PLUS_TOKEN: ${{ secrets.PUSH_PLUS_TOKEN }}
+  TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+  TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+  TZ: Asia/Shanghai
+
+jobs:
+  build:
+    name: 启动"${{ matrix.target }}-${{ github.event.inputs.REPO_BRANCH }}"触发编译
+    runs-on: ubuntu-22.04
+    if: ${{ github.event.repository.owner.id }} == ${{ github.event.sender.id }}
+    
+    env:
+      FOLDER_NAME: ${{ matrix.target }}
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [Lede]
+        
+        # 请勿对 target: [Lede] 做任何修改
+        
+    steps:
+    - name: 密匙检测（密匙为空则退出）
+      run: |
+        cd ${GITHUB_WORKSPACE}
+        if [[ -z "${{ secrets.REPO_TOKEN }}" ]]; then
+          echo "您没有设置仓库密匙，请按教程设置好密匙再来"
+          echo "REPO_TOKEN密匙制作教程：https://git.io/jm.md"
+          exit 1
+        fi
+    
+    - name: 准备结束
+      uses: actions/checkout@v3
+
+    - name: 检测文件和对比上游版本
+      run: |
+        cd ${GITHUB_WORKSPACE}
+        bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/custom/first.sh)
+        source ${GITHUB_WORKSPACE}/build/${{ env.FOLDER_NAME }}/settings.ini
+        export INPUTS_REPO_BRANCH="${{ github.event.inputs.REPO_BRANCH }}"
+        export INPUTS_CONFIG_FILE="${{ github.event.inputs.CONFIG_FILE }}"
+        export INPUTS_CPU_SELECTION="${{ github.event.inputs.CPU_SELECTION }}"
+        export INPUTS_INFORMATION_NOTICE="${{ github.event.inputs.INFORMATION_NOTICE }}"
+        export INPUTS_SSH_ACTION="${{ github.event.inputs.SSH_ACTION }}"
+        export INPUTS_UPLOAD_FIRMWARE="${{ github.event.inputs.UPLOAD_FIRMWARE }}"
+        export INPUTS_UPLOAD_RELEASE="${{ github.event.inputs.UPLOAD_RELEASE }}"
+        export INPUTS_CACHEWRTBUILD_SWITCH="${{ github.event.inputs.CACHEWRTBUILD_SWITCH }}"
+        export INPUTS_UPDATE_FIRMWARE_ONLINE="${{ github.event.inputs.UPDATE_FIRMWARE_ONLINE }}"
+        export INPUTS_COMPILATION_INFORMATION="${{ github.event.inputs.COMPILATION_INFORMATION }}"
+        export INPUTS_PACKAGING_FIRMWARE="${{ github.event.inputs.PACKAGING_FIRMWARE }}"
+        source build/${{ env.FOLDER_NAME }}/common.sh && Diy_menu1
+
+    - name: 部署编译环境
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        sudo -E apt-get -qq update -y
+        sudo -E apt-get -qq install -y gawk git gettext libssl-dev xsltproc zip git-core wget curl grep python2.7 python3 python3-pip libpython3-dev
+        sudo timedatectl set-timezone "$TZ"
+        sudo mkdir -p /${{ env.DIY_WORK }}
+        sudo chown $USER:$GROUPS /${{ env.DIY_WORK }}
+    
+    - name: 下载"${{ matrix.target }}-${{ github.event.inputs.REPO_BRANCH }}"源码
+      working-directory: /${{ env.DIY_WORK }}
+      run: |
+        git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
+        ln -sf /${{ env.DIY_WORK }}/openwrt ${GITHUB_WORKSPACE}/openwrt
+        cp -Rf ${GITHUB_WORKSPACE}/build ${GITHUB_WORKSPACE}/openwrt/build
+        chmod -R +x ${GITHUB_WORKSPACE}/openwrt/build
+    
+    - name: 公 告
+      if: env.REPO_TOKEN
+      run: |
+        cd ${GITHUB_WORKSPACE}
+        cd openwrt
+        source ${BUILD_PATH}/common.sh && Diy_menu2
+ 
+    - name: 更新插件源
+      if: env.REPO_TOKEN
+      run: |
+        cd openwrt
+        source ${BUILD_PATH}/common.sh && Diy_menu3
+ 
+    - name: 加载自定义设置
+      if: env.REPO_TOKEN
+      run: |
+        cd openwrt
+        source ${BUILD_PATH}/common.sh && Diy_menu4
+        
+    - name: 安装插件源
+      if: env.REPO_TOKEN
+      run: |
+        cd openwrt
+        source ${BUILD_PATH}/common.sh && Diy_menu5
+    
+    - name: SSH远程连接（make menuconfig）
+      if: env.SSH_ACTION == 'true'
+      uses: danshui-git/debugger-action@main
+
+    - name: 生成"${{ matrix.target }}"配置文件
+      if: env.REPO_TOKEN
+      id: compile
+      run: |
+        cd openwrt
+        source ${BUILD_PATH}/common.sh && Diy_menu6
+        
+    - name: 上传"${{ matrix.target }}"配置文件在 Github Artifacts
+      if: steps.compile.outcome == 'success'
+      uses: actions/upload-artifact@main
+      with:
+        name: .config_${{ env.SOURCE }}_${{ env.LUCI_EDITION }}_${{ env.TARGET_PROFILE }}_${{ env.Firmware_Date }}
+        path: openwrt/build_logo/config.txt
+        
+    - name: 编译信息
+      continue-on-error: true
+      if: env.COMPILATION_INFORMATION == 'true'
+      run: |
+        cd openwrt
+        source ${BUILD_PATH}/common.sh && Diy_xinxi
+    
+    - name: 清理Actions空间
+      continue-on-error: true
+      if: env.REPO_TOKEN
+      uses: small-5/delete-workflow-runs@main
+      with:
+        token: ${{ secrets.REPO_TOKEN }}
+        repository: ${{ github.repository }}
+        retain_min: ${{ env.RETAIN_MINUTE }}
+    
+    - name: 清理releases
+      continue-on-error: true
+      if: env.REPO_TOKEN
+      uses: ophub/delete-releases-workflows@main
+      with:
+        delete_releases: true
+        releases_keep_keyword: targz/Update
+        releases_keep_latest: ${{ env.KEEP_LATEST }}
+        delete_tags: true
+        delete_workflows: false
+        workflows_keep_day: 90
+        gh_token: ${{ secrets.REPO_TOKEN }}
+        
+    - name: 触发启动"${{ matrix.target }}"开始编译
+      id: gitpush
+      if: steps.compile.outcome == 'success' && env.REPO_TOKEN
+      run: |
+        cd ${GITHUB_WORKSPACE}
+        source ${BUILD_PATH}/common.sh && build_openwrt
+        
+    - name: Telegram或pushplus信息通知
+      if: env.PUSH_PLUS_TOKEN && env.INFORMATION_NOTICE == 'PUSH' || env.TELEGRAM_BOT_TOKEN && env.INFORMATION_NOTICE == 'TG'
+      run: |
+        if [[ "${{ env.INFORMATION_NOTICE }}" == "TG" ]]; then
+          if [[ "${{steps.gitpush.outcome}}" == 'success' ]]; then
+            curl -k --data chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" --data "text=🎉 主人💕：您的编译脚本成功触发【${{matrix.target}}】文件夹编译【${REPO_BRANCH}分支的${{env.TARGET_PROFILE}}】固件中,请耐心等待...... 😋(${{env.WAREHOUSE_MAN}}仓库的#${{env.RUN_NUMBER}}号)！($(date +%Y年%m月%d号%H时%M分))💐" "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage"
+          fi
+        fi
+        if [[ "${{ env.INFORMATION_NOTICE }}" == "PUSH" ]]; then
+          if [[ "${{steps.gitpush.outcome}}" == 'success' ]]; then
+            curl -k --data token="${{ secrets.PUSH_PLUS_TOKEN }}" --data title="开始编译【${{matrix.target}}】" --data "content=🎉 主人💕：您的编译脚本成功触发【${{matrix.target}}】文件夹编译【${REPO_BRANCH}分支的${{env.TARGET_PROFILE}}】固件中,请耐心等待...... 😋(${{env.WAREHOUSE_MAN}}仓库的#${{env.RUN_NUMBER}}号)！($(date +%Y年%m月%d号%H时%M分))💐" "http://www.pushplus.plus/send"
+          fi
+        fi

@@ -1,0 +1,94 @@
+#
+# 在[build]文件夹里面创建文件夹程序,请勿修改文件名称（institution.yml）
+#
+# 创建文件夹需要用到REPO_TOKEN密匙
+#
+# REPO_TOKEN密匙制作教程：https://git.io/jm.md
+#
+
+name: 创建文件夹
+on:
+  workflow_dispatch:
+    inputs:
+      establish_sample:
+        description: '请选择创建文件夹的源码'
+        required: false
+        default: 'Lede'
+        type: choice
+        options:
+          - 'Lede'
+          - 'Immortalwrt'
+          - 'Lienol'
+          - 'Official'
+          - 'Xwrt'
+      establish_name:
+        description: '输入您需要创建的文件夹名称'
+        required: true
+        default: ''
+env:
+  REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
+  GIT_REPOSITORY: ${{github.repository}}
+  TONGBU_CANGKU: 1
+  TZ: Asia/Shanghai
+
+jobs:
+  build:
+    name: 在[build]文件夹里面创建文件夹
+    runs-on: ubuntu-22.04
+    if: ${{ github.event.repository.owner.id }} == ${{ github.event.sender.id }}
+    
+    steps:
+    - name: 密匙检测（密匙为空则退出）
+      run: |
+        if [[ -z "${{ secrets.REPO_TOKEN }}" ]]; then
+          echo "您没有设置仓库密匙，请按教程设置好密匙再来"
+          echo "REPO_TOKEN密匙制作教程：https://git.io/jm.md"
+          exit 1
+        fi
+    - name: 准备结束
+      uses: actions/checkout@v3
+      
+    - name: 部署环境
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        sudo -E apt-get -qq update
+        sudo -E apt-get -qq install -y git subversion git-core wget curl grep
+        sudo timedatectl set-timezone "$TZ"
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
+        
+    - name: 创建文件夹
+      if: env.REPO_TOKEN
+      run: |
+        cd $GITHUB_WORKSPACE
+        git clone -b main https://github.com/281677160/build-actions shangyou
+        git clone -b main https://github.com/${{github.repository}} repogx
+        if [[ -d "repogx/build/${{ inputs.establish_name }}" ]]; then
+          echo "${{ inputs.establish_name }}已存在，无法继续创建"
+          exit 1
+        else
+          cp -Rf shangyou/build/${{ inputs.establish_sample }} repogx/build/${{ inputs.establish_name }}
+          cp -Rf .github/workflows/${{ inputs.establish_sample }}.yml repogx/.github/workflows/${{ inputs.establish_name }}.yml
+          export X="repogx/.github/workflows/${{ inputs.establish_name }}.yml"
+          export FOLDER_NE1="target: \\[.*\\]"
+          export FOLDER_NE2="target: \\[${{ inputs.establish_name }}\\]"
+          sed -i "s?${FOLDER_NE1}?${FOLDER_NE2}?g" "${X}"
+          export yml_name1="$(grep 'name:' "${X}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1')"
+          if [[ -n "$(echo "${{ inputs.establish_name }}" |grep -i "${{ inputs.establish_sample }}")" ]]; then
+            sample_name="${{ inputs.establish_name }}"
+          else
+            sample_name="${{ inputs.establish_sample }}_${{ inputs.establish_name }}"
+          fi
+          export yml_name2="name: ${sample_name}"
+          sed -i "s?${yml_name1}?${yml_name2}?g" "${X}"
+        fi
+        cd ${GITHUB_WORKSPACE}/repogx
+        git add .
+        git commit -m "Update $(date +%Y-%m%d-%H%M%S)"
+        git push --quiet "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main
+        if [[ $? -ne 0 ]]; then
+          echo "${{ inputs.establish_name }}文件夹创建失败"
+        else
+          echo "${{ inputs.establish_name }}文件夹创建完成"
+        fi

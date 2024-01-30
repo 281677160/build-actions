@@ -53,7 +53,7 @@ export AdGuardHome_Core="1"                  # 编译固件时自动增加AdGuar
 export Disable_NaiveProxy="1"                # 因个别源码的分支不支持编译NaiveProxy,不小心选择了就编译错误了,为减少错误,打开这个选项后,就算选择了NaiveProxy也会把NaiveProxy干掉不进行编译的(1为启用命令,填0为不作修改)
 
 # 开启NTFS格式盘挂载
-export Automatic_Mount_Settings="1"          # 编译时加入开启NTFS格式盘挂载的所需依赖(1为启用命令,填0为不作修改)
+export Automatic_Mount_Settings="0"          # 编译时加入开启NTFS格式盘挂载的所需依赖(1为启用命令,填0为不作修改)
 
 # 去除网络共享(autosamba)
 export Disable_autosamba="0"                 # 去掉源码默认自选的luci-app-samba或luci-app-samba4(1为启用命令,填0为不作修改)
@@ -66,11 +66,11 @@ export Cancel_running="0"                    # 取消路由器每天跑分任务
 
 
 # 晶晨CPU系列打包固件设置(不懂请看说明)
-export amlogic_model="s905d"
-export amlogic_kernel="5.10.01_6.1.01"
-export auto_kernel="true"
-export rootfs_size="2560"
-export kernel_usage="stable"
+#export amlogic_model="s905d"
+#export amlogic_kernel="5.10.01_6.1.01"
+#export auto_kernel="true"
+#export rootfs_size="2560"
+#export kernel_usage="stable"
 
 
 
@@ -89,18 +89,19 @@ sed -i 's/"带宽监控"/"监控"/g' `egrep "带宽监控" -rl ./`
 
 
 # 整理固件包时候,删除您不想要的固件或者文件,让它不需要上传到Actions空间(根据编译机型变化,自行调整删除名称)
-# cat >"$CLEAR_PATH" <<-EOF
-# packages
+ cat >"$CLEAR_PATH" <<-EOF
+ packages
 # config.buildinfo
 # feeds.buildinfo
 # sha256sums
 # version.buildinfo
 # profiles.json
-# openwrt-x86-64-generic-kernel.bin
+ openwrt-x86-64-generic-kernel.bin
 # openwrt-x86-64-generic.manifest
-# openwrt-x86-64-generic-squashfs-rootfs.img.gz
-# EOF
+ openwrt-x86-64-generic-squashfs-rootfs.img.gz
+ ipk.tar.gz
+ EOF
 
 # 在线更新时，删除不想保留固件的某个文件，在EOF跟EOF之间加入删除代码，记住这里对应的是固件的文件路径，比如： rm -rf /etc/config/luci
-cat >>$DELETE <<-EOF
-EOF
+#cat >>$DELETE <<-EOF
+#EOF

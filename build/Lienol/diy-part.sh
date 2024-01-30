@@ -6,9 +6,9 @@
 
 
 # 后台IP设置
-export Ipv4_ipaddr="192.168.2.2"            # 修改openwrt后台地址(填0为关闭)
-export Netmask_netm="255.255.255.0"         # IPv4 子网掩码（默认：255.255.255.0）(填0为不作修改)
-export Op_name="OpenWrt-123"                # 修改主机名称为OpenWrt-123(填0为不作修改)
+export Ipv4_ipaddr="0"            # 修改openwrt后台地址(填0为关闭)
+export Netmask_netm="0"         # IPv4 子网掩码（默认：255.255.255.0）(填0为不作修改)
+export Op_name="HC5962"                # 修改主机名称为OpenWrt-123(填0为不作修改)
 
 # 内核和系统分区大小(不是每个机型都可用)
 export Kernel_partition_size="0"            # 内核分区大小,每个机型默认值不一样 (填写您想要的数值,默认一般16,数值以MB计算，填0为不作修改),如果你不懂就填0
@@ -89,17 +89,17 @@ sed -i 's/"带宽监控"/"监控"/g' `egrep "带宽监控" -rl ./`
 
 
 # 整理固件包时候,删除您不想要的固件或者文件,让它不需要上传到Actions空间(根据编译机型变化,自行调整删除名称)
-cat >"$CLEAR_PATH" <<-EOF
-packages
-config.buildinfo
-feeds.buildinfo
-sha256sums
-version.buildinfo
-profiles.json
-openwrt-x86-64-generic-kernel.bin
-openwrt-x86-64-generic.manifest
-openwrt-x86-64-generic-squashfs-rootfs.img.gz
-EOF
+# cat >"$CLEAR_PATH" <<-EOF
+# packages
+# config.buildinfo
+# feeds.buildinfo
+# sha256sums
+# version.buildinfo
+# profiles.json
+# openwrt-x86-64-generic-kernel.bin
+# openwrt-x86-64-generic.manifest
+# openwrt-x86-64-generic-squashfs-rootfs.img.gz
+# EOF
 
 # 在线更新时，删除不想保留固件的某个文件，在EOF跟EOF之间加入删除代码，记住这里对应的是固件的文件路径，比如： rm -rf /etc/config/luci
 cat >>$DELETE <<-EOF

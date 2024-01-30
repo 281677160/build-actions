@@ -16,7 +16,7 @@ on:
       REPO_BRANCH:
         description: '（Lienol源码）请选择源码分支'
         required: true
-        default: '19.07'
+        default: '22.03'
         type: choice
         options:
           - '22.03'
@@ -27,11 +27,12 @@ on:
       CONFIG_FILE:
         description: '请选择配置文件'
         required: true
-        default: 'x86_64'
+        default: 'b70'
         type: choice
         options:
           - 'aarch64'
           - 'x86_64'
+          - 'b70'
       CPU_SELECTION:
         description: 'CPU优选,增加编译速度'
         required: true
@@ -64,7 +65,7 @@ on:
       UPLOAD_RELEASE:
         description: '发布固件到 Github Releases'
         required: false
-        default: 'false'
+        default: 'true'
         type: boolean
       CACHEWRTBUILD_SWITCH:
         description: '缓存加速编译'

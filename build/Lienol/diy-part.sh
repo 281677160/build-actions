@@ -5,7 +5,7 @@
 # 不要一下就拉取别人一个插件包N多插件的，多了没用，增加编译错误，自己需要的才好
 
 # Add a feed source，增加了aliyundrive-webdav软件
-echo 'src-git aliyundrive-webdav https://github.com/messense/aliyundrive-webdav' >>feeds.conf.default
+git clone https://github.com/messense/aliyundrive-webdav.git /package
 #echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
 #echo 'src-git kenzok8 https://github.com/kenzok8/openwrt-packages.git' >>feeds.conf.default
 

@@ -55,7 +55,7 @@ on:
       SSH_ACTION:
         description: 'SSH远程配置固件'
         required: false
-        default: 'false'
+        default: 'true'
         type: boolean
       UPLOAD_FIRMWARE:
         description: '上传固件到 Github Artifacts'

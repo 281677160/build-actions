@@ -9,7 +9,7 @@
 #
 #
 
-name: Lede-大雕
+name: Lede源码编译
 on:
   workflow_dispatch:
     inputs:

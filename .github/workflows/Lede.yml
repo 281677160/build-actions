@@ -9,7 +9,7 @@
 #
 #
 
-name: Lede源码编译
+name: Lede-源码编译
 on:
   workflow_dispatch:
     inputs:

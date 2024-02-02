@@ -9,7 +9,7 @@
 #
 #
 
-name: Openwrt-官方
+name: Openwrt-官方源码编译
 on:
   workflow_dispatch:
     inputs:

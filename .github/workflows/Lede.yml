@@ -9,7 +9,7 @@
 #
 #
 
-name: Lede-源码编译
+name: 开始编译Lede
 on:
   workflow_dispatch:
     inputs:

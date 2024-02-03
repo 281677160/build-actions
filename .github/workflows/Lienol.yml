@@ -9,7 +9,7 @@
 #
 #
 
-name: Lienol-源码
+name: 开始编译 Lienol
 on:
   workflow_dispatch:
     inputs:

@@ -60,7 +60,7 @@ on:
       UPLOAD_FIRMWARE:
         description: '上传固件到 Github Artifacts'
         required: false
-        default: 'false'
+        default: 'true'
         type: boolean
       UPLOAD_RELEASE:
         description: '发布固件到 Github Releases'

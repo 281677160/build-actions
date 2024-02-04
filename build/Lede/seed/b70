@@ -52,7 +52,6 @@ CONFIG_PACKAGE_libyaml=y
 # CONFIG_PACKAGE_lua-neturl is not set
 # CONFIG_PACKAGE_luci-app-accesscontrol is not set
 CONFIG_PACKAGE_luci-app-adguardhome=y
-CONFIG_PACKAGE_luci-app-aliyundrive-webdav=y
 CONFIG_PACKAGE_luci-app-control-timewol=y
 CONFIG_PACKAGE_luci-app-control-webrestriction=y
 CONFIG_PACKAGE_luci-app-control-weburl=y
@@ -75,6 +74,8 @@ CONFIG_PACKAGE_luci-app-openclash=y
 # CONFIG_PACKAGE_luci-app-ssr-plus is not set
 # CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ChinaDNS_NG is not set
 # CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Libev_Client is not set
+# CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks_Libev_Client is not set
+CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks_NONE_Client=y
 # CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks_Simple_Obfs is not set
 CONFIG_PACKAGE_luci-app-ttyd=y
 CONFIG_PACKAGE_luci-app-udpxy=y
@@ -82,7 +83,6 @@ CONFIG_PACKAGE_luci-app-udpxy=y
 # CONFIG_PACKAGE_luci-app-vsftpd is not set
 # CONFIG_PACKAGE_luci-app-webd_INCLUDE_WEBD_BINARY is not set
 CONFIG_PACKAGE_luci-app-zerotier=y
-CONFIG_PACKAGE_luci-i18n-aliyundrive-webdav-zh-cn=y
 CONFIG_PACKAGE_luci-i18n-control-timewol-zh-cn=y
 CONFIG_PACKAGE_luci-i18n-control-webrestriction-zh-cn=y
 CONFIG_PACKAGE_luci-i18n-control-weburl-zh-cn=y

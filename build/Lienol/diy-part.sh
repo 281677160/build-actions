@@ -5,11 +5,11 @@
 # 不要一下就拉取别人一个插件包N多插件的，多了没用，增加编译错误，自己需要的才好
 
 # 自行拉取插件
-git clone https://github.com/messense/aliyundrive-webdav package/luci-app-aliyundrive-webdav
+# 此行代码失败 git clone https://github.com/messense/aliyundrive-webdav package/luci-app-aliyundrive-webdav
 
 # 后台IP设置
 export Ipv4_ipaddr="0"            # 修改openwrt后台地址(填0为关闭)
-export Netmask_netm="0"         # IPv4 子网掩码（默认：255.255.255.0）(填0为不作修改)
+export Netmask_netm="0"           # IPv4 子网掩码（默认：255.255.255.0）(填0为不作修改)
 export Op_name="0"                # 修改主机名称为OpenWrt-123(填0为不作修改)
 
 # 内核和系统分区大小(不是每个机型都可用)
@@ -75,21 +75,6 @@ export Cancel_running="1"                    # 取消路由器每天跑分任务
 #export kernel_usage="stable"
 
 
-
-# 修改插件名字
-sed -i 's/"终端"/"TTYD"/g' `egrep "终端" -rl ./`
-sed -i 's/"aMule设置"/"电驴下载"/g' `egrep "aMule设置" -rl ./`
-sed -i 's/"网络存储"/"NAS"/g' `egrep "网络存储" -rl ./`
-sed -i 's/"Turbo ACC 网络加速"/"网络加速"/g' `egrep "Turbo ACC 网络加速" -rl ./`
-sed -i 's/"实时流量监测"/"流量"/g' `egrep "实时流量监测" -rl ./`
-sed -i 's/"KMS 服务器"/"KMS激活"/g' `egrep "KMS 服务器" -rl ./`
-sed -i 's/"TTYD 终端"/"TTYD"/g' `egrep "TTYD 终端" -rl ./`
-sed -i 's/"USB 打印服务器"/"打印服务"/g' `egrep "USB 打印服务器" -rl ./`
-sed -i 's/"Web 管理"/"Web管理"/g' `egrep "Web 管理" -rl ./`
-sed -i 's/"管理权"/"改密码"/g' `egrep "管理权" -rl ./`
-sed -i 's/"带宽监控"/"监控"/g' `egrep "带宽监控" -rl ./`
-
-
 # 整理固件包时候,删除您不想要的固件或者文件,让它不需要上传到Actions空间(根据编译机型变化,自行调整删除名称)
 cat >"$CLEAR_PATH" <<-EOF
 packages
@@ -98,10 +83,11 @@ packages
 #sha256sums
 #version.buildinfo
 #profiles.json
-openwrt-x86-64-generic-kernel.bin
+hiwifi_hc5962-initramfs-kernel.bin
 #openwrt-x86-64-generic.manifest
 openwrt-x86-64-generic-squashfs-rootfs.img.gz
 ipk.tar.gz
+Source code
 EOF
 
 # 在线更新时，删除不想保留固件的某个文件，在EOF跟EOF之间加入删除代码，记住这里对应的是固件的文件路径，比如： rm -rf /etc/config/luci

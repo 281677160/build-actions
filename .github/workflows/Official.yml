@@ -9,7 +9,7 @@
 #
 #
 
-name: 开始编译 Openwrt官方
+name: 开始编译 Openwrt
 on:
   workflow_dispatch:
     inputs:

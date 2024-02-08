@@ -7,7 +7,7 @@
 #
 # REPO_TOKEN密匙制作教程：https://git.io/jm.md
 #
-#
+###以下几个选项同Actions中的new workflos选项，也可以从那里改
 
 name: 开始编译 Lienol
 on:

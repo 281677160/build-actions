@@ -4,6 +4,9 @@
 # 自行拉取插件之前请SSH连接进入固件配置里面确认过没有你要的插件再单独拉取你需要的插件
 # 不要一下就拉取别人一个插件包N多插件的，多了没用，增加编译错误，自己需要的才好
 
+# 自行拉取插件
+git clone https://github.com/messense/aliyundrive-webdav package/luci-app-aliyundrive-webdav
+
 # 后台IP设置
 export Ipv4_ipaddr="0"            # 修改openwrt后台地址(填0为关闭)
 export Netmask_netm="0"         # IPv4 子网掩码（默认：255.255.255.0）(填0为不作修改)
@@ -37,7 +40,7 @@ export OpenClash_branch="0"                 # OpenClash的源码分别有【mast
 export OpenClash_Core="1"                   # 增加OpenClash时,把核心下载好,(填1为下载【dev单核】,填2为下载【dev/meta/premium三核】,填0为不需要核心)
 
 # 个性签名,默认增加年月日"$(TZ=UTC-8 date "+%Y.%m.%d")"
-export Customized_Information="I Love You"  # 个性签名,你想写啥就写啥，(填0为不作修改)
+export Customized_Information="无限远        # 个性签名,你想写啥就写啥，(填0为不作修改)
 
 # 更换固件内核
 export Replace_Kernel="0"                    # 更换内核版本,在对应源码的[target/linux/架构]查看patches-x.x,看看x.x有啥就有啥内核了(填入内核x.x版本号,填0为不作修改)

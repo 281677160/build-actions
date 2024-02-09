@@ -5,10 +5,8 @@
 # 不要一下就拉取别人一个插件包N多插件的，多了没用，增加编译错误，自己需要的才好
 
 # 自行拉取插件，例aliyun-webdav
-cd openwrt
 git clone https://github.com/messense/aliyundrive-webdav package/luci-app-aliyundrive-webdav
 ./scripts/feeds update -a
-./scripts/feeds install -a
 
 # 后台IP设置
 export Ipv4_ipaddr="0"            # 修改openwrt后台地址(填0为关闭)

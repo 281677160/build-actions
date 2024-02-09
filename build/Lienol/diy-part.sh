@@ -6,7 +6,6 @@
 
 # 自行拉取插件，例aliyun-webdav
 git clone https://github.com/messense/aliyundrive-webdav package/luci-app-aliyundrive-webdav
-./scripts/feeds update -a
 
 # 后台IP设置
 export Ipv4_ipaddr="0"            # 修改openwrt后台地址(填0为关闭)

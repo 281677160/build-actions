@@ -46,7 +46,7 @@ jobs:
           exit 1
         fi
     - name: 准备结束
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       
     - name: 部署环境
       env:

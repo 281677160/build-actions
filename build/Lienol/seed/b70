@@ -28,7 +28,6 @@ CONFIG_PACKAGE_iptables-mod-conntrack-extra=y
 # CONFIG_PACKAGE_iptables-mod-filter is not set
 CONFIG_PACKAGE_iptables-mod-ipopt=y
 CONFIG_PACKAGE_iptables-mod-nat-extra=y
-# CONFIG_PACKAGE_iptvhelper is not set
 CONFIG_PACKAGE_ipv6helper=y
 CONFIG_PACKAGE_kmod-inet-diag=y
 CONFIG_PACKAGE_kmod-ip6tables=y
@@ -49,7 +48,6 @@ CONFIG_PACKAGE_kmod-nf-nat6=y
 CONFIG_PACKAGE_kmod-sit=y
 CONFIG_PACKAGE_kmod-tcp-bbr=y
 CONFIG_PACKAGE_kmod-tun=y
-# CONFIG_PACKAGE_koolproxy is not set 
 CONFIG_PACKAGE_libatomic=y
 CONFIG_PACKAGE_libattr=y
 CONFIG_PACKAGE_libavahi-client=y

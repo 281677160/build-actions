@@ -4,7 +4,7 @@
 # 自行拉取插件之前请SSH连接进入固件配置里面确认过没有你要的插件再单独拉取你需要的插件
 # 不要一下就拉取别人一个插件包N多插件的，多了没用，增加编译错误，自己需要的才好
 
-# 自行aliyun-webdav插件
+# 自行增加拉取插件，例如aliyun-webdav插件
 git clone https://github.com/messense/aliyundrive-webdav package/luci-app-aliyundrive-webdav
 
 # 后台IP设置

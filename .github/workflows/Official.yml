@@ -30,6 +30,7 @@ on:
         default: 'b70'
         type: choice
         options:
+          - 'b70'
           - '1907-phicomm-k3'
           - 'aarch64'
           - 'phicomm_k3'

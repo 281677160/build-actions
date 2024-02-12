@@ -169,14 +169,14 @@ jobs:
         
     - name: 上传固件在 github Artifacts
       if: steps.compile.outcome == 'success' && env.UPLOAD_FIRMWARE == 'true'
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@main
       with:
         name: ${{ env.SOURCE }}-${{ env.LUCI_EDITION }}-${{ env.TARGET_PROFILE }}-firmware-${{ env.Firmware_Date }}
         path: ${{ env.FIRMWARE_PATH }}
     
     - name: 发布固件
       if: steps.compile.outcome == 'success' && env.UPLOAD_RELEASE == 'true' && env.ING_FIRMWAR == 'true' && env.REPO_TOKEN
-      uses: ncipollo/release-action@main
+      uses: ncipollo/release-action@v1
       with:
         name: ${{ env.SOURCE }}-${{ env.PROMPT_TING }}
         tag: a${{ env.date }}
@@ -188,7 +188,7 @@ jobs:
     - name: 发送[在线更新固件]至云端1
       id: autoup
       if: steps.compile.outcome == 'success' && env.UPDATE_FIRMWARE_ONLINE == 'true' && env.REPO_TOKEN
-      uses: ncipollo/release-action@main
+      uses: ncipollo/release-action@v1
       with:
         name: AutoUpdate
         tag: ${{ env.Update_tag }}
@@ -209,7 +209,7 @@ jobs:
         
     - name: 发送[在线更新固件]至云端3
       if: steps.autoup.outcome == 'success' && env.UPDATE_FIRMWARE_ONLINE == 'true' && env.REPO_TOKEN
-      uses: ncipollo/release-action@main
+      uses: ncipollo/release-action@v1
       with:
         name: AutoUpdate-${{ env.TARGET_BOARD }}
         tag: ${{ env.Update_tag }}

@@ -16,25 +16,20 @@ on:
       REPO_BRANCH:
         description: '（官方源码）请选择源码分支'
         required: true
-        default: 'openwrt-23.05'
+        default: 'openwrt-22.03'
         type: choice
         options:
-          - 'main'
-          - 'lede-17.01'
-          - 'master'
-          - 'openwrt-18.06'
-          - 'openwrt-19.07'
-          - 'openwrt-21.02'
+          - 'openwrt-23.05'
           - 'openwrt-22.03'
-          - 'openwrt-23.05'      
-               
+          - 'openwrt-21.02'
+          - 'openwrt-19.07'
+          - 'master'
       CONFIG_FILE:
         description: '请选择配置文件'
         required: true
-        default: 'b70'
+        default: 'x86_64'
         type: choice
         options:
-          - 'b70'
           - '1907-phicomm-k3'
           - 'aarch64'
           - 'phicomm_k3'
@@ -61,7 +56,7 @@ on:
       SSH_ACTION:
         description: 'SSH远程配置固件'
         required: false
-        default: 'true'
+        default: 'false'
         type: boolean
       UPLOAD_FIRMWARE:
         description: '上传固件到 Github Artifacts'
@@ -71,7 +66,7 @@ on:
       UPLOAD_RELEASE:
         description: '发布固件到 Github Releases'
         required: false
-        default: 'true'
+        default: 'false'
         type: boolean
       CACHEWRTBUILD_SWITCH:
         description: '缓存加速编译'
@@ -81,7 +76,7 @@ on:
       UPDATE_FIRMWARE_ONLINE:
         description: '增加在线更新固件功能/自动打包Amlogic_Rockchip系列固件'
         required: false
-        default: 'false'
+        default: 'true'
         type: boolean
       COMPILATION_INFORMATION:
         description: '是否显示编译信息'
@@ -132,7 +127,7 @@ jobs:
         fi
     
     - name: 准备结束
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: 检测文件和对比上游版本
       run: |

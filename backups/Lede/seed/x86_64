@@ -1,0 +1,10 @@
+CONFIG_TARGET_x86=y
+CONFIG_TARGET_x86_64=y
+CONFIG_TARGET_x86_64_DEVICE_generic=y
+CONFIG_GRUB_IMAGES=y
+CONFIG_PACKAGE_libnetsnmp=y
+CONFIG_PACKAGE_luci-app-argon-config=y
+CONFIG_PACKAGE_luci-compat=y
+CONFIG_PACKAGE_luci-i18n-argon-config-zh-cn=y
+CONFIG_PACKAGE_openssh-sftp-server=y
+CONFIG_PACKAGE_snmpd=y

@@ -9,7 +9,7 @@ on:
     branches:
       - main
     paths:
-      - 'build/Lienol/relevance/start'
+      - 'bconfig'
 
 env:
   GITHUB_LINK: https://github.com/${{github.repository}}
@@ -34,11 +34,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [Lienol]
+        target: [Lede]
 
     steps:    
     - name: 准备结束
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: 检测文件和对比上游版本
       run: |
@@ -137,14 +137,14 @@ jobs:
       run: |
         cd openwrt
         make defconfig
-        make download -j16
+        make download -j8
     
     - name: 开始编译固件
       id: compile
       run: |
         cd openwrt
         echo -e "$(nproc) thread compile"
-        make -j$(($(nproc) + 1)) || make -j1 V=s
+        make -j$(nproc) || make -j1 V=s
         echo "date=$(date "+%Y%m%d%H%M%S")" >> ${GITHUB_ENV}
         source ${BUILD_PATH}/common.sh && firmware_jiance
         
@@ -169,14 +169,14 @@ jobs:
         
     - name: 上传固件在 github Artifacts
       if: steps.compile.outcome == 'success' && env.UPLOAD_FIRMWARE == 'true'
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@main
       with:
         name: ${{ env.SOURCE }}-${{ env.LUCI_EDITION }}-${{ env.TARGET_PROFILE }}-firmware-${{ env.Firmware_Date }}
         path: ${{ env.FIRMWARE_PATH }}
     
     - name: 发布固件
       if: steps.compile.outcome == 'success' && env.UPLOAD_RELEASE == 'true' && env.ING_FIRMWAR == 'true' && env.REPO_TOKEN
-      uses: ncipollo/release-action@main
+      uses: ncipollo/release-action@v1
       with:
         name: ${{ env.SOURCE }}-${{ env.PROMPT_TING }}
         tag: a${{ env.date }}
@@ -188,7 +188,7 @@ jobs:
     - name: 发送[在线更新固件]至云端1
       id: autoup
       if: steps.compile.outcome == 'success' && env.UPDATE_FIRMWARE_ONLINE == 'true' && env.REPO_TOKEN
-      uses: ncipollo/release-action@main
+      uses: ncipollo/release-action@v1
       with:
         name: AutoUpdate
         tag: ${{ env.Update_tag }}
@@ -209,7 +209,7 @@ jobs:
         
     - name: 发送[在线更新固件]至云端3
       if: steps.autoup.outcome == 'success' && env.UPDATE_FIRMWARE_ONLINE == 'true' && env.REPO_TOKEN
-      uses: ncipollo/release-action@main
+      uses: ncipollo/release-action@v1
       with:
         name: AutoUpdate-${{ env.TARGET_BOARD }}
         tag: ${{ env.Update_tag }}

@@ -113,4 +113,4 @@ CONFIG_PACKAGE_udpxy=y
 CONFIG_PACKAGE_unzip=y
 # CONFIG_PACKAGE_vlmcsd is not set
 # CONFIG_PACKAGE_vsftpd-alt is not set
-CONFIG_PACKAGE_zerotier=y
+# CONFIG_PACKAGE_zerotier is not set

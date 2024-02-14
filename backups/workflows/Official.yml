@@ -19,15 +19,11 @@ on:
         default: 'openwrt-23.05'
         type: choice
         options:
-          - 'main'
-          - 'lede-17.01'
-          - 'master'
-          - 'openwrt-18.06'
-          - 'openwrt-19.07'
-          - 'openwrt-21.02'
+          - 'openwrt-23.05'
           - 'openwrt-22.03'
-          - 'openwrt-23.05'      
-               
+          - 'openwrt-21.02'
+          - 'openwrt-19.07'
+          - 'master'
       CONFIG_FILE:
         description: '请选择配置文件'
         required: true
@@ -61,7 +57,7 @@ on:
       SSH_ACTION:
         description: 'SSH远程配置固件'
         required: false
-        default: 'true'
+        default: 'false'
         type: boolean
       UPLOAD_FIRMWARE:
         description: '上传固件到 Github Artifacts'
@@ -132,7 +128,7 @@ jobs:
         fi
     
     - name: 准备结束
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: 检测文件和对比上游版本
       run: |

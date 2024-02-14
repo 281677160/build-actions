@@ -16,7 +16,7 @@ on:
       REPO_BRANCH:
         description: '（Lienol源码）请选择源码分支'
         required: true
-        default: '22.03'
+        default: '19.07'
         type: choice
         options:
           - '22.03'
@@ -27,10 +27,9 @@ on:
       CONFIG_FILE:
         description: '请选择配置文件'
         required: true
-        default: 'b70'
+        default: 'x86_64'
         type: choice
         options:
-          - 'b70'
           - 'aarch64'
           - 'x86_64'
       CPU_SELECTION:
@@ -65,7 +64,7 @@ on:
       UPLOAD_RELEASE:
         description: '发布固件到 Github Releases'
         required: false
-        default: 'true'
+        default: 'false'
         type: boolean
       CACHEWRTBUILD_SWITCH:
         description: '缓存加速编译'
@@ -75,7 +74,7 @@ on:
       UPDATE_FIRMWARE_ONLINE:
         description: '增加在线更新固件功能/自动打包Amlogic_Rockchip系列固件'
         required: false
-        default: 'false'
+        default: 'true'
         type: boolean
       COMPILATION_INFORMATION:
         description: '是否显示编译信息'

@@ -9,7 +9,7 @@
 #
 #
 
-name: Xwrt-源码
+name: 开始编译 Xwrt
 on:
   workflow_dispatch:
     inputs:

@@ -9,7 +9,7 @@
 #
 #
 
-name: Immortalwrt-天灵
+name: 开始编译 Immortalwrt
 on:
   workflow_dispatch:
     inputs:

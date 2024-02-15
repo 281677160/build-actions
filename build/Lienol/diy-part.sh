@@ -6,17 +6,17 @@
 
 
 # 后台IP设置
-export Ipv4_ipaddr="0"            # 修改openwrt后台地址为192.168.2.2(填0为不作修改)
-export Netmask_netm="0"           # 修改IPv4子网掩码为255.255.255.0）(填0为不作修改)
-export Op_name="0"                # 修改主机名称为OpenWrt-123(填0为不作修改)
+export Ipv4_ipaddr="192.168.199.1"            # 修改openwrt后台地址为192.168.2.2(填0为不作修改)
+export Netmask_netm="0"                       # 修改IPv4子网掩码地址，默认为255.255.255.0(填0为不作修改)
+export Op_name="0"                            # 修改主机名称为OpenWrt-123(填0为不作修改)
 
 # 内核和系统分区大小(不是每个机型都可用)
 export Kernel_partition_size="0"            # 内核分区大小,每个机型默认值不一样 (填写您想要的数值,默认一般16,数值以MB计算，填0为不作修改),如果你不懂就填0
 export Rootfs_partition_size="0"            # 系统分区大小,每个机型默认值不一样 (填写您想要的数值,默认一般300左右,数值以MB计算，填0为不作修改),如果你不懂就填0
 
 # 默认主题设置
-export Mandatory_theme="argon"              # 将bootstrap替换您需要的主题为必选主题(可自行更改您要的,源码要带此主题就行,填写名称也要写对) (填写主题名称,填0为不作修改)
-export Default_theme="argon"                # 多主题时,选择某主题为默认第一主题 (填写主题名称,填0为不作修改)
+export Mandatory_theme="0"                 # 将默认必选主题由bootstrap替换为(如argon,源码要带此主题就行,填写名称也要写对，填0为不作修改)
+export Default_theme="0"                   # 多主题时,选择某主题为默认第一主题 (填写主题名称argon,填0为不作修改)
 
 # 旁路由选项
 export Gateway_Settings="0"                 # 旁路由设置 IPv4 网关(填入您的网关IP为启用)(填0为不作修改)
@@ -66,26 +66,11 @@ export Cancel_running="0"                    # 取消路由器每天跑分任务
 
 
 # 晶晨CPU系列打包固件设置(不懂请看说明)
-export amlogic_model="s905d"
-export amlogic_kernel="5.10.01_6.1.01"
-export auto_kernel="true"
-export rootfs_size="2560"
-export kernel_usage="stable"
-
-
-
-# 修改插件名字
-sed -i 's/"终端"/"TTYD"/g' `egrep "终端" -rl ./`
-sed -i 's/"aMule设置"/"电驴下载"/g' `egrep "aMule设置" -rl ./`
-sed -i 's/"网络存储"/"NAS"/g' `egrep "网络存储" -rl ./`
-sed -i 's/"Turbo ACC 网络加速"/"网络加速"/g' `egrep "Turbo ACC 网络加速" -rl ./`
-sed -i 's/"实时流量监测"/"流量"/g' `egrep "实时流量监测" -rl ./`
-sed -i 's/"KMS 服务器"/"KMS激活"/g' `egrep "KMS 服务器" -rl ./`
-sed -i 's/"TTYD 终端"/"TTYD"/g' `egrep "TTYD 终端" -rl ./`
-sed -i 's/"USB 打印服务器"/"打印服务"/g' `egrep "USB 打印服务器" -rl ./`
-sed -i 's/"Web 管理"/"Web管理"/g' `egrep "Web 管理" -rl ./`
-sed -i 's/"管理权"/"改密码"/g' `egrep "管理权" -rl ./`
-sed -i 's/"带宽监控"/"监控"/g' `egrep "带宽监控" -rl ./`
+# export amlogic_model="s905d"
+# export amlogic_kernel="5.10.01_6.1.01"
+# export auto_kernel="true"
+# export rootfs_size="2560"
+# export kernel_usage="stable"
 
 
 # 整理固件包时候,删除您不想要的固件或者文件,让它不需要上传到Actions空间(根据编译机型变化,自行调整删除名称)

@@ -8,7 +8,7 @@
 # 后台IP设置
 export Ipv4_ipaddr="192.168.199.1"            # 修改openwrt后台地址为192.168.2.2(填0为不作修改)
 export Netmask_netm="0"                       # 修改IPv4子网掩码地址，默认为255.255.255.0(填0为不作修改)
-export Op_name="Lienol"                       # 修改主机名称为OpenWrt-123(填0为不作修改)
+export Op_name="0"                       # 修改主机名称为OpenWrt-123(填0为不作修改)
 
 # 内核和系统分区大小(不是每个机型都可用)
 export Kernel_partition_size="0"            # 内核分区大小,每个机型默认值不一样 (填写您想要的数值,默认一般16,数值以MB计算，填0为不作修改),如果你不懂就填0
@@ -47,7 +47,7 @@ export Replace_Kernel="0"                   # 更换内核版本,在对应源码
 export Password_free_login="0"               # 设置首次登录后台密码为空（进入openwrt后自行修改密码）(1为启用命令,填0为不作修改)
 
 # 增加AdGuardHome插件和核心
-export AdGuardHome_Core="0"                  # 编译固件时自动增加AdGuardHome插件和AdGuardHome插件核心,需要注意的是一个核心20多MB的,小闪存机子搞不来(1为启用命令,填0为不作修改)
+export AdGuardHome_Core="1"                  # 编译固件时自动增加AdGuardHome插件和AdGuardHome插件核心,需要注意的是一个核心20多MB的,小闪存机子搞不来(1为启用命令,填0为不作修改)
 
 # 禁用ssrplus和passwall的NaiveProxy
 export Disable_NaiveProxy="1"                # 因个别源码的分支不支持编译NaiveProxy,不小心选择了就编译错误了,为减少错误,打开这个选项后,就算选择了NaiveProxy也会把NaiveProxy干掉不进行编译的(1为启用命令,填0为不作修改)

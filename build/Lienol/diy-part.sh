@@ -76,8 +76,6 @@ export Cancel_running="0"                    # 取消路由器每天跑分任务
 # 整理固件包时候,删除您不想要的固件或者文件,让它不需要上传到Actions空间(根据编译机型变化,自行调整删除名称)
 cat >"$CLEAR_PATH" <<-EOF
 packages
-hiwifi_hc5962-initramfs-kernel.bin
-hiwifi_hc5962.manifest
 ipk.tar.gz
 EOF
 

@@ -8,7 +8,7 @@
 # 后台IP设置
 export Ipv4_ipaddr="192.168.199.1"            # 修改openwrt后台地址为192.168.2.2(填0为不作修改)
 export Netmask_netm="0"                       # 修改IPv4子网掩码地址，默认为255.255.255.0(填0为不作修改)
-export Op_name="0"                            # 修改主机名称为OpenWrt-123(填0为不作修改)
+export Op_name="Lienol"                       # 修改主机名称为OpenWrt-123(填0为不作修改)
 
 # 内核和系统分区大小(不是每个机型都可用)
 export Kernel_partition_size="0"            # 内核分区大小,每个机型默认值不一样 (填写您想要的数值,默认一般16,数值以MB计算，填0为不作修改),如果你不懂就填0
@@ -38,7 +38,7 @@ export OpenClash_branch="0"                 # OpenClash的源码分别有【mast
 export OpenClash_Core="1"                   # 增加OpenClash时,把核心下载好,(填1为下载【dev单核】,填2为下载【dev/meta/premium三核】,填0为不需要核心)
 
 # 个性签名,默认增加年月日[$(TZ=UTC-8 date "+%Y.%m.%d")]
-export Customized_Information="十步杀一人，千里不留行"       # 个性签名,你想写啥就写啥，(填0为不作修改)
+export Customized_Information="赵客缦胡缨，吴钩霜雪明"       # 个性签名,你想写啥就写啥，(填0为不作修改)
 
 # 更换固件内核
 export Replace_Kernel="0"                   # 更换内核版本,在对应源码的[target/linux/架构]查看patches-x.x,看看x.x有啥就有啥内核了(填入内核x.x版本号,填0为不作修改)

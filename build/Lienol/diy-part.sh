@@ -4,6 +4,9 @@
 # 自行拉取插件之前请SSH连接进入固件配置里面确认过没有你要的插件再单独拉取你需要的插件
 # 不要一下就拉取别人一个插件包N多插件的，多了没用，增加编译错误，自己需要的才好
 
+# 拉取第三方插件IPK
+git clone https://github.com/XXKDB/luci-theme-argon_armygreen.git package/lienol/luci-theme-argon_armygreen
+git clone https://github.com/YL2209/luci-theme-ifit.git package/lienol/luci-theme-ifit
 
 # 后台IP设置
 export Ipv4_ipaddr="192.168.199.1"            # 修改openwrt后台地址为192.168.2.2(填0为不作修改)

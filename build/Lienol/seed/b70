@@ -69,6 +69,7 @@ CONFIG_PACKAGE_luci-app-autoreboot=y
 # CONFIG_PACKAGE_luci-app-ddns is not set
 # CONFIG_PACKAGE_luci-app-diskman_INCLUDE_btrfs_progs is not set
 # CONFIG_PACKAGE_luci-app-diskman_INCLUDE_lsblk is not set
+CONFIG_PACKAGE_luci-app-filetransfer=y
 CONFIG_PACKAGE_luci-app-ikoolproxy=y
 CONFIG_PACKAGE_luci-app-iptvhelper=y
 CONFIG_PACKAGE_luci-app-mwan3=y
@@ -90,7 +91,6 @@ CONFIG_PACKAGE_luci-app-openclash=y
 # CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Libev_Client is not set
 # CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks_Simple_Obfs is not set
 CONFIG_PACKAGE_luci-app-syncdial=y
-# CONFIG_PACKAGE_luci-app-timecontrol is not set
 CONFIG_PACKAGE_luci-app-ttyd=y
 CONFIG_PACKAGE_luci-app-turboacc=y
 CONFIG_PACKAGE_luci-app-udpxy=y
@@ -100,6 +100,7 @@ CONFIG_PACKAGE_luci-app-zerotier=y
 CONFIG_PACKAGE_luci-i18n-aliyundrive-webdav-zh-cn=y
 CONFIG_PACKAGE_luci-i18n-arpbind-zh-cn=y
 CONFIG_PACKAGE_luci-i18n-autoreboot-zh-cn=y
+CONFIG_PACKAGE_luci-i18n-filetransfer-zh-cn=y
 CONFIG_PACKAGE_luci-i18n-iptvhelper-zh-cn=y
 CONFIG_PACKAGE_luci-i18n-mwan3-zh-cn=y
 CONFIG_PACKAGE_luci-i18n-mwan3helper-zh-cn=y
@@ -110,7 +111,11 @@ CONFIG_PACKAGE_luci-i18n-turboacc-zh-cn=y
 CONFIG_PACKAGE_luci-i18n-udpxy-zh-cn=y
 CONFIG_PACKAGE_luci-i18n-wrtbwmon-zh-cn=y
 CONFIG_PACKAGE_luci-i18n-zerotier-zh-cn=y
+CONFIG_PACKAGE_luci-lib-fs=y
 CONFIG_PACKAGE_luci-theme-argon=y
+CONFIG_PACKAGE_luci-theme-argon_armygreen=y
+CONFIG_PACKAGE_luci-theme-design=y
+CONFIG_PACKAGE_luci-theme-ifit=y
 CONFIG_PACKAGE_mwan3=y
 CONFIG_PACKAGE_nlbwmon=y
 CONFIG_PACKAGE_omcproxy=y

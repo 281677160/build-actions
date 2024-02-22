@@ -5,12 +5,12 @@
 # 不要一下就拉取别人一个插件包N多插件的，多了没用，增加编译错误，自己需要的才好
 
 # 拉取第三方主题插件IPK，删除已有主题
-# rm -rf package/lienol/luci-theme-argon
-# rm -rf package/lienol/luci-theme-bootstrap
+rm -rf package/lienol/luci-theme-argon
 rm -rf package/lienol/luci-theme-design
+git clone https://github.com/jerrykuku/luci-theme-argon.git package/lienol/luci-theme-argon
+git clone https://github.com/gngpp/luci-theme-design.git package/lienol/luci-theme-design
 git clone https://github.com/XXKDB/luci-theme-argon_armygreen.git package/lienol/luci-theme-argon_armygreen
 git clone https://github.com/YL2209/luci-theme-ifit.git package/lienol/luci-theme-ifit
-git clone https://github.com/gngpp/luci-theme-design.git package/lienol/luci-theme-design
 
 # 后台IP设置
 export Ipv4_ipaddr="192.168.199.1"            # 修改openwrt后台地址为192.168.2.2(填0为不作修改)
@@ -23,7 +23,7 @@ export Rootfs_partition_size="0"            # 系统分区大小,每个机型默
 
 # 默认主题设置
 export Mandatory_theme="0"                 # 将默认必选主题由bootstrap替换为(如argon,源码要带此主题就行,填写名称也要写对，填0为不作修改)
-export Default_theme="0"                   # 多主题时,选择某主题为默认第一主题 (填写主题名称argon,填0为不作修改)
+export Default_theme="bootstrap"           # 多主题时,选择某主题为默认第一主题 (填写主题名称argon,填0为不作修改)
 
 # 旁路由选项
 export Gateway_Settings="0"                 # 旁路由设置 IPv4 网关(填入您的网关IP为启用)(填0为不作修改)

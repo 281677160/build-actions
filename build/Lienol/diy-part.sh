@@ -23,7 +23,7 @@ export Rootfs_partition_size="0"            # 系统分区大小,每个机型默
 
 # 默认主题设置
 export Mandatory_theme="0"                 # 将默认必选主题由bootstrap替换为(如argon,源码要带此主题就行,填写名称也要写对，填0为不作修改)
-export Default_theme="0"                   # 多主题时,选择某主题为默认第一主题 (填写主题名称argon,填0为不作修改)
+export Default_theme="design"                   # 多主题时,选择某主题为默认第一主题 (填写主题名称argon,填0为不作修改)
 
 # 旁路由选项
 export Gateway_Settings="0"                 # 旁路由设置 IPv4 网关(填入您的网关IP为启用)(填0为不作修改)

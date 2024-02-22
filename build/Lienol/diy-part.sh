@@ -8,6 +8,7 @@
 rm -rf package/lienol/luci-theme-argon
 rm -rf package/lienol/luci-theme-design
 git clone https://github.com/jerrykuku/luci-theme-argon.git package/lienol/luci-theme-argon
+# git clone https://github.com/jerrykuku/luci-app-argon-config.git package/lienol/luci-app-argon-config
 git clone https://github.com/gngpp/luci-theme-design.git package/lienol/luci-theme-design
 git clone https://github.com/XXKDB/luci-theme-argon_armygreen.git package/lienol/luci-theme-argon_armygreen
 git clone https://github.com/YL2209/luci-theme-ifit.git package/lienol/luci-theme-ifit

@@ -4,19 +4,19 @@
 # 自行拉取插件之前请SSH连接进入固件配置里面确认过没有你要的插件再单独拉取你需要的插件
 # 不要一下就拉取别人一个插件包N多插件的，多了没用，增加编译错误，自己需要的才好
 
-# 拉取第三方主题插件IPK，删除已有主题
-rm -rf package/lienol/luci-theme-argon
-rm -rf package/lienol/luci-theme-design
-git clone https://github.com/jerrykuku/luci-theme-argon.git package/lienol/luci-theme-argon
+# 拉取第三方主题插件IPK，（先删除已有主题，测试了一下，都不管用，默认主题设为其它的可能打不开luci页面）
+# rm -rf package/lienol/luci-theme-argon
+# rm -rf package/lienol/luci-theme-design
+# git clone https://github.com/jerrykuku/luci-theme-argon.git package/lienol/luci-theme-argon
 # git clone https://github.com/jerrykuku/luci-app-argon-config.git package/lienol/luci-app-argon-config
-git clone https://github.com/gngpp/luci-theme-design.git package/lienol/luci-theme-design
-git clone https://github.com/XXKDB/luci-theme-argon_armygreen.git package/lienol/luci-theme-argon_armygreen
-git clone https://github.com/YL2209/luci-theme-ifit.git package/lienol/luci-theme-ifit
+# git clone https://github.com/gngpp/luci-theme-design.git package/lienol/luci-theme-design
+# git clone https://github.com/XXKDB/luci-theme-argon_armygreen.git package/lienol/luci-theme-argon_armygreen
+# git clone https://github.com/YL2209/luci-theme-ifit.git package/lienol/luci-theme-ifit
 
 # 后台IP设置
 export Ipv4_ipaddr="192.168.199.1"            # 修改openwrt后台地址为192.168.2.2(填0为不作修改)
 export Netmask_netm="0"                       # 修改IPv4子网掩码地址，默认为255.255.255.0(填0为不作修改)
-export Op_name="0"                       # 修改主机名称为OpenWrt-123(填0为不作修改)
+export Op_name="0"                            # 修改主机名称为OpenWrt-123(填0为不作修改)
 
 # 内核和系统分区大小(不是每个机型都可用)
 export Kernel_partition_size="0"            # 内核分区大小,每个机型默认值不一样 (填写您想要的数值,默认一般16,数值以MB计算，填0为不作修改),如果你不懂就填0
@@ -24,7 +24,7 @@ export Rootfs_partition_size="0"            # 系统分区大小,每个机型默
 
 # 默认主题设置
 export Mandatory_theme="0"                 # 将默认必选主题由bootstrap替换为(如argon,源码要带此主题就行,填写名称也要写对，填0为不作修改)
-export Default_theme="bootstrap"           # 多主题时,选择某主题为默认第一主题 (填写主题名称argon,填0为不作修改)
+export Default_theme="0"                   # 多主题时,选择某主题为默认第一主题 (填写主题名称argon,填0为不作修改)
 
 # 旁路由选项
 export Gateway_Settings="0"                 # 旁路由设置 IPv4 网关(填入您的网关IP为启用)(填0为不作修改)
@@ -46,7 +46,7 @@ export OpenClash_branch="0"                 # OpenClash的源码分别有【mast
 export OpenClash_Core="1"                   # 增加OpenClash时,把核心下载好,(填1为下载【dev单核】,填2为下载【dev/meta/premium三核】,填0为不需要核心)
 
 # 个性签名,默认增加年月日[$(TZ=UTC-8 date "+%Y.%m.%d")]
-export Customized_Information="十步杀一人，千里不留行"       # 个性签名,你想写啥就写啥，(填0为不作修改)
+export Customized_Information="青青子衿，悠悠我心"       # 个性签名,你想写啥就写啥，(填0为不作修改)
 
 # 更换固件内核
 export Replace_Kernel="0"                   # 更换内核版本,在对应源码的[target/linux/架构]查看patches-x.x,看看x.x有啥就有啥内核了(填入内核x.x版本号,填0为不作修改)

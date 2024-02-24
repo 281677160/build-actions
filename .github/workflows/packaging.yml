@@ -86,7 +86,7 @@ jobs:
     if: ${{ github.event.repository.owner.id }} == ${{ github.event.sender.id }}
 
     steps:    
-    - name: Free Disk Space
+    - name: 释放Ubuntu磁盘空间
       uses: endersonmenezes/free-disk-space@v2
       with:
         remove_android: true

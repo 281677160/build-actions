@@ -5,7 +5,7 @@
 # 不要一下就拉取别人一个插件包N多插件的，多了没用，增加编译错误，自己需要的才好
 
 # 拉取第三方插件IPK源 
-# 拉取jerrykuku/的luci-theme-argon主题替换lede自带主题
+# 拉取jerrykuku/的luci-theme-argon主题替换lede自带agron主题
 rm -rf luci-theme-argon
 git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git luci-theme-argon
 

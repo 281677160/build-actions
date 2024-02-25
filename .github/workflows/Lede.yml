@@ -50,7 +50,7 @@ on:
       INFORMATION_NOTICE:
         description: 'Telegram或pushplus信息通知'
         required: true
-        default: '关闭'
+        default: 'Telegram'
         type: choice
         options:
           - '关闭'
@@ -64,17 +64,17 @@ on:
       UPLOAD_FIRMWARE:
         description: '上传固件到 Github Artifacts'
         required: false
-        default: 'true'
+        default: 'false'
         type: boolean
       UPLOAD_RELEASE:
         description: '发布固件到 Github Releases'
         required: false
-        default: 'false'
+        default: 'true'
         type: boolean
       CACHEWRTBUILD_SWITCH:
         description: '缓存加速编译'
         required: false
-        default: 'true'
+        default: 'false'
         type: boolean
       UPDATE_FIRMWARE_ONLINE:
         description: '增加在线更新固件功能/自动打包Amlogic_Rockchip系列固件'
@@ -90,7 +90,7 @@ on:
 
 # 定时触发开启开始编译(把下面两个#去掉开启,时间设置请看定时开启编译说明)
 #  schedule:
-#   - cron: 35 18 * * *
+#   - cron: 30 18 * * 0
 
 env:
   GITHUB_LINK: https://github.com/${{github.repository}}

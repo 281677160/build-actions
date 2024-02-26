@@ -75,7 +75,7 @@ on:
       UPDATE_FIRMWARE_ONLINE:
         description: '增加在线更新固件功能/自动打包Amlogic_Rockchip系列固件'
         required: false
-        default: 'true'
+        default: 'false'
         type: boolean
       COMPILATION_INFORMATION:
         description: '是否显示编译信息'

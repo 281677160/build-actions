@@ -19,7 +19,7 @@ export Kernel_partition_size="0"            # 内核分区大小,每个机型默
 export Rootfs_partition_size="0"            # 系统分区大小,每个机型默认值不一样 (填写您想要的数值,默认一般300左右,数值以MB计算，填0为不作修改),如果你不懂就填0
 
 # 默认主题设置
-export Mandatory_theme="0"                  # 将默认必选主题由bootstrap替换为(如argon,源码要带此主题就行,填写名称也要写对，填0为不作修改)
+export Mandatory_theme="bootstrap-mod"      # 将默认必选主题由bootstrap替换为(如argon,源码要带此主题就行,填写名称也要写对，填0为不作修改)
 export Default_theme="0"                    # 多主题时,选择某主题为默认第一主题 (填写主题名称argon,填0为不作修改)
 
 # 旁路由选项

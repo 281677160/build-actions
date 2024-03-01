@@ -9,7 +9,7 @@ on:
     branches:
       - main
     paths:
-      - 'bconfig'
+      - 'build/K3_lienol_23.05/relevance/start'
 
 env:
   GITHUB_LINK: https://github.com/${{github.repository}}
@@ -34,7 +34,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [Lede]
+        target: [K3_lienol_23.05]
 
     steps:    
     - name: 准备结束

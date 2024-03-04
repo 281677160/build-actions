@@ -16,7 +16,7 @@ on:
       REPO_BRANCH:
         description: '天灵源码-请选择分支'
         required: true
-        default: 'openwrt-21.02'
+        default: 'openwrt-23.05'
         type: choice
         options:
           - 'openwrt-23.05'
@@ -30,6 +30,7 @@ on:
         default: 'x86_64'
         type: choice
         options:
+          - 'k3'
           - 'x86_64'
           - 'aarch64'
       CPU_SELECTION:
@@ -64,7 +65,7 @@ on:
       UPLOAD_RELEASE:
         description: '发布固件到 Github Releases'
         required: false
-        default: 'false'
+        default: 'true'
         type: boolean
       CACHEWRTBUILD_SWITCH:
         description: '缓存加速编译'

@@ -1,0 +1,6 @@
+CONFIG_TARGET_bcm53xx=y
+CONFIG_TARGET_bcm53xx_generic=y
+CONFIG_TARGET_bcm53xx_generic_DEVICE_phicomm_k3=y
+CONFIG_PACKAGE_luci-app-openclash=y
+CONFIG_PACKAGE_luci-app-passwall2=y
+CONFIG_PACKAGE_luci-app-ssr-plus=y

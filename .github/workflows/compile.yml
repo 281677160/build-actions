@@ -9,7 +9,7 @@ on:
     branches:
       - main
     paths:
-      - 'build/Lede/relevance/start'
+      - 'build/Immortalwrt/relevance/start'
 
 env:
   GITHUB_LINK: https://github.com/${{github.repository}}
@@ -34,7 +34,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [Lede]
+        target: [Immortalwrt]
 
     steps:    
     - name: 准备结束

@@ -24,6 +24,7 @@ on:
           - 'openwrt-18.06'
           - 'openwrt-18.06-k5.4'
           - 'master'
+          - 'mt798x'
       CONFIG_FILE:
         description: '请选择[seed文件夹内]的配置文件'
         required: true

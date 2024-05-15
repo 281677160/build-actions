@@ -23,10 +23,11 @@ on:
       CONFIG_FILE:
         description: '请选择配置文件'
         required: true
-        default: 'x86_64'
+        default: 'k3'
         type: choice
         options:
           - 'aarch64'
+          - 'k3'
           - 'asus_rt-acrh17'
           - 'd-team_newifi-d2'
           - 'p2w_r619ac-128m'

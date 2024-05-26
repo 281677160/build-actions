@@ -32,6 +32,7 @@ on:
         type: choice
         options:
           - 'x86_64'
+          - 'x96-Max'
           - 'aarch64'
       CPU_SELECTION:
         description: 'CPU优选,增加编译速度'

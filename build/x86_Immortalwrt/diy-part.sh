@@ -6,7 +6,7 @@
 
 
 # 后台IP设置
-export Ipv4_ipaddr="192.168.2.1"            # 修改openwrt后台地址(填0为关闭)
+export Ipv4_ipaddr="192.168.10.100"            # 修改openwrt后台地址(填0为关闭)
 export Netmask_netm="255.255.255.0"         # IPv4 子网掩码（默认：255.255.255.0）(填0为不作修改)
 export Op_name="X96-Max"                # 修改主机名称为OpenWrt-123(填0为不作修改)
 
@@ -67,7 +67,7 @@ export Cancel_running="0"                    # 取消路由器每天跑分任务
 
 # 晶晨CPU系列打包固件设置(不懂请看说明)
 export amlogic_model="s905x3"
-export amlogic_kernel="6.1.01"
+export amlogic_kernel="5.15"
 export auto_kernel="true"
 export rootfs_size="2560"
 export kernel_usage="stable"

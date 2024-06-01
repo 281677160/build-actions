@@ -7,7 +7,7 @@
 # sed -i '/\/etc\/init\.d\/tailscale/d;/\/etc\/config\/tailscale/d;' feeds/packages/net/tailscale/Makefile
 # git clone https://github.com/asvow/luci-app-tailscale package/luci-app-tailscale
 
-git clone https://github.com/Carseason/openwrt-tailscale
+git clone https://github.com/Carseason/openwrt-tailscale package
 
 # 后台IP设置
 export Ipv4_ipaddr="10.0.0.252"            # 修改openwrt后台地址(填0为关闭)

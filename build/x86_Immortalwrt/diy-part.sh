@@ -70,7 +70,7 @@ export amlogic_model="s905x3"
 export amlogic_kernel="5.10_5.15_6.1_6.6"
 export auto_kernel="true"
 export rootfs_size="2560"
-export kernel_usage="stable"
+export kernel_usage="dev"
 
 
 # 修改插件名字

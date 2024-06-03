@@ -69,14 +69,14 @@ on:
     branches:
       - main
     paths:
-      - 'build/x86_Immortalwrt/relevance/armsrstart'
+      - 'build/X96-Max_Immortalwrt/relevance/armsrstart'
 
 env:
   GITHUB_LINK: https://github.com/${{github.repository}}
   GIT_REPOSITORY: ${{github.repository}}
   REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
   TZ: Asia/Shanghai
-  FOLDER_NAME: x86_Immortalwrt
+  FOLDER_NAME: X96-Max_Immortalwrt
   SOURCE: Immortalwrt
 
 jobs:

@@ -9,7 +9,7 @@ on:
     branches:
       - main
     paths:
-      - 'build/x86_Immortalwrt/relevance/start'
+      - 'build/X96-Max_Immortalwrt/relevance/start'
 
 env:
   GITHUB_LINK: https://github.com/${{github.repository}}
@@ -34,7 +34,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [x86_Immortalwrt]
+        target: [X96-Max_Immortalwrt]
 
     steps:    
     - name: 准备结束

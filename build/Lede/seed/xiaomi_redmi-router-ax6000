@@ -19,3 +19,5 @@ CONFIG_PACKAGE_zerotier=y
 CONFIG_PACKAGE_luci-app-upnp=y
 #KMS激活工具
 CONFIG_PACKAGE_luci-app-vlmcsd=y
+#Netdata实时监控（图表） 
+CONFIG_PACKAGE_luci-app-netdata=y

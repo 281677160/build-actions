@@ -13,3 +13,9 @@ CONFIG_PACKAGE_luci-app-arpbind=y
 CONFIG_IPV6=n
 CONFIG_PACKAGE_odhcp6c=n
 CONFIG_PACKAGE_odhcpd-ipv6only=n
+#ZeroTier
+CONFIG_PACKAGE_zerotier=y
+#UPNP
+CONFIG_PACKAGE_luci-app-upnp=y
+#KMS激活工具
+CONFIG_PACKAGE_luci-app-vlmcsd=y

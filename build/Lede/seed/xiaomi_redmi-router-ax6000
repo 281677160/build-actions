@@ -9,3 +9,7 @@ CONFIG_PACKAGE_luci-app-turboacc=y
 CONFIG_PACKAGE_luci-app-wol=y
 #IP/MAC绑定
 CONFIG_PACKAGE_luci-app-arpbind=y
+#去掉IPV6
+CONFIG_IPV6=n
+CONFIG_PACKAGE_odhcp6c=n
+CONFIG_PACKAGE_odhcpd-ipv6only=n

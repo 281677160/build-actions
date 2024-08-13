@@ -59,32 +59,37 @@ on:
       SSH_ACTION:
         description: 'SSH远程配置固件'
         required: false
-        default: 'false'
+        default: false
+        type: boolean
+      POST_LOGIN:
+        description: '编译后SSH远程下载固件'
+        required: false
+        default: true
         type: boolean
       UPLOAD_FIRMWARE:
         description: '上传固件到 Github Artifacts'
         required: false
-        default: 'true'
+        default: true
         type: boolean
       UPLOAD_RELEASE:
         description: '发布固件到 Github Releases'
         required: false
-        default: 'false'
+        default: false
         type: boolean
       CACHEWRTBUILD_SWITCH:
         description: '缓存加速编译'
         required: false
-        default: 'true'
+        default: true
         type: boolean
       UPDATE_FIRMWARE_ONLINE:
         description: '增加在线更新固件功能/自动打包Amlogic_Rockchip系列固件'
         required: false
-        default: 'true'
+        default: true
         type: boolean
       COMPILATION_INFORMATION:
         description: '是否显示编译信息'
         required: false
-        default: 'true'
+        default: true
         type: boolean
 
 
@@ -148,6 +153,7 @@ jobs:
         export INPUTS_UPDATE_FIRMWARE_ONLINE="${{ github.event.inputs.UPDATE_FIRMWARE_ONLINE }}"
         export INPUTS_COMPILATION_INFORMATION="${{ github.event.inputs.COMPILATION_INFORMATION }}"
         export INPUTS_PACKAGING_FIRMWARE="${{ github.event.inputs.PACKAGING_FIRMWARE }}"
+        export INPUTS_POST_LOGIN="${{github.event.inputs.POST_LOGIN}}"
         source build/${{ env.FOLDER_NAME }}/common.sh && Diy_menu1
 
     - name: 部署编译环境
@@ -194,7 +200,7 @@ jobs:
         source ${BUILD_PATH}/common.sh && Diy_menu5
     
     - name: SSH远程连接（make menuconfig）
-      if: env.SSH_ACTION == 'true'
+      if: env.SSH_ACTION == true
       uses: danshui-git/debugger-action@main
 
     - name: 生成"${{ matrix.target }}"配置文件
@@ -213,11 +219,15 @@ jobs:
         
     - name: 编译信息
       continue-on-error: true
-      if: env.COMPILATION_INFORMATION == 'true'
+      if: env.COMPILATION_INFORMATION == true
       run: |
         cd openwrt
         source ${BUILD_PATH}/common.sh && Diy_xinxi
     
+    - name: 编译后远程SSH
+      if: env.POST_LOGIN == true
+      uses: danshui-git/debugger-action@main
+
     - name: 清理Actions空间
       continue-on-error: true
       if: env.REPO_TOKEN

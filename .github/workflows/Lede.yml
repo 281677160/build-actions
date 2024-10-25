@@ -30,6 +30,7 @@ on:
           - 'asus_rt-acrh17'
           - 'd-team_newifi-d2'
           - 'p2w_r619ac-128m'
+          - 'nanopi-r5s'
           - 'phicomm_k2p'
           - 'x86_32'
           - 'x86_64'

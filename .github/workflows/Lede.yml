@@ -23,7 +23,7 @@ on:
       CONFIG_FILE:
         description: '请选择配置文件'
         required: true
-        default: 'x86_64'
+        default: 'nanopi-r5s'
         type: choice
         options:
           - 'aarch64'
@@ -63,13 +63,13 @@ on:
         type: boolean
       UPLOAD_FIRMWARE:
         description: '上传固件到 Github Artifacts'
-        required: false
+        required: true
         default: 'true'
         type: boolean
       UPLOAD_RELEASE:
         description: '发布固件到 Github Releases'
-        required: false
-        default: 'false'
+        required: true
+        default: 'true'
         type: boolean
       CACHEWRTBUILD_SWITCH:
         description: '缓存加速编译'
@@ -79,7 +79,7 @@ on:
       UPDATE_FIRMWARE_ONLINE:
         description: '增加在线更新固件功能/自动打包Amlogic_Rockchip系列固件'
         required: false
-        default: 'true'
+        default: 'false'
         type: boolean
       COMPILATION_INFORMATION:
         description: '是否显示编译信息'

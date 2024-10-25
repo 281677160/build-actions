@@ -51,7 +51,7 @@ on:
       INFORMATION_NOTICE:
         description: 'Telegram或pushplus信息通知'
         required: true
-        default: '关闭'
+        default: 'Telegram'
         type: choice
         options:
           - '关闭'
@@ -64,12 +64,12 @@ on:
         type: boolean
       UPLOAD_FIRMWARE:
         description: '上传固件到 Github Artifacts'
-        required: true
+        required: false
         default: 'true'
         type: boolean
       UPLOAD_RELEASE:
         description: '发布固件到 Github Releases'
-        required: true
+        required: false
         default: 'true'
         type: boolean
       CACHEWRTBUILD_SWITCH:

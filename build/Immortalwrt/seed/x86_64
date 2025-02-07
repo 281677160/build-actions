@@ -60,6 +60,7 @@ CONFIG_PACKAGE_ipt2socks=y
 CONFIG_PACKAGE_iptables-mod-tproxy=y
 CONFIG_PACKAGE_iptables-nft=y
 CONFIG_PACKAGE_ipv6helper=y
+CONFIG_PACKAGE_jq=y
 CONFIG_PACKAGE_kcptun-client=y
 CONFIG_PACKAGE_kcptun-config=y
 CONFIG_PACKAGE_kmod-inet-diag=y

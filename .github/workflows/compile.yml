@@ -34,7 +34,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [Lede]
+        target: [Immortalwrt]
 
     steps:    
     - name: 准备结束

@@ -1,0 +1,43 @@
+name: Custom Modifications
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: '确认执行替换操作'
+        required: true
+        default: 'yes'
+        type: choice
+        options:
+          - 'yes'
+          - 'no'
+
+jobs:
+  modify-files:
+    runs-on: ubuntu-latest
+    if: github.event.inputs.confirm == 'yes'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.REPO_TOKEN }}
+          
+      - name: Setup environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y sed grep
+      
+      - name: Replace URLs in workflow files
+        run: |
+          echo "正在替换 workflow 文件中的 URL..."
+          find .github/workflows -name "*.yml" -type f -exec sed -i 's|https://raw.githubusercontent.com/281677160/common|https://raw.githubusercontent.com/ydfk/openwrt-common|g' {} \;
+          echo "URL 替换完成"
+      
+      - name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "替换所有 workflow 文件中的 URL 地址" || echo "没有变更需要提交"
+          git push

@@ -135,7 +135,7 @@ jobs:
     - name: 检测文件和对比上游版本
       run: |
         cd ${GITHUB_WORKSPACE}
-        bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/custom/first.sh)
+        bash <(curl -fsSL https://raw.githubusercontent.com/ydfk/openwrt-common/main/custom/first.sh)
         source ${GITHUB_WORKSPACE}/build/${{ env.FOLDER_NAME }}/settings.ini
         export INPUTS_REPO_BRANCH="${{ github.event.inputs.REPO_BRANCH }}"
         export INPUTS_CONFIG_FILE="${{ github.event.inputs.CONFIG_FILE }}"

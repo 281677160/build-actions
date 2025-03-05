@@ -31,7 +31,7 @@ jobs:
       - name: Replace URLs in workflow files
         run: |
           echo "正在替换 workflow 文件中的 URL..."
-          find .github/workflows -name "*.yml" -type f -exec sed -i 's|https://raw.githubusercontent.com/281677160/common|https://raw.githubusercontent.com/ydfk/openwrt-common|g' {} \;
+          find .github/workflows -name "*.yml" -type f -exec sed -i 's|https://raw.githubusercontent.com/ydfk/openwrt-common|https://raw.githubusercontent.com/ydfk/openwrt-common|g' {} \;
           echo "URL 替换完成"
       
       - name: Commit changes

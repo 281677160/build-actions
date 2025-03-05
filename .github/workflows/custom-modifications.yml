@@ -2,20 +2,10 @@ name: Custom Modifications
 
 on:
   workflow_dispatch:
-    inputs:
-      confirm:
-        description: '确认执行替换操作'
-        required: true
-        default: 'yes'
-        type: choice
-        options:
-          - 'yes'
-          - 'no'
 
 jobs:
   modify-files:
     runs-on: ubuntu-latest
-    if: github.event.inputs.confirm == 'yes'
     
     steps:
       - name: Checkout code

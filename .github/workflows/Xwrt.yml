@@ -20,12 +20,6 @@ on:
         type: choice
         options:
           - 'master'
-          - '21.10'
-          - '22.03'
-          - 'pr-fix-nand_do_platform_check'
-          - 'master-mt7981'
-          - 'pr-rm-ax6000'
-          - 'pr-wolfssl'
       CONFIG_FILE:
         description: '请选择配置文件'
         required: true

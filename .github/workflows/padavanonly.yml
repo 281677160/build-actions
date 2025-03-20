@@ -21,7 +21,6 @@ on:
         options:
           - '2410'
           - 'openwrt-23.05'
-          - 'openwrt-21.02'
       CONFIG_FILE:
         description: '请选择[seed文件夹内]的配置文件'
         required: true

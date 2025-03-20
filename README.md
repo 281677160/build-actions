@@ -27,7 +27,7 @@
 
   2025年3月21号
 
- 修复源码可编译性，增加https://github.com/padavanonly/immortalwrt-mt798x-24.10此仓库源码
+ 修复源码可编译性，增加 https://github.com/padavanonly/immortalwrt-mt798x-24.10 此仓库源码
 
  ---
 

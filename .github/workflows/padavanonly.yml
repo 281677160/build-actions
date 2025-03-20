@@ -9,7 +9,7 @@
 #
 #
 
-name: Padavanonly-mt798x
+name: Mt798x-源码
 on:
   workflow_dispatch:
     inputs:

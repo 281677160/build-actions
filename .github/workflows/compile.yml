@@ -89,7 +89,7 @@ jobs:
         git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
         ln -sf /${{ env.DIY_WORK }}/openwrt ${GITHUB_WORKSPACE}/openwrt
         cp -Rf ${GITHUB_WORKSPACE}/build ${GITHUB_WORKSPACE}/openwrt/build
-        chmod -R +x ${GITHUB_WORKSPACE}/openwrt/build
+        chmod -R +x ${GITHUB_WORKSPACE}/openwrt
     
     - name: 公 告
       run: |

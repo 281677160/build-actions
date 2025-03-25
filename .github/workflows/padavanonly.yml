@@ -16,7 +16,7 @@ on:
       REPO_BRANCH:
         description: 'mt798x源码-请选择分支'
         required: true
-        default: 'openwrt-23.05'
+        default: '2410'
         type: choice
         options:
           - '2410'
@@ -24,7 +24,7 @@ on:
       CONFIG_FILE:
         description: '请选择[seed文件夹内]的配置文件'
         required: true
-        default: '2305-360-t7-108M'
+        default: '2410-360-t7-108M'
         type: choice
         options:
           - '2410-360-t7-108M'

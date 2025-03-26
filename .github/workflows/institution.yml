@@ -21,6 +21,7 @@ on:
           - 'Lienol'
           - 'Official'
           - 'Xwrt'
+          - 'Mt798x'
       establish_name:
         description: '输入您需要创建的文件夹名称'
         required: true

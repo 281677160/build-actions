@@ -28,7 +28,7 @@ on:
         default: '360-t7-108M'
         type: choice
         options:
-          - 'CMCC-RAX3000Me'
+          - 'glinet-gl-xe3000'
           - 'huasifei_wh3000-emmc'
           - '360-t7-108M'
           - 'clt-r30b1-112M'

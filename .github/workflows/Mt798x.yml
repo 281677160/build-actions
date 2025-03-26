@@ -9,7 +9,7 @@
 #
 #
 
-name: Mt798x-源码
+name: Mt798x-mtk闭源
 on:
   workflow_dispatch:
     inputs:

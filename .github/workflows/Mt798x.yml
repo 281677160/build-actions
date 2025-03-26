@@ -34,7 +34,7 @@ on:
           - 'clt-r30b1-112M'
           - 'cmcc-rax3000m-emmc'
           - 'jcg-q30'
-          - 'xiaomi_redmi-router-ax6000'
+          - 'xiaomi-redmi-router-ax6000'
       CPU_SELECTION:
         description: 'CPU优选,增加编译速度'
         required: true

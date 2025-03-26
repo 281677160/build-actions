@@ -29,7 +29,7 @@ on:
         type: choice
         options:
           - 'glinet-gl-xe3000'
-          - 'huasifei_wh3000-emmc'
+          - 'huasifei-wh3000-emmc'
           - '360-t7-108M'
           - 'clt-r30b1-112M'
           - 'cmcc-rax3000m-emmc'

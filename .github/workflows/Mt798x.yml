@@ -24,17 +24,16 @@ on:
       CONFIG_FILE:
         description: '请选择[seed文件夹内]的配置文件'
         required: true
-        default: '2410-360-t7-108M'
+        default: '360-t7-108M'
         type: choice
         options:
-          - '2410-360-t7-108M'
-          - '2410-cudy-tr3000-v1'
-          - '2410-jcg-q30'
-          - '2305-360-t7-108M'
-          - '2305-clt-r30b1-112M'
-          - '2305-cmcc-rax3000m-emmc'
-          - '2305-jcg-q30'
-          - '2305-xiaomi_redmi-router-ax6000'
+          - 'CMCC-RAX3000Me'
+          - 'huasifei_wh3000-emmc'
+          - '360-t7-108M'
+          - 'clt-r30b1-112M'
+          - 'cmcc-rax3000m-emmc'
+          - 'jcg-q30'
+          - 'xiaomi_redmi-router-ax6000'
       CPU_SELECTION:
         description: 'CPU优选,增加编译速度'
         required: true

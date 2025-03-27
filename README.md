@@ -21,10 +21,15 @@
 ---
 
 <details>
-<summary>🆙更新说明（2025年3月25号）</summary>
+<summary>🆙更新说明（2025年3月26号）</summary>
 
 <br>
 
+  2025年3月26号
+
+ 将《[padavanonly](https://github.com/padavanonly/immortalwrt-mt798x-24.10)]》和《[hanwckf](https://github.com/hanwckf/immortalwrt-mt798x)]》的仓库整合成Mt798x的了，选择hanwckf-21.02分支编译是《[hanwckf](https://github.com/hanwckf/immortalwrt-mt798x)]》作者的仓库，选择其他分支编译的是《[padavanonly](https://github.com/padavanonly/immortalwrt-mt798x-24.10)]》作者的仓库，均为mtk闭源驱动
+
+ ---
   2025年3月25号
 
  修复个别源码开启 export Enable_IPV6_function="1" 选项编译错误，个别源码编译选择ipv6会缺依赖造成编译错误

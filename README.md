@@ -32,8 +32,8 @@
  ---
   2025年3月25号
 
- 修复个别源码开启 export Enable_IPV6_function="1" 选项编译错误，个别源码编译选择ipv6会缺依赖造成编译错误
- 修复个别源码开启 export Enable_IPV4_function="1"  选项编译错误，个别源码是不能完整清除IPV6来编译的，会造成编译错误
+ 修复个别源码开启 export Enable_IPV6_function="1" 选项编译错误，个别源码编译选择ipv6会缺依赖造成编译错误，
+ 修复个别源码开启 export Enable_IPV4_function="1"  选项编译错误，个别源码是不能完整清除IPV6来编译的，会造成编译错误，
  修复低版本源码编译出现 WARNING: Makefile 'package/feeds/danshui/v2raya/Makefile' has a dependency on 'kmod-nft-tproxy', which does not exist 错误
 
  ---

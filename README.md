@@ -27,7 +27,7 @@
 
   2025年3月26号
 
- 将《[padavanonly](https://github.com/padavanonly/immortalwrt-mt798x-24.10)》和《[hanwckf](https://github.com/hanwckf/immortalwrt-mt798x)》的仓库整合成Mt798x的了，选择hanwckf-21.02分支编译是<[hanwckf](https://github.com/hanwckf/immortalwrt-mt798x)>作者的仓库，选择其他分支编译的是<[padavanonly](https://github.com/padavanonly/immortalwrt-mt798x-24.10)>作者的仓库，均为mtk闭源网卡驱动，openwrt-23.05和hanwckf-21.02的【mt7981和mt7986】可以编译机型文件均拉取于<[padavanonly](https://github.com/padavanonly/immortalwrt-mt798x-24.10)>作者仓库的2410分支，也就是说【mt7981和mt7986】类的机型都同时同步与<[padavanonly](https://github.com/padavanonly/immortalwrt-mt798x-24.10)>作者的2410分支.
+ 将《[padavanonly](https://github.com/padavanonly/immortalwrt-mt798x-24.10)》和《[hanwckf](https://github.com/hanwckf/immortalwrt-mt798x)》的仓库整合成Mt798x的了，选择hanwckf-21.02分支编译是[hanwckf](https://github.com/hanwckf/immortalwrt-mt798x)作者仓库的openwrt-21.02分支，选择其他分支编译的是[padavanonly](https://github.com/padavanonly/immortalwrt-mt798x-24.10)作者的仓库，均为mtk闭源网卡驱动，openwrt-23.05和hanwckf-21.02的【mt7981和mt7986】可以编译机型文件均拉取于[padavanonly](https://github.com/padavanonly/immortalwrt-mt798x-24.10)作者仓库的2410分支，也就是说【mt7981和mt7986】类的机型都同时同步与[padavanonly](https://github.com/padavanonly/immortalwrt-mt798x-24.10)作者的2410分支.
 
  ---
   2025年3月25号

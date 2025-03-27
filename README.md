@@ -27,7 +27,7 @@
 
   2025年3月26号
 
- 将《[padavanonly](https://github.com/padavanonly/immortalwrt-mt798x-24.10)]》和《[hanwckf](https://github.com/hanwckf/immortalwrt-mt798x)]》的仓库整合成Mt798x的了，选择hanwckf-21.02分支编译是《[hanwckf](https://github.com/hanwckf/immortalwrt-mt798x)]》作者的仓库，选择其他分支编译的是《[padavanonly](https://github.com/padavanonly/immortalwrt-mt798x-24.10)]》作者的仓库，均为mtk闭源驱动
+ 将《[padavanonly](https://github.com/padavanonly/immortalwrt-mt798x-24.10)》和《[hanwckf](https://github.com/hanwckf/immortalwrt-mt798x)》的仓库整合成Mt798x的了，选择hanwckf-21.02分支编译是<[hanwckf](https://github.com/hanwckf/immortalwrt-mt798x)>作者的仓库，选择其他分支编译的是<[padavanonly](https://github.com/padavanonly/immortalwrt-mt798x-24.10)>作者的仓库，均为mtk闭源驱动
 
  ---
   2025年3月25号

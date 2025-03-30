@@ -132,7 +132,7 @@ jobs:
         source ${GITHUB_WORKSPACE}/build/${{ env.FOLDER_NAME }}/settings.ini
         export INPUTS_REPO_BRANCH="${{ github.event.inputs.REPO_BRANCH }}"
         export INPUTS_CONFIG_FILE="${{ github.event.inputs.CONFIG_FILE }}"
-        export INPUTS_CPU_SELECTION="${{ github.event.inputs.CPU_SELECTION }}"
+        export INPUTS_RETAIN_MINUTE="${{ github.event.inputs.RETAIN_MINUTE }}"
         export INPUTS_INFORMATION_NOTICE="${{ github.event.inputs.INFORMATION_NOTICE }}"
         export INPUTS_SSH_ACTION="${{ github.event.inputs.SSH_ACTION }}"
         export INPUTS_UPLOAD_FIRMWARE="${{ github.event.inputs.UPLOAD_FIRMWARE }}"

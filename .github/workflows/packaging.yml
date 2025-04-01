@@ -41,13 +41,10 @@ on:
         required: true
         default: '1024'
       auto_kernel:
-        description: '是否自动检测最新内核'
-        required: true
+        description: '发布固件到 Github Releases'
+        required: false
         default: 'true'
-        type: choice
-        options:
-          - 'true'
-          - 'false'
+        type: boolean
       UPLOAD_FIRMWARE:
         description: '上传固件到 Github Artifacts'
         required: false

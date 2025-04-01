@@ -149,7 +149,7 @@ jobs:
         
     - name: 自动打包Amlogic_Rockchip系列固件
       if: steps.compile.outcome == 'success' && env.PACKAGING_FIRMWARE == 'true'
-      uses: ncipollo/release-action@main
+      uses: ncipollo/release-action@v1
       with:
         name: rootfs.tar.gz
         tag: targz

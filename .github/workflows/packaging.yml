@@ -39,21 +39,12 @@ on:
       rootfs_size:
         description: '设置rootfs大小(单位：MiB)'
         required: true
-        default: '2560'
-        type: choice
-        options:
-          - '2560'
-          - '3840'
-          - '5120'
-          - '6400'
+        default: '1024'
       auto_kernel:
         description: '是否自动检测最新内核'
-        required: true
+        required: false
         default: 'true'
-        type: choice
-        options:
-          - 'true'
-          - 'false'
+        type: boolean
       UPLOAD_FIRMWARE:
         description: '上传固件到 Github Artifacts'
         required: false
@@ -85,7 +76,24 @@ jobs:
     runs-on: ubuntu-22.04
     if: ${{ github.event.repository.owner.id }} == ${{ github.event.sender.id }}
 
-    steps:    
+    steps:
+    - name: 密匙检测（密匙为空则退出）
+      run: |
+        cd ${GITHUB_WORKSPACE}
+        if [[ -n "${{ env.REPO_TOKEN }}" ]]; then
+          curl -s -H "Authorization: Bearer ${{ env.REPO_TOKEN }}" \
+          https://api.github.com/repos/281677160/common/releases/tag/API > mishi
+          if [[ `grep -c "Bad credentials" mishi` -ge '1' ]]; then
+            echo "您的密匙不正确或已过期，请按教程设置好密匙再来"
+            echo "REPO_TOKEN密匙制作教程：https://git.io/jm.md"
+            exit 1
+          fi
+        elif [[ -z "${{ env.REPO_TOKEN }}" ]]; then
+          echo "您没有设置仓库密匙，请按教程设置好密匙再来"
+          echo "REPO_TOKEN密匙制作教程：https://git.io/jm.md"
+          exit 1
+        fi
+        
     - name: 释放Ubuntu磁盘空间
       uses: endersonmenezes/free-disk-space@v2
       with:

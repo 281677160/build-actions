@@ -51,16 +51,6 @@ jobs:
         fi
         source ${GITHUB_WORKSPACE}/build/${{ env.FOLDER_NAME }}/common.sh && Diy_menu1
 
-    - name: 清理因转换CPU而停止的工作流程
-      run: |
-        cd ${GITHUB_WORKSPACE}
-        source build/${FOLDER_NAME}/common.sh && Diy_delruns
-
-    - name: CPU检测
-      run: |
-        cd ${GITHUB_WORKSPACE}
-        source build/${FOLDER_NAME}/common.sh && CPU_Priority
-
     - name: 释放Ubuntu磁盘空间
       uses: endersonmenezes/free-disk-space@v2
       with:
@@ -149,7 +139,7 @@ jobs:
         
     - name: 自动打包Amlogic_Rockchip系列固件
       if: steps.compile.outcome == 'success' && env.PACKAGING_FIRMWARE == 'true'
-      uses: ncipollo/release-action@main
+      uses: ncipollo/release-action@v1
       with:
         name: rootfs.tar.gz
         tag: targz

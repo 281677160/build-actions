@@ -18,6 +18,7 @@ on:
           - 'Lienol'
           - 'Official'
           - 'Xwrt'
+          - 'Mt798x'
       amlogic_model:
         description: '输入机型,比如：s905d 或 s905d_s905x2'
         required: true

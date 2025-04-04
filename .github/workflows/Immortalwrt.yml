@@ -202,6 +202,13 @@ jobs:
         cd openwrt
         source ${BUILD_PATH}/common.sh && Diy_menu6
         
+    - name: 上传"${{ matrix.target }}"配置文件在 Github Artifacts
+      if: steps.compile.outcome == 'success'
+      uses: actions/upload-artifact@main
+      with:
+        name: .config_${{ env.SOURCE }}_${{ env.LUCI_EDITION }}_${{ env.TARGET_PROFILE }}_${{ env.Firmware_Date }}
+        path: openwrt/build_logo/config.txt
+        
     - name: 编译信息
       continue-on-error: true
       if: env.COMPILATION_INFORMATION == 'true'

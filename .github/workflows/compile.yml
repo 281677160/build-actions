@@ -9,7 +9,7 @@ on:
     branches:
       - main
     paths:
-      - 'bconfig'
+      - 'build/Lede/relevance/start'
 
 env:
   GITHUB_LINK: https://github.com/${{github.repository}}

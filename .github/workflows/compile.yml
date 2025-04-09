@@ -137,7 +137,7 @@ jobs:
         echo "date=$(date "+%Y%m%d%H%M%S")" >> ${GITHUB_ENV}
         source ${BUILD_PATH}/common.sh && firmware_jiance
         
-    - name: 自动打包Amlogic_Rockchip系列固件
+    - name: 自动打包aarch64系列固件
       if: steps.compile.outcome == 'success' && env.PACKAGING_FIRMWARE == 'true'
       uses: ncipollo/release-action@v1
       with:

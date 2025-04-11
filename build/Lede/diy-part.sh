@@ -68,14 +68,14 @@ export kernel_usage="stable"
 
 
 # 修改插件名字
-grep -rl '"终端"' . | xargs -r sed -i 's?"终端"?"TTYD"?g'
-grep -rl '"网络存储"' . | xargs -r sed -i 's?"网络存储"?"NAS"?g'
-grep -rl '"实时流量监测"' . | xargs -r sed -i 's?"实时流量监测"?"流量"?g'
-grep -rl '"KMS 服务器"' . | xargs -r sed -i 's?"KMS 服务器"?"KMS激活"?g'
-grep -rl '"USB 打印服务器"' . | xargs -r sed -i 's?"USB 打印服务器"?"打印服务"?g'
-grep -rl '"Web 管理"' . | xargs -r sed -i 's?"Web 管理"?"Web管理"?g'
-grep -rl '"管理权"' . | xargs -r sed -i 's?"管理权"?"改密码"?g'
-grep -rl '"带宽监控"' . | xargs -r sed -i 's?"带宽监控"?"监控"?g'
+sed -i 's/"终端"/"TTYD"/g' `egrep "终端" -rl ./`
+sed -i 's/"网络存储"/"NAS"/g' `egrep "网络存储" -rl ./`
+sed -i 's/"实时流量监测"/"流量"/g' `egrep "实时流量监测" -rl ./`
+sed -i 's/"KMS 服务器"/"KMS激活"/g' `egrep "KMS 服务器" -rl ./`
+sed -i 's/"USB 打印服务器"/"打印服务"/g' `egrep "USB 打印服务器" -rl ./`
+sed -i 's/"Web 管理"/"Web管理"/g' `egrep "Web 管理" -rl ./`
+sed -i 's/"管理权"/"改密码"/g' `egrep "管理权" -rl ./`
+sed -i 's/"带宽监控"/"监控"/g' `egrep "带宽监控" -rl ./`
 
 
 # 整理固件包时候,删除您不想要的固件或者文件,让它不需要上传到Actions空间(根据编译机型变化,自行调整删除名称)

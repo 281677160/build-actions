@@ -28,7 +28,9 @@
   2025年4月23号
 
  1、把脚本重新整理了一遍，23.05或者以下的版本编译passwall和ssr-plus都强制使用shadowsocks-libev编译了，使用Shadowsocks_Rust因为passwall更新太快，源码跟不上会导致编译失败，23.05以下版本强制去掉NaiveProxy
+ 
  2、diy-part.sh文件内容有小修改，别直接复制
+ 
  3、不想用这个仓库编译的话，可以使用 https://github.com/281677160/actions-openwrt 此仓库，原汁原味，啥都没修改过的
 
 

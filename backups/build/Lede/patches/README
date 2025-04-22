@@ -1,7 +1,0 @@
-补丁制作教程 https://github.com/danshui-git/shuoming/blob/master/buding.md
-存放制作好的补丁文件，所谓的补丁就是修改后的文件差异部分
-存放补丁有两种方法
-
-1、在这里按 Add file 然后选 Create new file 然后补丁名字，下面大方框粘贴补丁内容，然后最下面绿色按钮保存
-
-2、在这里按 Create new file 然后选择 Upload files 然后把在你电脑上的补丁文件拖进来，等文件传输完毕，然后最下绿色按钮保存就可以了

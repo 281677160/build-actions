@@ -1,0 +1,167 @@
+#
+# 请大家记住拉取的是我的 281677160/build-actions 仓库，拉取的是其他仓库有问题，别问我，我也不清楚什么问题
+#
+# 因为SSH连接配置固件直接编译，会给github停止编译的,所以要另外触发启动编译程序
+#
+# 一般情况下都能触发启动编译的，除非没设置好密匙，或者密匙过期了，或者密匙错误之类的
+#
+# REPO_TOKEN密匙制作教程：https://git.io/jm.md
+#
+#
+
+name: Lienol-源码
+on:
+  workflow_dispatch:
+    inputs:
+      REPO_BRANCH:
+        description: '（Lienol源码）请选择源码分支'
+        required: true
+        default: '19.07'
+        type: choice
+        options:
+          - '24.10'
+          - '23.05'
+          - '22.03'
+          - '21.02'
+          - '19.07'
+      CONFIG_FILE:
+        description: '请选择配置文件'
+        required: true
+        default: 'x86_64'
+        type: choice
+        options:
+          - 'aarch64'
+          - 'x86_64'
+      INFORMATION_NOTICE:
+        description: 'Telegram或pushplus信息通知'
+        required: true
+        default: '关闭'
+        type: choice
+        options:
+          - '关闭'
+          - 'Telegram'
+          - 'Pushplus'
+      RETAIN_MINUTE:
+        description: '清理[X]分钟之后的所有操作记录(最低30)'
+        required: true
+        default: '10080'
+      KEEP_LATEST:
+        description: '清理Releases,保留[X]个Releases不被清理'
+        required: true
+        default: '30'
+      SSH_ACTION:
+        description: 'SSH远程配置固件'
+        required: false
+        default: 'false'
+        type: boolean
+      UPLOAD_FIRMWARE:
+        description: '上传固件到 Github Artifacts'
+        required: false
+        default: 'true'
+        type: boolean
+      UPLOAD_RELEASE:
+        description: '发布固件到 Github Releases'
+        required: false
+        default: 'false'
+        type: boolean
+      CACHEWRTBUILD_SWITCH:
+        description: '缓存加速编译'
+        required: false
+        default: 'true'
+        type: boolean
+      UPDATE_FIRMWARE_ONLINE:
+        description: '在线更新固/打包aarch64系列为img固件'
+        required: false
+        default: 'true'
+        type: boolean
+
+
+# 定时触发开启开始编译(把下面两个#去掉开启,时间设置请看定时开启编译说明)
+#  schedule:
+#   - cron: 35 18 * * *
+
+env:
+  GIT_REPOSITORY: ${{github.repository}}
+  REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
+  PUSH_PLUS_TOKEN: ${{ secrets.PUSH_PLUS_TOKEN }}
+  TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+  TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+  TZ: Asia/Shanghai
+
+jobs:
+  build:
+    name: 启动"${{ matrix.target }}-${{ github.event.inputs.REPO_BRANCH }}"触发编译
+    runs-on: ubuntu-22.04
+    if: ${{ github.event.repository.owner.id }} == ${{ github.event.sender.id }}
+    
+    env:
+      FOLDER_NAME: ${{ matrix.target }}
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [Lienol]
+        
+        # 请勿对 target: [Lienol] 做任何修改
+        
+    steps:
+    - name: 准备结束
+      uses: actions/checkout@v4
+      
+    - name: 密匙检测（密匙为空则退出）
+      uses: 281677160/common@mishi
+
+    - name: 部署编译环境
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        sudo -E apt-get -qq update -y
+        sudo -E apt-get -qq install -y gawk git gettext libssl-dev xsltproc zip git-core wget curl grep python2.7 python3 python3-pip libpython3-dev
+        sudo timedatectl set-timezone "$TZ"
+        sudo mkdir -p /${{ env.DIY_WORK }}
+        sudo chown $USER:$GROUPS /${{ env.DIY_WORK }}
+    
+    - name: 下载"${{ matrix.target }}-${{ inputs.REPO_BRANCH }}"源码
+      working-directory: /${{ env.DIY_WORK }}
+      run: |
+        git clone -q -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
+        ln -sf /${{ env.DIY_WORK }}/openwrt ${GITHUB_WORKSPACE}/openwrt
+        echo "SHANG_CHUAN=true" >> ${GITHUB_ENV}
+    
+    - name: 公告
+      continue-on-error: true
+      uses: 281677160/common@message
+ 
+    - name: 运行其他和SSH远程(make menuconfig)
+      id: info
+      uses: 281677160/common@need
+        
+    - name: 编译信息
+      continue-on-error: true
+      if: env.COMPILATION_INFORMATION == 'true'
+      uses: 281677160/common@message
+    
+    - name: 清理Actions空间
+      continue-on-error: true
+      if: env.REPO_TOKEN
+      uses: small-5/delete-workflow-runs@main
+      with:
+        token: ${{ secrets.REPO_TOKEN }}
+        repository: ${{ github.repository }}
+        retain_min: ${{ env.RETAIN_MINUTE }}
+    
+    - name: 清理releases
+      continue-on-error: true
+      if: env.REPO_TOKEN
+      uses: ophub/delete-releases-workflows@main
+      with:
+        delete_releases: true
+        releases_keep_keyword: targz/Update
+        releases_keep_latest: ${{ env.KEEP_LATEST }}
+        delete_tags: true
+        delete_workflows: false
+        workflows_keep_day: 90
+        gh_token: ${{ secrets.REPO_TOKEN }}
+        
+    - name: 触发启动"${{ matrix.target }}"开始编译
+      if: steps.info.outcome == 'success'
+      uses: 281677160/common@trigger

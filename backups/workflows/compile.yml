@@ -1,0 +1,123 @@
+#
+# 编译主程序,请勿修改文件名称（compile.yml）
+#
+
+
+name: 编译主程序
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'build/Lienol/relevance/start'
+
+env:
+  GIT_REPOSITORY: ${{github.repository}}
+  REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
+  PUSH_PLUS_TOKEN: ${{ secrets.PUSH_PLUS_TOKEN }}
+  TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+  TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+  TZ: Asia/Shanghai
+
+jobs:
+  build:
+    name: 编译 "${{matrix.target}}"
+    runs-on: ubuntu-22.04
+    if: ${{ github.event.repository.owner.id }} == ${{ github.event.sender.id }}
+    
+    env:
+      FOLDER_NAME: ${{ matrix.target }}
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [Lienol]
+
+    steps:    
+    - name: 准备结束
+      uses: actions/checkout@v4
+
+    - name: 密匙检测（密匙为空则退出）
+      uses: 281677160/common@mishi
+
+    - name: 释放Ubuntu磁盘空间
+      uses: endersonmenezes/free-disk-space@v2
+      with:
+        remove_android: true
+        remove_dotnet: true
+        remove_haskell: true
+        remove_tool_cache: true
+        remove_swap: true
+        remove_packages: "azure-cli google-cloud-cli microsoft-edge-stable google-chrome-stable firefox postgresql* temurin-* *llvm* mysql* dotnet-sdk-*"
+        remove_packages_one_command: true
+        remove_folders: "/usr/share/swift /usr/share/miniconda /usr/share/az* /usr/share/glade* /usr/local/lib/node_modules /usr/local/share/chromium /usr/local/share/powershell"
+        testing: false
+        
+    - name: 部署编译环境
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        sudo bash -c 'bash <(curl -fsSL https://github.com/281677160/common/raw/main/custom/ubuntu.sh)'
+        sudo timedatectl set-timezone "$TZ"
+        sudo mkdir -p /${{ env.DIY_WORK }}
+        sudo chown ${USER}:${GROUPS} /${{ env.DIY_WORK }}
+
+    - name: 下载"${{matrix.target}}"源码
+      working-directory: /${{ env.DIY_WORK }}
+      run: |
+        git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
+        ln -sf /${{ env.DIY_WORK }}/openwrt ${GITHUB_WORKSPACE}/openwrt
+    
+    - name: 公告
+      continue-on-error: true
+      uses: 281677160/common@message
+ 
+    - name: 运行自定义文件和其他
+      uses: 281677160/common@need
+        
+    - name: 编译信息
+      continue-on-error: true
+      if: env.COMPILATION_INFORMATION == 'true'
+      uses: 281677160/common@message
+        
+    - name: 缓存加速
+      if: env.CACHEWRTBUILD_SWITCH == 'true'
+      uses: stupidloud/cachewrtbuild@main
+      with:
+        ccache: 'true'
+        mixkey: "${{ env.TARGET_PROFILE }}"
+        prefix: ${{ github.workspace }}/openwrt
+        
+    - name: 下载软件包
+      id: package
+      run: |
+        cd openwrt
+        make download -j8
+    
+    - name: 开始编译固件
+      id: compile
+      if: steps.package.outcome == 'success'
+      run: |
+        cd openwrt
+        echo -e "$(nproc) thread compile"
+        make -j$(nproc) || make -j1 V=s
+        echo "date=$(date "+%Y%m%d%H%M%S")" >> ${GITHUB_ENV}
+        echo "Tongzhi_Date=$(date +%Y年%m月%d日)" >> ${GITHUB_ENV}
+
+    - name: 自动打包aarch64系列固件
+      if: steps.compile.outcome == 'success' && env.ONLINE_FIRMWARE == 'true'
+      uses: 281677160/common@aarch
+
+    - name: 整理固件文件夹(需配合diy-part.sh设定使用)
+      continue-on-error: true
+      if: steps.compile.outcome == 'success'
+      run: |
+        cd openwrt
+        source $COMMON_SH && Diy_firmware
+
+    - name: 发送[在线更新固件]至云端
+      if: steps.compile.outcome == 'success' && env.UPDATE_FIRMWARE_ONLINE == 'true'
+      uses: 281677160/common@cloud
+        
+    - name: 上传,发布,信息通知
+      if: steps.compile.outcome == 'success'
+      uses: 281677160/common@uploads

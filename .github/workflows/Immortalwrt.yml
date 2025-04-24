@@ -133,7 +133,7 @@ jobs:
         cd openwrt
         git tag -l
         git fetch --tags
-        git checkout -b ImmortalWrt-24.10.1 v24.10.1
+        git checkout -b ImmortalWrt-24.10-Stable v24.10.1
     
     - name: 公告
       continue-on-error: true

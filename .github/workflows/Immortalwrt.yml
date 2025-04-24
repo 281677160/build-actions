@@ -132,7 +132,7 @@ jobs:
       run: |
         cd openwrt
         git tag -l
-        git describe --tags
+        git fetch --tags
         git checkout -f v24.10.1
 
         sed -i 's/^\(PKG_CONFIG_DEPENDS:=.*\)version\.date/\1/' include/version.mk 2>/dev/null || true

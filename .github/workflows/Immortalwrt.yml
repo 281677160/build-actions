@@ -127,6 +127,17 @@ jobs:
         git clone -q -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
         ln -sf /${{ env.DIY_WORK }}/openwrt ${GITHUB_WORKSPACE}/openwrt
         echo "SHANG_CHUAN=true" >> ${GITHUB_ENV}
+
+    - name: 修改版本号
+      run: |
+        cd openwrt
+        git tag -l
+        git describe --tags
+        git checkout -f v24.10.1
+
+        sed -i 's/^\(PKG_CONFIG_DEPENDS:=.*\)version\.date/\1/' include/version.mk 2>/dev/null || true
+        sed -i 's/$(VERSION_NUMBER)/24.10.1/' include/version.mk
+        sed -i 's/$(VERSION_DIST_SANITIZED)/ImmortalWrt/' include/version.mk
     
     - name: 公告
       continue-on-error: true

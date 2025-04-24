@@ -21,10 +21,16 @@
 ---
 
 <details>
-<summary>🆙更新说明（2025年4月23号）</summary>
+<summary>🆙更新说明（2025年4月24号）</summary>
 
 <br>
 
+  2025年4月24号
+
+ 1、修复了23.05以下不能编译的NaiveProxy问题
+
+
+ ---
   2025年4月23号
 
  1、把脚本重新整理了一遍，23.05或者以下的版本编译passwall和ssr-plus都强制使用shadowsocks-libev编译了，使用Shadowsocks_Rust因为passwall更新太快，源码跟不上会导致编译失败，23.05以下版本强制去掉NaiveProxy

@@ -9,7 +9,7 @@ on:
     branches:
       - main
     paths:
-      - 'buconfig'
+      - 'build/Lede/relevance/start'
 
 env:
   GIT_REPOSITORY: ${{github.repository}}
@@ -30,7 +30,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [Lienol]
+        target: [Lede]
 
     steps:    
     - name: 准备结束

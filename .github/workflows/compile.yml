@@ -119,7 +119,7 @@ jobs:
       uses: 281677160/common@cloud
         
     - name: 上传,发布,信息通知
-      if: steps.compile.outcome == 'success' && env.UPLOAD_RELEASE == 'true' && env.ING_FIRMWAR == 'true' && env.REPO_TOKEN
+      if: steps.compile.outcome == 'success'
       uses: ncipollo/release-action@v1
       with:
         name: ${{ env.SOURCE }}-${{ env.Tongzhi_Date }}

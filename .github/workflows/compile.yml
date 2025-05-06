@@ -117,6 +117,22 @@ jobs:
     - name: 发送[在线更新固件]至云端
       if: steps.compile.outcome == 'success' && env.UPDATE_FIRMWARE_ONLINE == 'true'
       uses: 281677160/common@cloud
+      with:      
+        tag: ${{ env.Update_tag }}
+        token: ${{ secrets.REPO_TOKEN }}
+        artifacts: "Github_Api/*"
+        allowUpdates: true
+        body: |
+          ### 📒 固件信息
+          - 💄 LUCI版本：${{ env.LUCI_EDITION }}
+          - 🚀 内核版本：${{ env.LINUX_KERNEL }}
+          - 💻 平台架构：${{ env.TARGET_PROFILE }}
+          - 🌻 源码作者：${{ env.SOURCE_OWNER }}
+          - 💝 源码分支：${{ env.REPO_BRANCH }}
+          - 🌐 默认地址：192.168.23.254
+          - 🔑 默认密码：空
+          - 🔴 固件大小：Kernel=32MB，rootfs=968MB
+          - 🧊 编译时间：${{ env.Firmware_Date }}
         
     - name: 上传,发布,信息通知
       if: steps.compile.outcome == 'success'

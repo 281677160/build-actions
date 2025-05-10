@@ -21,9 +21,6 @@ on:
         options:
           - 'openwrt-24.10'
           - 'openwrt-23.05'
-          - 'openwrt-21.02'
-          - 'openwrt-18.06'
-          - 'openwrt-18.06-k5.4'
           - 'master'
       CONFIG_FILE:
         description: '请选择[seed文件夹内]的配置文件'

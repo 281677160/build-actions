@@ -21,9 +21,16 @@
 ---
 
 <details>
-<summary>🆙更新说明（2025年4月24号）</summary>
-
+<summary>🆙更新说明（2025年5月11号）</summary>
 <br>
+
+  2025年5月11号
+
+ 1、Lienol源码那里删除了几个低版本的luci分支，我在脚本当中也删除了对官方的低版本luci编译，还有删除了天灵的低版本luci的，实在是passwall和ssr-plus更新太快了，4月24号成修复不能编译NaiveProxy问题，现在又不能编译了，如果你们不需要编译这些，你们可以自己加回去编译的
+
+
+ ---
+
 
   2025年4月24号
 
@@ -199,8 +206,8 @@ CONFIG_TARGET_armsr_armv8_DEVICE_generic=y
  ### 鸣谢！
  感谢以下各位大佬（排名无分先后）<br />
  
- [`coolsnowwolf`](https://github.com/coolsnowwolf/lede/tree/master)
- [`Lienol`](https://github.com/Lienol/openwrt/tree/21.02)
+ [`coolsnowwolf`](https://github.com/coolsnowwolf/lede)
+ [`Lienol`](https://github.com/Lienol/openwrt)
  [`immortalwrt`](https://github.com/immortalwrt/immortalwrt)
  [`openwrt`](https://github.com/openwrt/openwrt)
  [`x-wrt`](https://github.com/x-wrt/x-wrt)

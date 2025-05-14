@@ -1,0 +1,3 @@
+CONFIG_TARGET_amlogic=y
+CONFIG_TARGET_amlogic_mesongx=y
+CONFIG_TARGET_amlogic_mesongx_DEVICE_phicomm_n1=y

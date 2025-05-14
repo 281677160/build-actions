@@ -2,7 +2,7 @@
 # 打包Amlogic/Rockchip固件,请勿修改文件名称（packaging.yml）
 #
 
-name: 打包aarch64系列固件
+name: 打包armsr_rootfs_tar_gz
 on:
   repository_dispatch:
   workflow_dispatch:
@@ -218,7 +218,7 @@ env:
 
 jobs:
   build:
-    name: 打包aarch64系列固件
+    name: 打包armsr_rootfs_tar_gz
     runs-on: ubuntu-22.04
     steps:
     - name: 准备结束
@@ -293,7 +293,7 @@ jobs:
           exit 1
         fi
 
-    - name: 自动打包aarch64系列固件
+    - name: 自动打包armsr_rootfs_tar_gz
       id: compile
       uses: 281677160/common@aarch
 

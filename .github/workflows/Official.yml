@@ -29,8 +29,7 @@ on:
         default: 'x86_64'
         type: choice
         options:
-          - '1907-phicomm-k3'
-          - 'aarch64'
+          - 'armsr_rootfs_tar_gz'
           - 'phicomm_k3'
           - 'x86_64'
       INFORMATION_NOTICE:

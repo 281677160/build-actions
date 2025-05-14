@@ -26,7 +26,7 @@ on:
         default: 'x86_64'
         type: choice
         options:
-          - 'aarch64'
+          - 'armsr_rootfs_tar_gz'
           - 'asus_rt-ac42u'
           - 'd-team_newifi-d2'
           - 'p2w_r619ac-128m'

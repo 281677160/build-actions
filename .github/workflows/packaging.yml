@@ -289,7 +289,7 @@ jobs:
         fi
         find $FIRMWARE_PATH -type f -name "*.tar.gz" -size -2M -delete
         if [[ -z "$(find $FIRMWARE_PATH -maxdepth 1 -name '*rootfs.tar.gz' -print -quit)" ]]; then
-          echo -e "\033[31m[${SOURCE}-armvirt-64-default-rootfs.tar.gz]包小于2MB,非正常rootfs.tar.gz包\033[0m"
+          echo -e "\033[31m没发现[${SOURCE}-armvirt-64-default-rootfs.tar.gz]包存在\033[0m"
           exit 1
         fi
 

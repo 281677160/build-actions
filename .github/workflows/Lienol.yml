@@ -28,7 +28,10 @@ on:
         default: 'x86_64'
         type: choice
         options:
-          - 'aarch64'
+          - 'armsr_rootfs_tar_gz'
+          - '1907-armsr_rootfs_tar_gz'
+          - 'phicomm_k3'
+          - '1907-phicomm-k3'
           - 'x86_64'
       INFORMATION_NOTICE:
         description: 'Telegram或pushplus信息通知'

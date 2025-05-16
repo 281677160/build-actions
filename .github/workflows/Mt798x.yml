@@ -34,7 +34,6 @@ on:
           - 'clt-r30b1-112M'
           - 'cmcc-rax3000m-emmc'
           - 'jcg-q30'
-          - 'xiaomi-redmi-router-ax6000'
       INFORMATION_NOTICE:
         description: 'Telegram或pushplus信息通知'
         required: true

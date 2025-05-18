@@ -107,7 +107,7 @@ jobs:
     - name: 准备结束
       uses: actions/checkout@v4
       
-    - name: 密匙检测（密匙为空则退出）
+    - name: 检测密匙/文件/版本
       uses: 281677160/common@mishi
 
     - name: 部署编译环境

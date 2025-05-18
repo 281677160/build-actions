@@ -131,9 +131,6 @@ jobs:
         ln -sf /${{ env.DIY_WORK }}/openwrt ${GITHUB_WORKSPACE}/openwrt
         bash ${{ env.COMMON_SH }} Diy_feedsconf
         echo "SHANG_CHUAN=true" >> ${GITHUB_ENV}
-
-    - name: SSH远程连接（make menuconfig）
-      uses: danshui-git/debugger-action@main
     
     - name: 公告
       continue-on-error: true

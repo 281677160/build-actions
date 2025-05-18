@@ -9,7 +9,7 @@ on:
     branches:
       - main
     paths:
-      - 'build/Lede/relevance/start'
+      - 'buconfig'
 
 env:
   GIT_REPOSITORY: ${{github.repository}}

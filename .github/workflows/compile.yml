@@ -111,7 +111,7 @@ jobs:
       if: steps.compile.outcome == 'success'
       run: |
         cd openwrt
-        source $COMMON_SH && Diy_firmware
+        bash $COMMON_SH Diy_firmware
 
     - name: 发送[在线更新固件]至云端
       if: steps.compile.outcome == 'success' && env.UPDATE_FIRMWARE_ONLINE == 'true'

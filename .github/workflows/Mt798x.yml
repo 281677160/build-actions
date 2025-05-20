@@ -28,11 +28,12 @@ on:
         default: '360-t7-108M'
         type: choice
         options:
-          - 'glinet-gl-xe3000'
-          - 'huasifei-wh3000-emmc'
           - '360-t7-108M'
           - 'clt-r30b1-112M'
           - 'cmcc-rax3000m-emmc'
+          - 'cmcc_rax3000me'
+          - 'glinet-gl-xe3000'
+          - 'huasifei-wh3000-emmc'
           - 'jcg-q30'
       INFORMATION_NOTICE:
         description: 'Telegram或pushplus信息通知'

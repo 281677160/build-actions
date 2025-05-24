@@ -221,24 +221,25 @@ jobs:
     name: 打包armsr_rootfs_tar_gz
     runs-on: ubuntu-22.04
     steps:
-    - name: 准备结束
-      uses: actions/checkout@v4
-
-    - name: 密匙检测
-      uses: 281677160/common@yaoshi
-
     - name: 释放Ubuntu磁盘空间
-      uses: endersonmenezes/free-disk-space@v2
+      uses: danshui-git/free-disk-space@main
       with:
         remove_android: true
         remove_dotnet: true
         remove_haskell: true
         remove_tool_cache: true
         remove_swap: true
+        remove_docker: true
         remove_packages: "azure-cli google-cloud-cli microsoft-edge-stable google-chrome-stable firefox postgresql* temurin-* *llvm* mysql* dotnet-sdk-*"
         remove_packages_one_command: true
         remove_folders: "/usr/share/swift /usr/share/miniconda /usr/share/az* /usr/share/glade* /usr/local/lib/node_modules /usr/local/share/chromium /usr/local/share/powershell"
         testing: false
+    
+    - name: 准备结束
+      uses: actions/checkout@v4
+
+    - name: 密匙检测
+      uses: 281677160/common@yaoshi
 
     - name: 整理变量
       run: |

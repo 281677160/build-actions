@@ -37,11 +37,11 @@ on:
           - '关闭'
           - 'Telegram'
           - 'Pushplus'
-      RETAIN_MINUTE:
-        description: '清理[X]分钟之后的所有操作记录(最低30)'
+      KEEP_WORKFLOWS:
+        description: '清理workflows,保留[X]个runs不被清理'
         required: true
-        default: '10080'
-      KEEP_LATEST:
+        default: '30'
+      KEEP_RELESAES:
         description: '清理Releases,保留[X]个Releases不被清理'
         required: true
         default: '30'
@@ -138,26 +138,20 @@ jobs:
       if: env.COMPILATION_INFORMATION == 'true'
       uses: 281677160/common@message
     
-    - name: 清理Actions空间
+    - name: 清理releases和workflows
       continue-on-error: true
-      if: env.REPO_TOKEN
-      uses: small-5/delete-workflow-runs@main
-      with:
-        token: ${{ secrets.REPO_TOKEN }}
-        repository: ${{ github.repository }}
-        retain_min: ${{ env.RETAIN_MINUTE }}
-    
-    - name: 清理releases
-      continue-on-error: true
-      if: env.REPO_TOKEN
-      uses: ophub/delete-releases-workflows@main
+      uses: danshui-git/delete-releases-workflows@main
       with:
         delete_releases: true
+        prerelease_option: all
         releases_keep_keyword: targz/Update
-        releases_keep_latest: ${{ env.KEEP_LATEST }}
+        releases_keep_latest: ${{ env.KEEP_RELESAES }}
         delete_tags: true
-        delete_workflows: false
-        workflows_keep_day: 90
+        max_releases_fetch: 300
+        delete_workflows: true
+        workflows_keep_latest: ${{ env.KEEP_WORKFLOWS }}
+        max_workflows_fetch: 300
+        repo: ${{ github.repository }}
         gh_token: ${{ secrets.REPO_TOKEN }}
         
     - name: 触发启动"${{ matrix.target }}"开始编译

@@ -141,6 +141,7 @@ jobs:
       uses: 281677160/common@message
     
     - name: 清理releases和workflows
+      continue-on-error: true
       uses: danshui-git/delete-releases-workflows@main
       with:
         delete_releases: true

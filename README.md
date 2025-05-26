@@ -228,7 +228,7 @@ CONFIG_TARGET_armsr_armv8_DEVICE_generic=y
 ---
 
 <details>
-<summary>✴️本地编译</summary>
+<summary>📳本地编译</summary>
 <br><br>
 
 《[本地Ubuntu一键编译OpenWrt固件](https://github.com/281677160/bendi)》

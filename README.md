@@ -1,65 +1,53 @@
 
-
-
----
-
-<details>
-<summary>🔎各种教程</summary>
-<br>
-<br />
-<br>
-
-《[github actions编译教程](https://github.com/danshui-git/shuoming#%E7%BC%96%E8%AF%91%E6%95%99%E7%A8%8B)》
-
-《[Amlogic、Rockchip系列固件打包设置教程](https://github.com/danshui-git/shuoming/blob/master/Amlogic.md)》
-
-《[在线更新固件插件说明](https://github.com/danshui-git/shuoming/blob/master/%E5%AE%9A%E6%97%B6%E6%9B%B4%E6%96%B0%E6%8F%92%E4%BB%B6.md)》
-
-<br />
-</details>
-
----
-
 <details>
 <summary>⬆️更新说明（2025年5月25号）</summary>
-<br>
 
+ 
+
+ ---
+ <br>
   2025年5月25号
+ <br><br>
 
- 1、更换 [清理releases和workflows] 设置方法在这里 https://github.com/danshui-git/delete-releases-workflows
+ 1、更换 [清理releases和workflows]  《[新的设置方法在这里](https://github.com/danshui-git/delete-releases-workflows)》
 
 
  ---
-
+ <br>
   2025年5月24号
+ <br><br>
 
- 1、修复[释放Ubuntu磁盘空间]运行时候有报错的问题，以前用的是 https://github.com/endersonmenezes/free-disk-space 这个作者的源码，我拉取过来修复了一点点东西，修复过后比以前多2~3G空间吧
+ 1、修复[释放Ubuntu磁盘空间]运行时候有报错的问题，以前用的是《[endersonmenezes](https://github.com/endersonmenezes/free-disk-space)》这个作者的源码，我拉取过来修复了一点点东西，修复过后比以前多2~3G空间吧
 
 
  ---
-
+ <br>
   2025年5月19号
+ <br><br>
 
  1、修复了一些小问题，增加删除缓存功能，如果编译的时候出现奇怪的错误，一般都是【ERROR: target/linux failed to build.】这样的，或者就是缓存弄的，把缓存的[√]去掉，再编译，就会先清理缓存，在编译的时候再次缓存，如果你一直去掉[√]编译，就等于一直不使用缓存
 
 
  ---
-
+ <br>
   2025年5月11号
+ <br><br>
 
  1、Lienol源码那里删除了几个低版本的luci分支，我在脚本当中也删除了对官方的低版本luci编译，还有删除了天灵的低版本luci的，实在是passwall和ssr-plus更新太快了，4月24号成修复不能编译NaiveProxy问题，现在又不能编译了，如果你们不需要编译这些，你们可以自己加回去编译的
 
 
  ---
-
-
+ <br>
   2025年4月24号
+ <br><br>
 
  1、修复了23.05以下不能编译的NaiveProxy问题
 
 
  ---
+ <br>
   2025年4月23号
+ <br><br>
 
  1、把脚本重新整理了一遍，23.05或者以下的版本编译passwall和ssr-plus都强制使用shadowsocks-libev编译了，使用Shadowsocks_Rust因为passwall更新太快，源码跟不上会导致编译失败，23.05以下版本强制去掉NaiveProxy
  
@@ -69,14 +57,17 @@
 
 
  ---
+ <br>
   2025年3月30号
+ <br><br>
 
  1、去除选择服务器CPU编译的操作，测试了一下，现在可以看到的CPU基本都全是AMD的一个型号了，如果使用了选择服务器CPU编译的话，会一直循环寻找CPU当中，不会进行编译了
 
 
  ---
-
+<br>
   2025年3月26号
+ <br><br>
 
  1、将《[padavanonly](https://github.com/padavanonly/immortalwrt-mt798x-24.10)》和《[hanwckf](https://github.com/hanwckf/immortalwrt-mt798x)》的仓库整合成Mt798x的了
  
@@ -85,7 +76,9 @@
  3、openwrt-23.05和hanwckf-21.02的【mt7981和mt7986】可以编译机型文件均拉取于[padavanonly](https://github.com/padavanonly/immortalwrt-mt798x-24.10)作者仓库的2410分支，也就是说【mt7981和mt7986】类的机型都同时同步与[padavanonly](https://github.com/padavanonly/immortalwrt-mt798x-24.10)作者的2410分支.
 
  ---
+ <br>
   2025年3月25号
+ <br><br>
 
  1、修复个别源码开启 export Enable_IPV6_function="1" 选项编译错误，个别源码编译选择ipv6会缺依赖造成编译错误
  
@@ -94,26 +87,30 @@
  3、修复低版本源码编译出现 WARNING: Makefile 'package/feeds/danshui/v2raya/Makefile' has a dependency on 'kmod-nft-tproxy', which does not exist 错误
 
  ---
-
+<br>
   2025年3月21号
+ <br><br>
 
  修复脚本长期没更新导致的各种问题，增加 https://github.com/padavanonly/immortalwrt-mt798x-24.10 此仓库源码
 
  ---
-
+<br>
   2024年1月14号
+ <br><br>
 
  修复私库不能启动编译和同步更新上游仓库问题，要注意的是如果你把仓库设置成私库，在线更新固件功能是不可以使用的，因为私库是检测不到的，就没办法下载您在私库releases的固件
  
  ---
- 
+ <br>
   2023年9月2号
+ <br><br>
 
  增加<释放Ubuntu磁盘空间>解决最近因为服务器空间不足而编译失败的问题
  
  ---
- 
+ <br>
   2023年6月16号
+ <br><br>
  
  修复个别源码不能编译N1固件的问题
  
@@ -142,8 +139,9 @@ CONFIG_TARGET_armsr_armv8_DEVICE_generic=y
  
  以上机型文件仅供参考，自己在对应源码SSH连接多看吧
  ---
- 
- 2023年6月11号
+ <br>
+  2023年6月11号
+ <br><br>
  
  1、修改了清理Actions空间操作记录的时间设置方式，以前是按天来计算的，现在是按分钟计算
  
@@ -154,8 +152,9 @@ CONFIG_TARGET_armsr_armv8_DEVICE_generic=y
  5、增加了自动删除，因筛选CPU转换服务器而停止的工作流程
  
  ---
-
+<br>
  2023年6月3号
+<br><br>
  
  1、每次编译都自动检测一次上游仓库版本，上游有更新的话自动同步上游，同步分小版本和大版本，小版本不会改变您现有机型文件夹，不会改变【diy、files、patches、seed】等文件夹，大版本是直接把上游仓库整个覆盖您现的仓库，不管大小版本更新都会保留备份的，在根目录会多一个【backups】文件夹，里面就是您没更新之前的仓库所有文件，不想要此文件夹的时候直接删除就可以了
  
@@ -174,8 +173,9 @@ CONFIG_TARGET_armsr_armv8_DEVICE_generic=y
  8、那些上传网盘之类的，因为此功能的作者没更新仓库源码，基本都失效了，懒的折腾了，我仓库都删除了那些功能了，有懂搞的可以去上传功能的仓库修改修改来用
  
  ---
- 
-2023年5月13号
+<br>
+ 2023年5月13号
+<br><br>
  
  1、重新整理了所有源码的插件包，因技术有限，gl-ax1800源码增加不了docker，还有个别源码不能编译ssrplus和passwall的NaiveProxy，个别源码的vssr和istore可以编译成功，但是不能用，还有没有其他插件也存在此问题，等你们测试了
  
@@ -190,8 +190,9 @@ CONFIG_TARGET_armsr_armv8_DEVICE_generic=y
  6、每次安装固件完毕，就是跑完码后，该运行的运行，该咋滴咋滴，全部搞定后就会进行重启，跑完码后，如果你使用页面后台进入固件是可以的，但是进入后因为相隔几十秒后(全部东西运行完毕大概是20-30秒,东西多的话时间要增加一点点)会进行重启，所以有些人进入后，修改了东西，没保存设置，因为才几十秒，很快就过去了，来不及按保存，然后造成你以为你设置了东西，但是过一会发现又没设置的情况，因为你没按保存，固件就重启了，应该要等重启后再来慢慢设置，如果请大家发现这个问题的时候莫慌
 
 ---
-
-2023年4月22号
+<br>
+ 2023年4月22号
+<br><br>
 
 1、把autobuild仓库合拼到了这里了，以前拉autobuild仓库的应该都不可以用了，请重新拉取这个仓库吧，以前老的build-actions仓库也要重新拉取新的build-actions仓库使用（请不要继续拉取autobuild仓库使用，这个是我个人使用仓库）
  
@@ -212,14 +213,27 @@ CONFIG_TARGET_armsr_armv8_DEVICE_generic=y
 ---
 
 <details>
-<summary>📳本地编译</summary>
-<br>
-<br />
-<br>
+<summary>🔎各种教程</summary>
+<br><br>
+
+《[github actions编译教程](https://github.com/danshui-git/shuoming#%E7%BC%96%E8%AF%91%E6%95%99%E7%A8%8B)》
+
+《[Amlogic、Rockchip系列固件打包设置教程](https://github.com/danshui-git/shuoming/blob/master/Amlogic.md)》
+
+《[在线更新固件插件说明](https://github.com/danshui-git/shuoming/blob/master/%E5%AE%9A%E6%97%B6%E6%9B%B4%E6%96%B0%E6%8F%92%E4%BB%B6.md)》
+
+<br/>
+</details>
+
+---
+
+<details>
+<summary>✴️本地编译</summary>
+<br><br>
 
 《[本地Ubuntu一键编译OpenWrt固件](https://github.com/281677160/bendi)》
 
-<br />
+<br/>
 </details>
 
 ---

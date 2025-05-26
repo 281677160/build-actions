@@ -212,7 +212,7 @@ CONFIG_TARGET_armsr_armv8_DEVICE_generic=y
 ---
 
 <details>
-<summary>✴️本地编译</summary>
+<summary>🅱️本地编译</summary>
 <br>
 <br />
 <br>

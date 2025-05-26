@@ -4,7 +4,7 @@
 ---
 
 <details>
-<summary>🆘各种教程</summary>
+<summary>🔎各种教程</summary>
 <br>
 <br />
 <br>
@@ -21,7 +21,7 @@
 ---
 
 <details>
-<summary>🆙更新说明（2025年5月25号）</summary>
+<summary>⬆️更新说明（2025年5月25号）</summary>
 <br>
 
   2025年5月25号

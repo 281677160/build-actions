@@ -115,6 +115,7 @@ jobs:
         bash ${{ env.COMMON_SH }} Diy_firmware
 
     - name: 发送[在线更新固件]至云端
+      continue-on-error: true
       if: steps.compile.outcome == 'success' && env.UPDATE_FIRMWARE_ONLINE == 'true'
       uses: 281677160/common@cloud
         

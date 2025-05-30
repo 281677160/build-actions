@@ -49,7 +49,7 @@ on:
         description: '清理workflows,保留[X]个runs不被清理'
         required: true
         default: '30'
-      KEEP_RELESAES:
+      KEEP_RELEASES:
         description: '清理Releases,保留[X]个Releases不被清理'
         required: true
         default: '30'
@@ -154,7 +154,7 @@ jobs:
         delete_releases: true
         prerelease_option: all
         releases_keep_keyword: targz/Update
-        releases_keep_latest: ${{ env.KEEP_RELESAES }}
+        releases_keep_latest: ${{ env.KEEP_RELEASES }}
         delete_tags: true
         max_releases_fetch: 300
         delete_workflows: true

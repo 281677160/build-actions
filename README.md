@@ -1,7 +1,15 @@
 
 <details>
-<summary>⬆️更新说明（2025年5月29号）</summary>
+<summary>⬆️更新说明（2025年5月30号）</summary>
 
+ 
+
+ ---
+ <br>
+  2025年5月30号
+ <br><br>
+
+ 1、修复[223](https://github.com/281677160/build-actions/issues/223)变量拼写错误的问题
  
 
  ---

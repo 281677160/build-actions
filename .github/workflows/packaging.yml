@@ -282,7 +282,9 @@ jobs:
           echo -e "\033[31mReleases里面，没有名称为[targz]的tag存在\033[0m"
           exit 1
         elif grep -q "${{ env.SOURCE }}-armvirt-64-default-rootfs.tar.gz" aarch; then
-          wget -q https://github.com/${{ github.repository }}/releases/download/targz/${{ env.SOURCE }}-armvirt-64-default-rootfs.tar.gz -O ${FIRMWARE_PATH}/openwrt-armvirt-64-default-rootfs.tar.gz
+          if wget -q https://github.com/${{ github.repository }}/releases/download/targz/${{ env.SOURCE }}-armvirt-64-default-rootfs.tar.gz -O ${FIRMWARE_PATH}/openwrt-armvirt-64-default-rootfs.tar.gz; then
+             curl -# -L -k https://github.com/${{ github.repository }}/releases/download/targz/${{ env.SOURCE }}-armvirt-64-default-rootfs.tar.gz -o ${FIRMWARE_PATH}/openwrt-armvirt-64-default-rootfs.tar.gz
+          fi  
         else
           echo -e "\033[31mReleases里面，名称为[targz]的tag，没有[${SOURCE}-armvirt-64-default-rootfs.tar.gz]存在\033[0m"
           exit 1

@@ -30,6 +30,7 @@ on:
         options:
           - '360-t7-108M'
           - 'clt-r30b1-112M'
+          - 'cudy_tr3000-v1'
           - 'cmcc-rax3000m-emmc'
           - 'cmcc_rax3000me'
           - 'glinet-gl-xe3000'

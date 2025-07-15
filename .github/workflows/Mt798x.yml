@@ -16,10 +16,10 @@ on:
       REPO_BRANCH:
         description: 'mt798x源码-请选择分支'
         required: true
-        default: '2410'
+        default: 'openwrt-24.10-6.6'
         type: choice
         options:
-          - '2410'
+          - 'openwrt-24.10-6.6'
           - 'openwrt-23.05'
           - 'hanwckf-21.02'
       CONFIG_FILE:
